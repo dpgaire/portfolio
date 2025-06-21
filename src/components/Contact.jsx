@@ -266,7 +266,7 @@ const Contact = () => {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-12 h-12 bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group"
+                    className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group"
                   >
                     <span className="text-xl">{social.icon}</span>
                   </motion.a>

@@ -45,7 +45,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-dark-900 text-white overflow-hidden">
+    <footer className="relative dark:bg-dark-900 dark:text-white overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div
@@ -95,7 +95,7 @@ const Footer = () => {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.1, y: -2 }}
                       whileTap={{ scale: 0.95 }}
-                      className="w-12 h-12 bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group"
+                      className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group"
                     >
                       <span className="text-xl group-hover:scale-110 transition-transform duration-300">
                         {social.icon}

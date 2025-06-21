@@ -123,10 +123,15 @@ const Hero = () => {
           variants={itemVariants}
           className="mb-6"
         >
-          <span className="inline-flex  mt-16 lg:mt-12  items-center gap-2 px-4 py-2 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50">
+          {/* <span className="inline-flex text-wrap items-center gap-2 px-4 py-2 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50">
             <SparklesIcon className="w-4 h-4 text-primary-500" />
             Welcome to my digital space
-          </span>
+          </span> */}
+          <span className="flex flex-wrap items-center justify-start lg:justify-center gap-2 px-4 py-2 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50 max-w-xs sm:max-w-none">
+  <SparklesIcon className="w-4 h-4 text-primary-500" />
+  <span className="whitespace-normal">Welcome to my digital space</span>
+</span>
+
         </motion.div>
 
         {/* Main Heading */}
