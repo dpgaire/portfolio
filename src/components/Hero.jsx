@@ -123,7 +123,7 @@ const Hero = () => {
           variants={itemVariants}
           className="mb-6"
         >
-          <span className="inline-flex mt-16  items-center gap-2 px-4 py-2 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50">
+          <span className="inline-flex  mt-16 lg:mt-12  items-center gap-2 px-4 py-2 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50">
             <SparklesIcon className="w-4 h-4 text-primary-500" />
             Welcome to my digital space
           </span>
