@@ -3,7 +3,7 @@
   <url>
     <loc>https://www.durgagairhe.com.np/</loc>
     <lastmod>2025-06-21</lastmod>
-    <priority>1.00</priority>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
   </url>
-  <!-- Add more pages if using routing -->
 </urlset>
