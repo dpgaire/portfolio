@@ -1,25 +1,395 @@
-import { projects } from "../utils";
-import ProjectCard from "./ui/ProjectCard";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { 
+  EyeIcon,
+  CodeBracketIcon,
+  ArrowTopRightOnSquareIcon,
+  XMarkIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon
+} from '@heroicons/react/24/outline';
 
-const Projects = () => (
-  <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-800 relative">
-    <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent dark:from-gray-900 dark:to-transparent -z-10"></div>
-    <div className="max-w-7xl mx-auto px-4">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Featured Projects</h2>
-        <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          A showcase of my recent work spanning web applications, desktop tools, mobile apps, and AI-powered solutions
-        </p>
-        <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-6"></div>
-      </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
-      </div>
-    </div>
-  </section>
-);
+const Projects = () => {
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true
+  });
+
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [filter, setFilter] = useState('all');
+
+  const projects = [
+    {
+      id: 1,
+      title: "Moru Digital Wallet",
+      category: "fintech",
+      description: "Leading frontend development for a comprehensive digital wallet solution serving thousands of users daily.",
+      longDescription: "A comprehensive digital wallet platform that enables users to manage their finances, make payments, and track transactions. Built with React, Node.js, and modern security practices.",
+      image: "/api/placeholder/600/400",
+      technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "AWS"],
+      liveUrl: "https://moru.com",
+      githubUrl: null,
+      featured: true,
+      status: "Live"
+    },
+    {
+      id: 2,
+      title: "AI-Powered Code Assistant",
+      category: "ai",
+      description: "VS Code extension that provides intelligent code suggestions and automated refactoring capabilities.",
+      longDescription: "An intelligent VS Code extension that leverages AI to provide contextual code suggestions, automated refactoring, and code quality improvements. Supports multiple programming languages.",
+      image: "/api/placeholder/600/400",
+      technologies: ["TypeScript", "VS Code API", "OpenAI", "Node.js"],
+      liveUrl: "https://marketplace.visualstudio.com/items?itemName=durga-gairhe.code-assistant",
+      githubUrl: "https://github.com/durga-gairhe/code-assistant",
+      featured: true,
+      status: "Published"
+    }, 
+    {
+      id: 3,
+      title: "Rich Text Editor",
+      category: "tools",
+      description: "Feature-rich text editor with real-time collaboration and advanced formatting options.",
+      longDescription: "A modern rich text editor built with React and Draft.js, featuring real-time collaboration, advanced formatting, image uploads, and export capabilities.",
+      image: "/api/placeholder/600/400",
+      technologies: ["React", "Draft.js", "Socket.io", "Express", "MongoDB"],
+      liveUrl: "https://editor.durgagairhe.com",
+      githubUrl: "https://github.com/durga-gairhe/rich-text-editor",
+      featured: false,
+      status: "Live"
+    },
+    {
+      id: 4,
+      title: "React Native Fitness App",
+      category: "mobile",
+      description: "Cross-platform fitness tracking app with workout plans and progress monitoring.",
+      longDescription: "A comprehensive fitness tracking application built with React Native and Expo, featuring workout plans, progress tracking, social features, and integration with health APIs.",
+      image: "/api/placeholder/600/400",
+      technologies: ["React Native", "Expo", "Firebase", "Redux", "Health APIs"],
+      liveUrl: "https://apps.apple.com/app/fitness-tracker",
+      githubUrl: "https://github.com/durga-gairhe/fitness-app",
+      featured: false,
+      status: "Live"
+    },
+    {
+      id: 5,
+      title: "E-commerce Dashboard",
+      category: "web",
+      description: "Comprehensive admin dashboard for e-commerce management with analytics and reporting.",
+      longDescription: "A powerful admin dashboard for e-commerce platforms featuring real-time analytics, inventory management, order processing, and comprehensive reporting tools.",
+      image: "/api/placeholder/600/400",
+      technologies: ["React", "Chart.js", "Material-UI", "Express", "MySQL"],
+      liveUrl: "https://dashboard.ecommerce.com",
+      githubUrl: "https://github.com/durga-gairhe/ecommerce-dashboard",
+      featured: false,
+      status: "Live"
+    },
+    {
+      id: 6,
+      title: "Blockchain Voting System",
+      category: "blockchain",
+      description: "Secure voting platform built on blockchain technology ensuring transparency and immutability.",
+      longDescription: "A decentralized voting system built on Ethereum blockchain, ensuring transparent, secure, and immutable voting processes with smart contract integration.",
+      image: "/api/placeholder/600/400",
+      technologies: ["Solidity", "Web3.js", "React", "Ethereum", "IPFS"],
+      liveUrl: "https://vote.blockchain.com",
+      githubUrl: "https://github.com/durga-gairhe/blockchain-voting",
+      featured: true,
+      status: "Beta"
+    }
+  ];
+
+  const categories = [
+    { id: 'all', label: 'All Projects' },
+    { id: 'fintech', label: 'FinTech' },
+    { id: 'ai', label: 'AI/ML' },
+    { id: 'tools', label: 'Tools' },
+    { id: 'mobile', label: 'Mobile' },
+    { id: 'web', label: 'Web Apps' },
+    { id: 'blockchain', label: 'Blockchain' }
+  ];
+
+  const filteredProjects = filter === 'all' 
+    ? projects 
+    : projects.filter(project => project.category === filter);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const ProjectModal = ({ project, onClose }) => {
+    if (!project) return null;
+
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-white dark:bg-dark-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative">
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 z-10 p-2 bg-black/20 hover:bg-black/40 rounded-full text-white transition-colors duration-200"
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+              
+              <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-t-2xl flex items-center justify-center">
+                <div className="text-4xl font-bold gradient-text">{project.title}</div>
+              </div>
+            </div>
+
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {project.title}
+                </h3>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  project.status === 'Live' 
+                    ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                    : project.status === 'Beta'
+                    ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                    : 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+                }`}>
+                  {project.status}
+                </span>
+              </div>
+
+              <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+                {project.longDescription}
+              </p>
+
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                  Technologies Used
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1 bg-primary-100 dark:bg-primary-900/20 text-primary-800 dark:text-primary-300 rounded-full text-sm font-medium"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                {project.liveUrl && (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary"
+                  >
+                    <EyeIcon className="w-5 h-5 mr-2" />
+                    View Live
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary"
+                  >
+                    <CodeBracketIcon className="w-5 h-5 mr-2" />
+                    View Code
+                  </a>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    );
+  };
+
+  return (
+    <section className="section-padding bg-white dark:bg-dark-900">
+      <motion.div
+        ref={ref}
+        variants={containerVariants}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+        className="container-custom"
+      >
+        {/* Section Header */}
+        <motion.div variants={itemVariants} className="text-center mb-16">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+            <span className="gradient-text">Featured Projects</span>
+          </h2>
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Showcasing my latest work and creative solutions
+          </p>
+          <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
+        </motion.div>
+
+        {/* Filter Buttons */}
+        <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-2 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setFilter(category.id)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                filter === category.id
+                  ? 'bg-primary-500 text-white shadow-lg'
+                  : 'bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600'
+              }`}
+            >
+              {category.label}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Projects Grid */}
+        <motion.div 
+          layout
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          <AnimatePresence>
+            {filteredProjects.map((project) => (
+              <motion.div
+                key={project.id}
+                layout
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                whileHover={{ y: -10 }}
+                className="card-hover group cursor-pointer overflow-hidden"
+                onClick={() => setSelectedProject(project)}
+              >
+                {/* Project Image */}
+                <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-2xl font-bold gradient-text">{project.title}</div>
+                  </div>
+                  
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <div className="flex gap-2">
+                      <div className="p-2 bg-white/90 rounded-full">
+                        <EyeIcon className="w-5 h-5 text-gray-900" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Featured Badge */}
+                  {project.featured && (
+                    <div className="absolute top-4 left-4 px-2 py-1 bg-accent-500 text-white text-xs font-medium rounded-full">
+                      Featured
+                    </div>
+                  )}
+
+                  {/* Status Badge */}
+                  <div className={`absolute top-4 right-4 px-2 py-1 text-xs font-medium rounded-full ${
+                    project.status === 'Live' 
+                      ? 'bg-green-500 text-white'
+                      : project.status === 'Beta'
+                      ? 'bg-yellow-500 text-white'
+                      : 'bg-blue-500 text-white'
+                  }`}>
+                    {project.status}
+                  </div>
+                </div>
+
+                {/* Project Content */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
+                    {project.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {project.technologies.slice(0, 3).map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded text-xs"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 3 && (
+                      <span className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded text-xs">
+                        +{project.technologies.length - 3}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Action Links */}
+                  <div className="flex gap-2">
+                    {project.liveUrl && (
+                      <button className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
+                        <EyeIcon className="w-4 h-4 mr-1" />
+                        View Live
+                      </button>
+                    )}
+                    {project.githubUrl && (
+                      <button className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
+                        <CodeBracketIcon className="w-4 h-4 mr-1" />
+                        Code
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* View All Projects Button */}
+        {/* <motion.div variants={itemVariants} className="text-center mt-12">
+          <button className="btn-secondary group flex items-center">
+            View All Projects
+            <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+          </button>
+        </motion.div> */}
+      </motion.div>
+
+      {/* Project Modal */}
+      <ProjectModal 
+        project={selectedProject} 
+        onClose={() => setSelectedProject(null)} 
+      />
+    </section>
+  );
+};
 
 export default Projects;
 

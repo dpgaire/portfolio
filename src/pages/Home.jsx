@@ -10,52 +10,53 @@ import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
 const Home = () => {
- const { theme } = useTheme();
-  
+  const { theme } = useTheme();
+
   useEffect(() => {
-    // Add smooth scrolling styles
-    const style = document.createElement('style');
-    style.textContent = `
-      html {
-        scroll-behavior: smooth;
-      }
-      ::selection {
-        background: rgba(59, 130, 246, 0.5);
-        color: white;
-      }
-      .animate-spin-slow {
-        animation: spin 8s linear infinite;
-      }
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-      .line-clamp-3 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-      }
-    `;
-    document.head.appendChild(style);
+    // Set the root `html` element class for Tailwind dark mode
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Set page title
+    document.title = "Durga Gairhe - Full-Stack Developer & System Architect";
     
-    return () => document.head.removeChild(style);
-  }, []);
-  
+    // Set meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Full-Stack Developer specializing in React, Node.js, and modern web technologies. Building scalable applications with precision and creativity.');
+    }
+  }, [theme]);
+
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'dark' : ''}`}>
-      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
-        <Navigation  />
-        <Hero />
-        <About />
-        <Projects />
-        <Skills />
-        <Blog />
-        <Contact />
-        <Footer />
-      </div>
+    <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white transition-colors duration-300">
+      <Navigation />
+      <main>
+        <section id="home">
+          <Hero />
+        </section>
+        <section id="about">
+          <About />
+        </section>
+        <section id="projects">
+          <Projects />
+        </section>
+        <section id="skills">
+          <Skills />
+        </section>
+        <section id="blog">
+          <Blog />
+        </section>
+        <section id="contact">
+          <Contact />
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 };
 
 export default Home;
+
