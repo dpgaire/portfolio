@@ -8,6 +8,7 @@ import Skills from "../components/Skills";
 import Blog from "../components/Blog";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
+import Chatbot from "../components/Chatbot";
 
 const Home = () => {
   const { theme } = useTheme();
@@ -33,6 +34,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white transition-colors duration-300">
       <Navigation />
+        <Chatbot />
       <main>
         <section id="home">
           <Hero />
@@ -53,6 +55,7 @@ const Home = () => {
           <Contact />
         </section>
       </main>
+     
       <Footer />
     </div>
   );

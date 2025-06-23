@@ -19,6 +19,7 @@ const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { theme, toggleTheme } = useTheme();
+  const currentYear = new Date().getFullYear();
 
   const navItems = [
     { id: 'home', label: 'Home', icon: HomeIcon, href: '#home' },
@@ -184,7 +185,7 @@ const Navigation = () => {
           {/* Mobile Footer */}
           <div className="mt-auto pb-6">
             <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-              <p>© 2024 Durga Gairhe</p>
+              <p>© {currentYear} Durga Gairhe</p>
               <p className="mt-1">Full-Stack Developer</p>
             </div>
           </div>

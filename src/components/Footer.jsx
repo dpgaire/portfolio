@@ -211,7 +211,7 @@ const Footer = () => {
       </div>
 
       {/* Scroll to Top Button */}
-      <motion.button
+      {/* <motion.button
         onClick={scrollToTop}
         initial={{ opacity: 0, scale: 0 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -219,10 +219,10 @@ const Footer = () => {
         viewport={{ once: true }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
+        className="fixed bottom-1 right-4 w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
       >
         <ArrowUpIcon className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
-      </motion.button>
+      </motion.button> */}
     </footer>
   );
 };
