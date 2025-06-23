@@ -136,7 +136,7 @@ const Card = ({ children, className = "" }) => (
 
 const Input = ({ className = "", ...props }) => (
   <input
-    className={`flex h-12 w-full rounded-xl border-2 border-gray-200 bg-white/80 px-4 py-3 text-sm transition-all duration-300 placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/20 ${className}`}
+    className={`flex text-gray-600 h-12 w-full rounded-xl border-2 border-gray-200 bg-white/80 px-4 py-3 text-sm transition-all duration-300 placeholder:text-gray-600 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/20 ${className}`}
     {...props}
   />
 );
