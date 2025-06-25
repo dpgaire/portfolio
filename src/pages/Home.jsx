@@ -32,10 +32,9 @@ const Home = () => {
   }, [theme]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white transition-colors duration-300">
-      <Navigation />
-        <Chatbot />
+   
       <main>
+         <Chatbot />
         <section id="home">
           <Hero />
         </section>
@@ -55,9 +54,7 @@ const Home = () => {
           <Contact />
         </section>
       </main>
-     
-      <Footer />
-    </div>
+   
   );
 };
 

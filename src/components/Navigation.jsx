@@ -13,6 +13,7 @@ import {
   DocumentTextIcon,
   EnvelopeIcon
 } from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +21,7 @@ const Navigation = () => {
   const [activeSection, setActiveSection] = useState('home');
   const { theme, toggleTheme } = useTheme();
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate()
 
   const navItems = [
     { id: 'home', label: 'Home', icon: HomeIcon, href: '#home' },
@@ -60,6 +62,7 @@ const Navigation = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+    navigate('/')
   };
 
   return (
@@ -68,7 +71,7 @@ const Navigation = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
           scrolled 
             ? 'glass-strong shadow-lg' 
             : 'bg-transparent'

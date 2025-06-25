@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, User, Bot, Sparkles, Award, Code, Zap, Star, Github, Mail, Phone, MapPin, Calendar, Briefcase, TrendingUp, Shield, Coffee, BookOpen, Lightbulb } from 'lucide-react';
+import { formatAnswerToHTML } from '../helper';
 
 const premiumFaqData = [
   {
@@ -93,12 +94,12 @@ const smartSuggestions = [
 ];
 
 const quickStarters = [
-  "Tell me about Durga's expertise",
-  "Why should I hire him?",
   "What's his latest project?",
-  "Show me his achievements",
   "How can I contact him?",
-  "Is he available for projects?"
+  "Is he available for projects?",
+  "Show me his achievements",
+  "Tell me about Durga's expertise",
+  "Why should I hire him?"
 ];
 
 // Enhanced UI Components
@@ -142,7 +143,9 @@ const Input = ({ className = "", ...props }) => (
 );
 
 const PremiumChatbot = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
+  const inputRef = useRef(null);
+
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -152,7 +155,7 @@ const PremiumChatbot = () => {
       type: 'welcome'
     }
   ]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('skills');
   const [isTyping, setIsTyping] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef(null);
@@ -179,7 +182,7 @@ const PremiumChatbot = () => {
       { keywords: ['achievement', 'success', 'accomplishment'], id: 'achievements' },
       { keywords: ['backend', 'server', 'database', 'api'], id: 'backend-skills' },
       { keywords: ['who', 'about', 'introduce'], id: 'intro' },
-      { keywords: ['exceptional', 'special', 'unique', 'different'], id: 'expertise' },
+      { keywords: ['exceptional', 'special', 'unique', 'different','experience'], id: 'expertise' },
       { keywords: ["hi", "hello", "hello hero", "durga", "greeting", "who", "hero", "DP","dp","dpg","gaire", "Gairhe"], id: 'greeting' },
 
     ];
@@ -188,7 +191,7 @@ const PremiumChatbot = () => {
     for (const match of priorityMatches) {
       if (match.keywords.some(keyword => lowerQuestion.includes(keyword))) {
         const faq = premiumFaqData.find(item => item.id === match.id);
-        if (faq) return faq.answer;
+        if (faq) return formatAnswerToHTML(faq.answer);
       }
     }
 
@@ -245,6 +248,12 @@ const PremiumChatbot = () => {
     }
   };
 
+  useEffect(() => {
+  if (isOpen && inputRef.current) {
+    inputRef.current.focus();
+  }
+}, [isOpen]);
+
   const renderMessage = (message) => {
     const isBot = message.sender === 'bot';
     
@@ -265,8 +274,8 @@ const PremiumChatbot = () => {
                 </div>
               )}
               <div className="flex-1">
-                <p className={`text-sm leading-relaxed whitespace-pre-line ${isBot ? 'text-gray-800' : 'text-white'}`}>
-                  {message.text}
+                <p dangerouslySetInnerHTML={{ __html: message.text }} className={`text-sm leading-relaxed whitespace-pre-line ${isBot ? 'text-gray-800' : 'text-white'}`}>
+                 
                 </p>
                 <p className={`text-xs mt-2 ${isBot ? 'text-gray-500' : 'text-blue-100'}`}>
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -285,7 +294,7 @@ const PremiumChatbot = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-0 right-0 scroll- lg:bottom-6 lg:right-4 z-50">
       {/* Enhanced Toggle Button */}
       {!isOpen && (
         <div className="relative">
@@ -293,6 +302,7 @@ const PremiumChatbot = () => {
             onClick={() => setIsOpen(true)}
             className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 hover:from-blue-700 hover:via-purple-700 hover:to-pink-600 shadow-2xl animate-pulse"
           >
+            ll
             <MessageCircle className="w-7 h-7 text-white" />
           </Button>
           {/* Notification badge */}
@@ -304,10 +314,10 @@ const PremiumChatbot = () => {
 
       {/* Premium Chat Window */}
       {isOpen && (
-        <Card className="w-96 h-[600px] shadow-2xl border-0 overflow-hidden">
+        <Card className="w-full lg:w-96  h-[700px]rounded-b-none lg:rounded-b-2xl lg:shadow-2xl  border-0 overflow-hidden">
           {/* Premium Header */}
           <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white p-6 relative overflow-hidden">
-            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="absolute inset-0 bg-black/10 right-0"></div>
             <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
@@ -315,10 +325,10 @@ const PremiumChatbot = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold">Durga's AI Assistant</h3>
-                  <p className="text-sm opacity-90 flex items-center">
+                  <div className="text-sm opacity-90 flex items-center">
                     <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
                     Online & Ready to Help
-                  </p>
+                  </div>
                 </div>
               </div>
               <Button
@@ -341,16 +351,15 @@ const PremiumChatbot = () => {
           </div>
 
           {/* Messages Container */}
-          <div className="flex flex-col h-[500px]">
+          <div className="flex flex-col h-[550px]">
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 bg-gradient-to-b from-gray-50/50 to-white">
               {messages.map(renderMessage)}
-
               {/* Typing Indicator */}
               {isTyping && (
                 <div className="flex justify-start mb-4">
-                  <div className="max-w-[85%] mr-12">
-                    <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 p-4 rounded-2xl shadow-lg">
+                  <div className="max-w-[85%] mr-6">
+                    <div className="bg-gradient-to-br w-full from-gray-50 to-white border border-gray-100 py-4 px-2 rounded-2xl shadow-lg">
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-md">
                           <Bot className="w-4 h-4 text-white" />
@@ -397,6 +406,7 @@ const PremiumChatbot = () => {
             <div className="p-4 bg-white border-t border-gray-100">
               <div className="flex space-x-3">
                 <Input
+                  ref={inputRef}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -413,7 +423,7 @@ const PremiumChatbot = () => {
               </div>
               
               {/* Quick starters */}
-              <div className="flex flex-wrap gap-1 mt-3">
+              <div className="flex text-center  flex-wrap gap-1 mt-3">
                 {quickStarters.slice(0, 3).map((starter, index) => (
                   <button
                     key={index}
