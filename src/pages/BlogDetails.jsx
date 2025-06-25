@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
   ArrowLeftIcon,
   CalendarIcon,
   ClockIcon,
@@ -10,11 +10,12 @@ import {
   ShareIcon,
   HeartIcon,
   ChatBubbleLeftIcon,
-  BookmarkIcon
-} from '@heroicons/react/24/outline';
-import { HeartIcon as HeartSolidIcon, BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid';
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
+  BookmarkIcon,
+} from "@heroicons/react/24/outline";
+import {
+  HeartIcon as HeartSolidIcon,
+  BookmarkIcon as BookmarkSolidIcon,
+} from "@heroicons/react/24/solid";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -28,7 +29,8 @@ const BlogDetails = () => {
     {
       id: 1,
       title: "Building Scalable React Applications: Lessons from Production",
-      excerpt: "Discover the architectural patterns and best practices I've learned while building large-scale React applications that serve thousands of users daily.",
+      excerpt:
+        "Discover the architectural patterns and best practices I've learned while building large-scale React applications that serve thousands of users daily.",
       content: `
 # Building Scalable React Applications: Lessons from Production
 
@@ -272,12 +274,13 @@ What patterns have you found most effective in your React applications? I'd love
       featured: true,
       likes: 42,
       comments: 8,
-      image: "/api/placeholder/800/400"
+      image: "/api/placeholder/800/400",
     },
     {
       id: 2,
       title: "The Future of Web Development: AI-Powered Code Generation",
-      excerpt: "Exploring how AI is revolutionizing the way we write code and what it means for the future of software development.",
+      excerpt:
+        "Exploring how AI is revolutionizing the way we write code and what it means for the future of software development.",
       content: `
 # The Future of Web Development: AI-Powered Code Generation
 
@@ -366,52 +369,51 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
       featured: false,
       likes: 38,
       comments: 12,
-      image: "/api/placeholder/800/400"
-    }
+      image: "/api/placeholder/800/400",
+    },
   ];
 
-  const post = blogPosts.find(p => p.id === parseInt(id));
+  const post = blogPosts.find((p) => p.id === parseInt(id));
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrollTop / docHeight) * 100;
       setReadingProgress(progress);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white">
-        <Navigation />
-        <div className="container-custom section-padding text-center">
+      <div
+        id="blog"
+        className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white"
+      >
+        <div id="blog" className="container-custom section-padding text-center">
           <h1 className="text-4xl font-bold mb-4">Post Not Found</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-8">
             The blog post you're looking for doesn't exist.
           </p>
-          <button
-            onClick={() => navigate('/')}
-            className="btn-primary"
-          >
+          <button onClick={() => navigate("/")} className="btn-primary">
             <ArrowLeftIcon className="w-5 h-5 mr-2" />
             Back to Home
           </button>
         </div>
-        <Footer />
       </div>
     );
   }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -424,22 +426,20 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
           url: window.location.href,
         });
       } catch (err) {
-        console.log('Error sharing:', err);
+        console.log("Error sharing:", err);
       }
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      alert("Link copied to clipboard!");
     }
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white transition-colors duration-300">
-      <Navigation />
-      
+    <>
       {/* Reading Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 dark:bg-dark-700 z-50">
-        <div 
+        <div
           className="h-full bg-gradient-to-r from-primary-500 to-secondary-500 transition-all duration-150"
           style={{ width: `${readingProgress}%` }}
         />
@@ -453,7 +453,7 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
             <motion.button
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
               className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 mb-8"
             >
               <ArrowLeftIcon className="w-5 h-5 mr-2" />
@@ -479,7 +479,7 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                className=" text-3xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
               >
                 {post.title}
               </motion.h1>
@@ -519,18 +519,24 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
         </div>
 
         {/* Content */}
-        <div className="container-custom px-4 sm:px-6 lg:px-8 py-16">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid lg:grid-cols-4 gap-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="max-w-3xl sm:max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12">
               {/* Main Content */}
               <div className="lg:col-span-3">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="prose prose-lg dark:prose-invert max-w-none"
-                  dangerouslySetInnerHTML={{ 
-                    __html: post.content.replace(/\n/g, '<br>').replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>').replace(/`(.*?)`/g, '<code>$1</code>').replace(/### (.*?)(<br>|$)/g, '<h3>$1</h3>').replace(/## (.*?)(<br>|$)/g, '<h2>$1</h2>').replace(/# (.*?)(<br>|$)/g, '<h1>$1</h1>')
+                  className="prose prose-sm sm:prose lg:prose-lg dark:prose-invert w-full max-w-full overflow-auto"
+                  dangerouslySetInnerHTML={{
+                    __html: post.content
+                      .replace(/\n/g, "<br>")
+                      .replace(/```(.*?)```/gs, "<pre><code>$1</code></pre>")
+                      .replace(/`(.*?)`/g, "<code>$1</code>")
+                      .replace(/### (.*?)(<br>|$)/g, "<h3>$1</h3>")
+                      .replace(/## (.*?)(<br>|$)/g, "<h2>$1</h2>")
+                      .replace(/# (.*?)(<br>|$)/g, "<h1>$1</h1>"),
                   }}
                 />
 
@@ -571,8 +577,8 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
                         onClick={() => setLiked(!liked)}
                         className={`w-full flex items-center justify-center px-4 py-2 rounded-lg transition-colors duration-200 ${
                           liked
-                            ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
-                            : 'bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600'
+                            ? "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
+                            : "bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600"
                         }`}
                       >
                         {liked ? (
@@ -580,15 +586,16 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
                         ) : (
                           <HeartIcon className="w-5 h-5 mr-2" />
                         )}
-                        {liked ? 'Liked' : 'Like'} ({post.likes + (liked ? 1 : 0)})
+                        {liked ? "Liked" : "Like"} (
+                        {post.likes + (liked ? 1 : 0)})
                       </button>
 
                       <button
                         onClick={() => setBookmarked(!bookmarked)}
                         className={`w-full flex items-center justify-center px-4 py-2 rounded-lg transition-colors duration-200 ${
                           bookmarked
-                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                            : 'bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600'
+                            ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                            : "bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600"
                         }`}
                       >
                         {bookmarked ? (
@@ -596,7 +603,7 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
                         ) : (
                           <BookmarkIcon className="w-5 h-5 mr-2" />
                         )}
-                        {bookmarked ? 'Saved' : 'Save'}
+                        {bookmarked ? "Saved" : "Save"}
                       </button>
 
                       <button
@@ -622,7 +629,8 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
                       <span>{post.comments} comments</span>
                     </div>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                      Join the conversation on social media or reach out directly.
+                      Join the conversation on social media or reach out
+                      directly.
                     </p>
                   </motion.div>
                 </div>
@@ -631,11 +639,8 @@ The key is to embrace AI as a powerful assistant while continuing to grow as tho
           </div>
         </div>
       </article>
-
-      <Footer />
-    </div>
+    </>
   );
 };
 
 export default BlogDetails;
-

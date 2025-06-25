@@ -28,6 +28,7 @@ const Skills = () => {
         { name: "PostgreSQL", level: 82, color: "from-blue-700 to-blue-500" },
         { name: "MongoDB", level: 80, color: "from-green-700 to-green-500" },
         { name: "GraphQL", level: 75, color: "from-pink-600 to-purple-600" }
+
       ]
     },
     {
@@ -36,7 +37,7 @@ const Skills = () => {
       skills: [
         { name: "React Native", level: 87, color: "from-blue-500 to-purple-500" },
         { name: "Expo", level: 85, color: "from-indigo-600 to-blue-600" },
-        { name: "Flutter", level: 70, color: "from-blue-400 to-cyan-400" },
+        // { name: "Flutter", level: 70, color: "from-blue-400 to-cyan-400" },
         { name: "iOS Development", level: 65, color: "from-gray-600 to-gray-400" },
         { name: "Android Development", level: 68, color: "from-green-600 to-green-400" }
       ]
@@ -183,10 +184,10 @@ const Skills = () => {
 
           <div className="flex flex-wrap justify-center gap-4">
             {[
-              "JavaScript", "Python", "Java", "C++", "PHP", "Ruby",
-              "Vue.js", "Angular", "Svelte", "Redux", "MobX", "Zustand",
-              "Firebase", "Supabase", "Prisma", "Sequelize", "Mongoose",
-              "Electron", "Tauri", "PWA", "WebAssembly", "Three.js",
+              "JavaScript", "Python", "Java", "PHP",
+              "React.js", "Redux", "Zustand",
+              "Firebase", "Supabase", "Prisma", "Mongoose",
+              "Electron", "PWA", "WebAssembly", "Three.js",
               "D3.js", "Chart.js", "Storybook", "Cypress", "Playwright",
               "Jenkins", "GitHub Actions", "Vercel", "Netlify", "Heroku"
             ].map((tech, index) => (

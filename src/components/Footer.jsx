@@ -168,7 +168,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-dark-700">
+        {/* <div className="border-t border-dark-700">
           <div className="container-custom px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <motion.div
@@ -207,7 +207,52 @@ const Footer = () => {
               </motion.div>
             </div>
           </div>
-        </div>
+        </div> */}
+        <div className="border-t border-dark-700">
+  <div className="container-custom px-4 sm:px-6 lg:px-8 py-6">
+    <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-center md:text-left">
+      
+      {/* Left Side */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="flex flex-wrap justify-center lg:justify-between items-center gap-1 text-gray-400 text-sm"
+      >
+        <span>© {currentYear} Durga Gairhe. Made with</span>
+        <HeartIcon className="w-4 h-4 text-red-500" />
+        <span>and</span>
+        <CodeBracketIcon className="w-4 h-4 text-primary-400" />
+        <span>in Nepal</span>
+      </motion.div>
+
+      {/* Right Side */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        viewport={{ once: true }}
+        className="flex justify-center md:justify-end items-center gap-4 text-sm text-gray-500"
+      >
+        <button
+          onClick={() => handleNavClick("#home")}
+          className="hover:text-white transition-colors duration-200"
+        >
+          Privacy Policy
+        </button>
+        <button
+          onClick={() => handleNavClick("#home")}
+          className="hover:text-white transition-colors duration-200"
+        >
+          Terms of Service
+        </button>
+      </motion.div>
+
+    </div>
+  </div>
+</div>
+
       </div>
 
       {/* Scroll to Top Button */}
