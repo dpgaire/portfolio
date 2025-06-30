@@ -1,17 +1,17 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { TypeAnimation } from 'react-type-animation';
-import { 
-  ChevronDownIcon, 
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { TypeAnimation } from "react-type-animation";
+import {
+  ChevronDownIcon,
   DocumentArrowDownIcon,
   CodeBracketIcon,
-  SparklesIcon 
-} from '@heroicons/react/24/outline';
+  SparklesIcon,
+} from "@heroicons/react/24/outline";
 
 const Hero = () => {
   const [ref, inView] = useInView({
     threshold: 0.1,
-    triggerOnce: true
+    triggerOnce: true,
   });
 
   const containerVariants = {
@@ -20,9 +20,9 @@ const Hero = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
+        delayChildren: 0.3,
+      },
+    },
   };
 
   const itemVariants = {
@@ -32,9 +32,9 @@ const Hero = () => {
       opacity: 1,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const floatingVariants = {
@@ -44,13 +44,13 @@ const Hero = () => {
       transition: {
         duration: 6,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   return (
-    <section 
+    <section
       ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900"
     >
@@ -65,13 +65,13 @@ const Hero = () => {
         <motion.div
           variants={floatingVariants}
           animate="animate"
-          style={{ animationDelay: '2s' }}
+          style={{ animationDelay: "2s" }}
           className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-secondary-400/20 to-accent-400/20 rounded-full blur-3xl"
         />
         <motion.div
           variants={floatingVariants}
           animate="animate"
-          style={{ animationDelay: '4s' }}
+          style={{ animationDelay: "4s" }}
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-accent-400/25 to-primary-400/25 rounded-full blur-3xl"
         />
 
@@ -83,7 +83,7 @@ const Hero = () => {
           }}
           transition={{
             rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
           }}
           className="absolute top-1/4 right-1/4 w-4 h-4 bg-primary-500/40 transform rotate-45"
         />
@@ -94,7 +94,7 @@ const Hero = () => {
           }}
           transition={{
             rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-            y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+            y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
           }}
           className="absolute bottom-1/3 left-1/4 w-6 h-6 border-2 border-secondary-500/40 rounded-full"
         />
@@ -105,7 +105,7 @@ const Hero = () => {
           }}
           transition={{
             rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-            x: { duration: 8, repeat: Infinity, ease: "easeInOut" }
+            x: { duration: 8, repeat: Infinity, ease: "easeInOut" },
           }}
           className="absolute top-2/3 right-1/3 w-3 h-3 bg-accent-500/50"
         />
@@ -119,19 +119,13 @@ const Hero = () => {
         className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto"
       >
         {/* Greeting */}
-        <motion.div
-          variants={itemVariants}
-          className="mb-6"
-        >
-          {/* <span className="inline-flex text-wrap items-center gap-2 px-4 py-2 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50">
+        <motion.div variants={itemVariants} className="mb-6">
+          <span className="flex flex-wrap items-center justify-start p-2 lg:justify-center gap-2  bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50 max-w-xs sm:max-w-none">
             <SparklesIcon className="w-4 h-4 text-primary-500" />
-            Welcome to my digital space
-          </span> */}
-          <span className="flex flex-wrap items-center justify-start lg:justify-center gap-2 px-4 py-2 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50 max-w-xs sm:max-w-none">
-  <SparklesIcon className="w-4 h-4 text-primary-500" />
-  <span className="whitespace-normal">Welcome to my digital space</span>
-</span>
-
+            <span className="whitespace-normal">
+              Welcome to my digital space
+            </span>
+          </span>
         </motion.div>
 
         {/* Main Heading */}
@@ -140,10 +134,7 @@ const Hero = () => {
           className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
         >
           <span className="block text-gray-900 dark:text-white">
-            Hi, I'm{' '}
-            <span className="gradient-text">
-              Durga Gairhe
-            </span>
+            Hi, I'm <span className="gradient-text">Durga Gairhe</span>
           </span>
         </motion.h1>
 
@@ -154,17 +145,17 @@ const Hero = () => {
         >
           <TypeAnimation
             sequence={[
-              'Full-Stack Developer',
+              "Full-Stack Developer",
               2000,
-              'System Architect',
+              "System Architect",
               2000,
-              'React Specialist',
+              "React Specialist",
               2000,
-              'Node.js Expert',
+              "Node.js Expert",
               2000,
-              'UI/UX Enthusiast',
+              "UI/UX Enthusiast",
               2000,
-              'Problem Solver',
+              "Problem Solver",
               2000,
             ]}
             wrapper="span"
@@ -179,9 +170,10 @@ const Hero = () => {
           variants={itemVariants}
           className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
         >
-          A one-person dev powerhouse with a sharp eye for design and a mind wired for structure. 
-          I craft tailored solutions from React setups to dynamic APIs, bringing precision and 
-          a DIY attitude that sets projects apart.
+          A one-person dev powerhouse with a sharp eye for design and a mind
+          wired for structure. I craft tailored solutions from React setups to
+          dynamic APIs, bringing precision and a DIY attitude that sets projects
+          apart.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -198,7 +190,7 @@ const Hero = () => {
             <CodeBracketIcon className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
             View My Work
           </motion.a>
-          
+
           <motion.a
             href="/files/Durga_Gairhe_Resume.pdf"
             download
@@ -236,11 +228,11 @@ const Hero = () => {
         }}
         transition={{
           rotate: { duration: 30, repeat: Infinity, ease: "linear" },
-          scale: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+          scale: { duration: 5, repeat: Infinity, ease: "easeInOut" },
         }}
         className="absolute top-20 right-20 hidden lg:block opacity-20 dark:opacity-10"
       >
-        <div className="text-6xl font-mono text-primary-500">{'<>'}</div>
+        <div className="text-6xl font-mono text-primary-500">{"<>"}</div>
       </motion.div>
 
       <motion.div
@@ -250,15 +242,14 @@ const Hero = () => {
         }}
         transition={{
           rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-          y: { duration: 7, repeat: Infinity, ease: "easeInOut" }
+          y: { duration: 7, repeat: Infinity, ease: "easeInOut" },
         }}
         className="absolute bottom-32 left-20 hidden lg:block opacity-20 dark:opacity-10"
       >
-        <div className="text-4xl font-mono text-secondary-500">{'{ }'}</div>
+        <div className="text-4xl font-mono text-secondary-500">{"{ }"}</div>
       </motion.div>
     </section>
   );
 };
 
 export default Hero;
-
