@@ -23,13 +23,11 @@ const Footer = () => {
       name: "GitHub",
       url: "https://github.com/dpgaire",
       icon: <Github />,
-      color: "hover:text-gray-900 dark:hover:text-white",
     },
     {
       name: "LinkedIn",
       url: "https://linkedin.com/in/durga-gairhe",
       icon: <Linkedin />,
-      color: "hover:text-blue-600",
     },
   ];
 
@@ -45,9 +43,9 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative dark:bg-dark-900 dark:text-white overflow-hidden">
+    <footer className="relative bg-white dark:bg-dark-900 dark:text-gray-200 overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
@@ -57,10 +55,9 @@ const Footer = () => {
       </div>
 
       <div className="relative z-10">
-        {/* Main Footer Content */}
         <div className="container-custom px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid lg:grid-cols-4 gap-8">
-            {/* Brand Section */}
+            {/* Branding */}
             <div className="lg:col-span-2">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -68,24 +65,21 @@ const Footer = () => {
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
               >
-                {/* Logo */}
                 <div className="flex items-center space-x-3 mb-6">
                   <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold">DG</span>
                   </div>
-                  <span className="text-2xl font-bold gradient-text">
+                  <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500">
                     Durga Gairhe
                   </span>
                 </div>
 
-                {/* Description */}
-                <p className="text-gray-400 text-lg leading-relaxed mb-6 max-w-md">
+                <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-6 max-w-md">
                   Full-Stack Developer passionate about creating exceptional
                   digital experiences. Building the future, one line of code at
                   a time.
                 </p>
 
-                {/* Social Links */}
                 <div className="flex space-x-4">
                   {socialLinks.map((social) => (
                     <motion.a
@@ -95,9 +89,9 @@ const Footer = () => {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.1, y: -2 }}
                       whileTap={{ scale: 0.95 }}
-                      className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group"
+                      className="w-12 h-12 bg-gray-100 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group"
                     >
-                      <span className="text-xl group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-xl text-gray-600 dark:text-gray-300 group-hover:text-white">
                         {social.icon}
                       </span>
                     </motion.a>
@@ -120,7 +114,7 @@ const Footer = () => {
                     <li key={link.name}>
                       <button
                         onClick={() => handleNavClick(link.href)}
-                        className="text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-1 transform inline-block"
+                        className="text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-white transition-colors duration-200 hover:translate-x-1 transform"
                       >
                         {link.name}
                       </button>
@@ -130,7 +124,7 @@ const Footer = () => {
               </motion.div>
             </div>
 
-            {/* Contact Info */}
+            {/* Contact */}
             <div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -138,26 +132,26 @@ const Footer = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <h3 className="text-lg font-semibold mb-6">Get In Touch</h3>
-                <div className="space-y-3">
-                  <p className="text-gray-400">
-                    <span className="block font-medium text-white mb-1">
+                <h3 className="text-lg font-semibold mb-4">Get In Touch</h3>
+                <div className="space-y-3 text-gray-600 dark:text-gray-400">
+                  <p>
+                    <span className="font-medium text-gray-800 dark:text-white block">
                       Email
                     </span>
                     gairhedurga13@gmail.com
                   </p>
-                  <p className="text-gray-400">
-                    <span className="block font-medium text-white mb-1">
+                  <p>
+                    <span className="font-medium text-gray-800 dark:text-white block">
                       Location
                     </span>
                     Kathmandu, Nepal
                   </p>
-                  <p className="text-gray-400">
-                    <span className="block font-medium text-white mb-1">
+                  <p>
+                    <span className="font-medium text-gray-800 dark:text-white block">
                       Availability
                     </span>
                     <span className="inline-flex items-center">
-                      <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                      <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse" />
                       Available for projects
                     </span>
                   </p>
@@ -168,20 +162,20 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        {/* <div className="border-t border-dark-700">
+        <div className="border-t border-gray-200 dark:border-dark-700">
           <div className="container-custom px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="flex flex-col md:flex-row items-center text-gray-400 text-sm mb-4 md:mb-0 space-y-2 md:space-y-0 md:space-x-1 text-center md:text-left"
+                className="flex flex-wrap items-center justify-center gap-1"
               >
                 <span>© {currentYear} Durga Gairhe. Made with</span>
                 <HeartIcon className="w-4 h-4 text-red-500" />
                 <span>and</span>
-                <CodeBracketIcon className="w-4 h-4 text-primary-400" />
+                <CodeBracketIcon className="w-4 h-4 text-primary-500" />
                 <span>in Nepal</span>
               </motion.div>
 
@@ -190,72 +184,27 @@ const Footer = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
                 viewport={{ once: true }}
-                className="flex items-center space-x-6 text-sm text-gray-400"
+                className="flex space-x-4"
               >
                 <button
                   onClick={() => handleNavClick("#home")}
-                  className="hover:text-white transition-colors duration-200"
+                  className="hover:text-primary-500 dark:hover:text-white transition-colors duration-200"
                 >
                   Privacy Policy
                 </button>
                 <button
                   onClick={() => handleNavClick("#home")}
-                  className="hover:text-white transition-colors duration-200"
+                  className="hover:text-primary-500 dark:hover:text-white transition-colors duration-200"
                 >
                   Terms of Service
                 </button>
               </motion.div>
             </div>
           </div>
-        </div> */}
-        <div className="border-t border-dark-700">
-  <div className="container-custom px-4 sm:px-6 lg:px-8 py-6">
-    <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-center md:text-left">
-      
-      {/* Left Side */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="flex flex-wrap justify-center lg:justify-between items-center gap-1 text-gray-400 text-sm"
-      >
-        <span>© {currentYear} Durga Gairhe. Made with</span>
-        <HeartIcon className="w-4 h-4 text-red-500" />
-        <span>and</span>
-        <CodeBracketIcon className="w-4 h-4 text-primary-400" />
-        <span>in Nepal</span>
-      </motion.div>
-
-      {/* Right Side */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-        viewport={{ once: true }}
-        className="flex justify-center md:justify-end items-center gap-4 text-sm text-gray-500"
-      >
-        <button
-          onClick={() => handleNavClick("#home")}
-          className="hover:text-white transition-colors duration-200"
-        >
-          Privacy Policy
-        </button>
-        <button
-          onClick={() => handleNavClick("#home")}
-          className="hover:text-white transition-colors duration-200"
-        >
-          Terms of Service
-        </button>
-      </motion.div>
-
-    </div>
-  </div>
-</div>
-
+        </div>
       </div>
 
-      {/* Scroll to Top Button */}
+      {/* Optional Scroll To Top */}
       {/* <motion.button
         onClick={scrollToTop}
         initial={{ opacity: 0, scale: 0 }}
@@ -264,7 +213,7 @@ const Footer = () => {
         viewport={{ once: true }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-1 right-4 w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
+        className="fixed bottom-4 right-4 w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
       >
         <ArrowUpIcon className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
       </motion.button> */}
