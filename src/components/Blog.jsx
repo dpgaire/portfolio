@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
+import {blogPosts} from '../posts/index'; // Assuming you have a data file with blog posts
 import { 
   CalendarIcon,
   ClockIcon,
@@ -17,92 +18,11 @@ const Blog = () => {
     triggerOnce: true
   });
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: "Building Scalable React Applications: Lessons from Production",
-      excerpt: "Discover the architectural patterns and best practices I've learned while building large-scale React applications that serve thousands of users daily.",
-      content: "In this comprehensive guide, I share the key insights and patterns I've discovered while building production React applications...",
-      author: "Durga Gairhe",
-      date: "2024-06-15",
-      readTime: "8 min read",
-      category: "React",
-      tags: ["React", "Architecture", "Performance", "Best Practices"],
-      featured: true,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 2,
-      title: "The Future of Web Development: AI-Powered Code Generation",
-      excerpt: "Exploring how AI is revolutionizing the way we write code and what it means for the future of software development.",
-      content: "Artificial Intelligence is transforming every aspect of software development, from code generation to testing...",
-      author: "Durga Gairhe",
-      date: "2024-06-10",
-      readTime: "6 min read",
-      category: "AI",
-      tags: ["AI", "Machine Learning", "Code Generation", "Future Tech"],
-      featured: false,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 3,
-      title: "Mastering TypeScript: Advanced Patterns for Better Code",
-      excerpt: "Deep dive into advanced TypeScript patterns that will make your code more robust, maintainable, and type-safe.",
-      content: "TypeScript has become an essential tool for modern JavaScript development. In this article, we explore advanced patterns...",
-      author: "Durga Gairhe",
-      date: "2024-06-05",
-      readTime: "10 min read",
-      category: "TypeScript",
-      tags: ["TypeScript", "JavaScript", "Type Safety", "Advanced Patterns"],
-      featured: true,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 4,
-      title: "Building Cross-Platform Mobile Apps with React Native",
-      excerpt: "A comprehensive guide to building performant mobile applications using React Native and modern development practices.",
-      content: "React Native continues to be one of the most popular choices for cross-platform mobile development...",
-      author: "Durga Gairhe",
-      date: "2024-05-28",
-      readTime: "12 min read",
-      category: "Mobile",
-      tags: ["React Native", "Mobile Development", "Cross-Platform", "Performance"],
-      featured: false,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 5,
-      title: "Modern CSS Techniques for Better User Interfaces",
-      excerpt: "Explore the latest CSS features and techniques that can help you create stunning, responsive user interfaces.",
-      content: "CSS has evolved significantly in recent years, with new features that make it easier to create beautiful interfaces...",
-      author: "Durga Gairhe",
-      date: "2024-05-20",
-      readTime: "7 min read",
-      category: "CSS",
-      tags: ["CSS", "UI Design", "Responsive Design", "Modern Web"],
-      featured: false,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 6,
-      title: "Optimizing Web Performance: A Developer's Guide",
-      excerpt: "Learn practical techniques to improve your web application's performance and provide better user experiences.",
-      content: "Web performance is crucial for user experience and business success. This guide covers essential optimization techniques...",
-      author: "Durga Gairhe",
-      date: "2024-05-15",
-      readTime: "9 min read",
-      category: "Performance",
-      tags: ["Performance", "Optimization", "Web Development", "User Experience"],
-      featured: false,
-      image: "/api/placeholder/600/300"
-    }
-  ];
-
-  const categories = ["All", "React", "AI", "TypeScript", "Mobile", "CSS", "Performance"];
+  const categories = ["All", "Web Development", "AI & Automation","Career", "Open Source", "Mindset & Productivity",];
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredPosts = selectedCategory === "All" 
-    ? blogPosts 
+    ? blogPosts
     : blogPosts.filter(post => post.category === selectedCategory);
 
   const featuredPosts = blogPosts.filter(post => post.featured);
