@@ -120,30 +120,33 @@ const blogPosts = [
     likes: 889,
     featured: true,
     image: "https://source.unsplash.com/featured/?ai,technology",
-  }
-,
-{
-  "id": 1751967175,
-  "title": "Intro to LangChain: Automate Tasks with AI Agents",
-  "excerpt": "Are you ready to revolutionize your workflow with the power of AI?  Imagine automating complex tasks, seamlessly integrating multiple tools, and creating truly",
-  "content": "# Intro to LangChain: Automate Tasks with AI Agents\n\nAre you ready to revolutionize your workflow with the power of AI?  Imagine automating complex tasks, seamlessly integrating multiple tools, and creating truly intelligent applications.  This is the promise of LangChain, a powerful framework that empowers you to build AI agents capable of handling intricate processes.  This \"Intro to LangChain: Automate Tasks with AI Agents\" will guide you through the fundamentals and show you how to harness its potential.\n\nLangChain simplifies the development of applications powered by large language models (LLMs).  Instead of wrestling with complex integrations and data management, you can focus on designing your AI agent's logic and capabilities.  This \"Intro to LangChain: Automate Tasks with AI Agents\" is perfect for anyone from curious beginners to seasoned developers looking to leverage the latest advancements in AI.\n\n\n## Understanding LangChain's Core Components\n\nLangChain's architecture revolves around several key components working in harmony.  First, we have **LLMs**, the brains of the operation. These are powerful models like GPT-3 or others capable of generating human-quality text.  LangChain efficiently connects your chosen LLM, abstracting away the complexities of API interactions.\n\nNext, we have **Chains**.  Chains orchestrate the sequence of actions your AI agent performs.  Think of them as workflows. A simple chain might involve prompting an LLM, processing the output, and presenting the results. More sophisticated chains can involve multiple LLMs, external APIs, and databases.  This modular design allows for creating highly customized agents.  For example, a chain could fetch data from a database, feed it to an LLM for summarization, and then send an email with the summarized information.\n\nFinally, **Agents** act as the decision-making layer. They determine which tools to use and in what order to complete a given task. This allows for dynamic task execution, responding intelligently to different inputs and situations. For instance, an agent might decide to use a search engine to gather information before querying an LLM for an answer.  This adaptive behavior is what truly sets LangChain agents apart.\n\n\n## Building Your First LangChain Application: A Simple Example\n\nLet's imagine you want to create an AI agent that answers questions about a specific document. Using LangChain, you could achieve this in a few straightforward steps.\n\nFirst, you'll load your document into LangChain's memory.  This might involve using a dedicated LangChain module for PDF processing or simply loading the text directly.  Next, you'll define a chain that takes a user's question as input.  This chain will pass the question and the document context to an LLM, prompting it to generate an answer based on the document's content.  Finally, you'll present the LLM's response to the user.  The entire process\u2014from document loading to response generation\u2014is seamlessly managed by LangChain.\n\nThis is a basic example, but LangChain's flexibility allows you to expand upon this foundation.  You could add an agent that decides whether to consult additional resources (like a web search) before answering complex questions. This ability to incorporate external tools significantly enhances the capabilities of your AI agents.\n\n##  Advanced Capabilities:  Scaling and Tool Integration\n\nLangChain\u2019s true power lies in its capacity to scale and integrate with various tools. You can readily incorporate tools like search engines, databases, calculators, and even custom APIs within your agents. This enables the creation of highly specialized AI assistants tailored to specific needs.\n\nFor instance, imagine building a financial advisor chatbot. The agent could use a database to access client portfolio data, a financial API to fetch market information, and an LLM to provide personalized investment recommendations. LangChain seamlessly facilitates these complex integrations, allowing you to focus on the application's logic, not the intricate details of connecting disparate systems.  Understanding this aspect of LangChain truly elevates your ability to create powerful and effective AI agents.\n\n\n## Conclusion:  Mastering the Art of AI Agent Development with LangChain\n\nThis \"Intro to LangChain: Automate Tasks with AI Agents\" provides a foundation for understanding this innovative framework. By mastering LangChain's core components \u2013 LLMs, Chains, and Agents \u2013 you gain the ability to build sophisticated AI applications that automate complex tasks and seamlessly integrate with numerous tools.  LangChain simplifies the development process, enabling you to focus on creativity and innovation. So, dive in, experiment, and unlock the potential of AI-powered automation with LangChain!  Start building your own intelligent agents today and witness the transformative power of this remarkable framework.\n",
-  "author": "Durga Gairhe",
-  "date": "2025-07-08",
-  "readTime": "12 min read",
-  "category": "AI Development",
-  "tags": [
-    "intro",
-    "to",
-    "langchain:",
-    "automate",
-    "tasks",
-    "with",
-    "ai",
-    "agents"
-  ],
-  "likes": 13,
-  "featured": true,
-  "image": "https://source.unsplash.com/featured/?ai,technology"
-}];
+  },
+  {
+    id: 1751967175,
+    title:
+      "How to Deploy Mistral-7B-Instruct as an API with ngrok in Google Colab",
+    excerpt:
+      "Learn how to set up Mistral-7B-Instruct-v0.2 in Google Colab, create an API endpoint with ngrok, and generate markdown files from user requests.",
+    content:
+      '# How to Deploy Mistral-7B-Instruct as an API with ngrok in Google Colab\n\n**Learn how to set up Mistral-7B-Instruct-v0.2 in Google Colab, create an API endpoint with ngrok, and generate markdown files from user requests.**\n\nLarge language models (LLMs) like Mistral-7B are powerful tools for generating text, answering questions, and automating content creation. However, deploying them for real-world applications can be challenging.\n\nIn this guide, I’ll show you how to:\n✅ Load Mistral-7B-Instruct in Google Colab  \n✅ Create a Flask API to handle requests  \n✅ Use ngrok to expose the API publicly  \n✅ Generate markdown (.md) files from user prompts\n\nLet’s get started!\n\n---\n\n## **Step 1: Set Up Google Colab Environment**\n\nFirst, open a new [Google Colab notebook](https://colab.research.google.com/) and ensure you’re using a **GPU runtime** (T4 or A100 works best for Mistral-7B).\n\nInstall the required dependencies:\n\n```python\n!pip install -q transformers accelerate sentencepiece torch ngrok pyngrok flask flask-ngrok\n```\n\n---\n\n## **Step 2: Load Mistral-7B-Instruct Model**\n\nWe’ll use Hugging Face’s `transformers` library to load the model:\n\n```python\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\nimport torch\n\nmodel_name = "mistralai/Mistral-7B-Instruct-v0.2"\n\ntokenizer = AutoTokenizer.from_pretrained(model_name)\nmodel = AutoModelForCausalLM.from_pretrained(\n    model_name,\n    device_map="auto",\n    torch_dtype=torch.float16\n)\n\ndevice = "cuda" if torch.cuda.is_available() else "cpu"\nmodel.to(device)\n```\n\n---\n\n## **Step 3: Create a Response Generation Function**\n\nThis function takes a topic and returns a structured response:\n\n```python\ndef generate_response(topic):\n    prompt = f"Please provide a comprehensive overview of the topic: {topic}. Include key concepts, applications, and relevant examples."\n\n    inputs = tokenizer(prompt, return_tensors="pt").to(device)\n\n    outputs = model.generate(\n        **inputs,\n        max_new_tokens=1024,\n        temperature=0.7,\n        do_sample=True,\n        top_p=0.9\n    )\n\n    return tokenizer.decode(outputs[0], skip_special_tokens=True)\n```\n\n---\n\n## **Step 4: Set Up a Flask API with ngrok**\n\nWe’ll use Flask to create a web server and ngrok to expose it publicly:\n\n```python\nfrom flask import Flask, request, jsonify\nfrom flask_ngrok import run_with_ngrok\nimport os\n\napp = Flask(__name__)\nrun_with_ngrok(app)\n\n@app.route(\'/generate\', methods=[\'POST\'])\ndef generate_markdown():\n    data = request.json\n    topic = data.get(\'topic\', \'\')\n\n    if not topic:\n        return jsonify({"error": "Topic is required"}), 400\n\n    response = generate_response(topic)\n\n    filename = f"{topic.replace(\' \', \'_\').lower()}.md"\n    with open(filename, \'w\') as f:\n        f.write(response)\n\n    return jsonify({\n        "message": "Markdown file created successfully",\n        "filename": filename,\n        "content": response\n    })\n\nif __name__ == \'__main__\':\n    app.run()\n```\n\n---\n\n## **Step 5: Run the API & Get ngrok URL**\n\nExecute the Flask app:\n\n```python\n!python /content/app.py &> flask_logs.txt &\n```\n\nThen, retrieve the public ngrok URL:\n\n```python\nfrom pyngrok import ngrok\n\npublic_url = ngrok.connect(5000).public_url\nprint(f"API Endpoint: {public_url}/generate")\n```\n\nYou’ll get a URL like:  \n`https://abc123-45-67-89-123.ngrok-free.app/generate`\n\n---\n\n## **Step 6: Test the API**\n\nYou can send a POST request with a topic:\n\n**Using Python (`requests`)**:\n\n```python\nimport requests\n\nresponse = requests.post(\n    "https://your-ngrok-url.ngrok-free.app/generate",\n    json={"topic": "Quantum Computing"}\n)\n\nprint(response.json())\n```\n\n**Using `curl`**:\n\n```bash\ncurl -X POST \\\n  -H "Content-Type: application/json" \\\n  -d \'{"topic": "Artificial Intelligence"}\' \\\n  https://your-ngrok-url.ngrok-free.app/generate\n```\n\n---\n\n## **Step 7: Retrieve the Markdown File**\n\nThe API will:\n1. Generate a response using Mistral-7B  \n2. Save it as `[topic_name].md` in Colab’s storage  \n3. Return the content in the API response\n\nTo download the file from Colab:\n\n```python\nfrom google.colab import files\nfiles.download("quantum_computing.md")\n```\n\n---\n\n## **Final Thoughts**\n\nThis setup allows you to:\n✔️ **Run Mistral-7B for free** (using Colab’s GPU)  \n✔️ **Create an API endpoint** (accessible via ngrok)  \n✔️ **Generate structured markdown files** from any topic\n\n### **Limitations & Improvements**\n🔹 **Colab’s GPU memory is limited** – For longer conversations, consider quantization.  \n🔹 **Ngrok free tier has restrictions** – For production, use a cloud VM (like AWS/GCP).  \n🔹 **Add authentication** – Secure your API with API keys.\n\n---\n\n**Try it out and let me know how it works for you!** 🚀',
+    author: "Durga Gairhe",
+    date: "2025-07-08",
+    readTime: "12 min read",
+    category: "AI Development",
+    tags: [
+      "intro",
+      "to",
+      "langchain",
+      "automate",
+      "tasks",
+      "with",
+      "ai",
+      "agents",
+    ],
+    likes: 13,
+    featured: true,
+    image: "https://source.unsplash.com/featured/?ai,technology",
+  },
+];
 
 export { blogPosts };
