@@ -176,7 +176,7 @@ const Blog = () => {
 
         {/* All Posts Grid */}
         <motion.div variants={itemVariants} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {filteredPosts.slice(0, 6).map((post) => (
+          {filteredPosts.slice(0, 8).map((post) => (
             <motion.article
               key={post.id}
               whileHover={{ y: -5 }}

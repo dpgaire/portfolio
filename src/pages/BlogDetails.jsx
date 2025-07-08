@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -11,13 +15,14 @@ import {
   HeartIcon,
   ChatBubbleLeftIcon,
   BookmarkIcon,
+  DocumentDuplicateIcon,
 } from "@heroicons/react/24/outline";
 import {
   HeartIcon as HeartSolidIcon,
   BookmarkIcon as BookmarkSolidIcon,
 } from "@heroicons/react/24/solid";
-import {blogPosts} from '../posts/index'; // Assuming you have a data file with blog posts
-
+import { blogPosts } from "../posts/index";
+import { CheckIcon } from "lucide-react";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -25,9 +30,7 @@ const BlogDetails = () => {
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
-
-  // Sample blog posts data (in a real app, this would come from an API)
-
+  const [markdownContent, setMarkdownContent] = useState("");
 
   const post = blogPosts.find((p) => p.id === parseInt(id));
 
@@ -44,13 +47,68 @@ const BlogDetails = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (post && post.content) {
+      setMarkdownContent(post.content);
+    }
+  }, [post]);
+
+  const CodeBlock = ({ node, inline, className, children, ...props }) => {
+    const [copied, setCopied] = useState(false);
+    const match = /language-(\w+)/.exec(className || "");
+    const codeText = String(children).replace(/\n$/, "");
+
+    const handleCopy = () => {
+      navigator.clipboard.writeText(codeText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    };
+
+    return !inline ? (
+      <div className="relative">
+        <div className="absolute right-2 top-2 z-10">
+          <button
+            onClick={handleCopy}
+            className="flex items-center gap-1 rounded bg-gray-700/50 px-2 py-1 text-xs text-white hover:bg-gray-600/50 transition-colors"
+            title="Copy code"
+          >
+            {copied ? (
+              <>
+                <CheckIcon className="h-3 w-3" />
+                <span>Copied!</span>
+              </>
+            ) : (
+              <>
+                <DocumentDuplicateIcon className="h-3 w-3" />
+                <span>Copy</span>
+              </>
+            )}
+          </button>
+        </div>
+        <SyntaxHighlighter
+          language={match ? match[1] : "javascript"}
+          style={vscDarkPlus}
+          showLineNumbers={true}
+          wrapLines={true}
+          {...props}
+        >
+          {codeText}
+        </SyntaxHighlighter>
+      </div>
+    ) : (
+      <code
+        className="bg-gray-100 dark:bg-dark-700 px-2 py-1 rounded text-sm"
+        {...props}
+      >
+        {children}
+      </code>
+    );
+  };
+
   if (!post) {
     return (
-      <div
-        id="blog"
-        className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white"
-      >
-        <div id="blog" className="container-custom section-padding text-center">
+      <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white">
+        <div className="container-custom section-padding text-center">
           <h1 className="text-4xl font-bold mb-4">Post Not Found</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-8">
             The blog post you're looking for doesn't exist.
@@ -85,7 +143,6 @@ const BlogDetails = () => {
         console.log("Error sharing:", err);
       }
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
       alert("Link copied to clipboard!");
     }
@@ -135,7 +192,7 @@ const BlogDetails = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className=" text-3xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
               >
                 {post.title}
               </motion.h1>
@@ -185,16 +242,58 @@ const BlogDetails = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                   className="prose prose-sm sm:prose lg:prose-lg dark:prose-invert w-full max-w-full overflow-auto"
-                  dangerouslySetInnerHTML={{
-                    __html: post.content
-                      .replace(/\n/g, "<br>")
-                      .replace(/```(.*?)```/gs, "<pre><code>$1</code></pre>")
-                      .replace(/`(.*?)`/g, "<code>$1</code>")
-                      .replace(/### (.*?)(<br>|$)/g, "<h3>$1</h3>")
-                      .replace(/## (.*?)(<br>|$)/g, "<h2>$1</h2>")
-                      .replace(/# (.*?)(<br>|$)/g, "<h1>$1</h1>"),
-                  }}
-                />
+                >
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      h1: ({ node, ...props }) => (
+                        <h1
+                          className="text-3xl font-bold mb-4 mt-8"
+                          {...props}
+                        />
+                      ),
+                      h2: ({ node, ...props }) => (
+                        <h2
+                          className="text-2xl font-bold mb-3 mt-6"
+                          {...props}
+                        />
+                      ),
+                      h3: ({ node, ...props }) => (
+                        <h3
+                          className="text-xl font-bold mb-2 mt-4"
+                          {...props}
+                        />
+                      ),
+                      p: ({ node, ...props }) => (
+                        <p className="mb-4 leading-relaxed" {...props} />
+                      ),
+                      ul: ({ node, ...props }) => (
+                        <ul className="list-disc pl-5 mb-4" {...props} />
+                      ),
+                      ol: ({ node, ...props }) => (
+                        <ol className="list-decimal pl-5 mb-4" {...props} />
+                      ),
+                      li: ({ node, ...props }) => (
+                        <li className="mb-2" {...props} />
+                      ),
+                      blockquote: ({ node, ...props }) => (
+                        <blockquote
+                          className="border-l-4 border-primary-500 pl-4 italic my-4"
+                          {...props}
+                        />
+                      ),
+                      code: CodeBlock,
+                      a: ({ node, ...props }) => (
+                        <a
+                          className="text-primary-600 dark:text-primary-400 hover:underline"
+                          {...props}
+                        />
+                      ),
+                    }}
+                  >
+                    {markdownContent}
+                  </ReactMarkdown>
+                </motion.div>
 
                 {/* Tags */}
                 <motion.div
