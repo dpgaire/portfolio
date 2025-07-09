@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { Helmet } from "react-helmet-async";
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -52,6 +53,63 @@ const BlogDetails = () => {
       setMarkdownContent(post.content);
     }
   }, [post]);
+
+  // SEO Helper Functions
+  const generateCanonicalUrl = () => {
+    return `https://www.durgagairhe.com.np/blog/${id}`;
+  };
+
+  const generateMetaDescription = () => {
+    if (!post) return "Blog post not found";
+    return post.excerpt.length > 160 
+      ? post.excerpt.substring(0, 157) + "..." 
+      : post.excerpt;
+  };
+
+  const generateKeywords = () => {
+    if (!post) return "";
+    return post.tags.join(", ");
+  };
+
+  const generateStructuredData = () => {
+    if (!post) return {};
+    
+    return {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "image": post.image || "https://www.durgagairhe.com.np/default-blog-image.jpg",
+      "author": {
+        "@type": "Person",
+        "name": post.author,
+        "url": "https://www.durgagairhe.com.np/about"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Durga Gairhe",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.durgagairhe.com.np/logo.png"
+        }
+      },
+      "datePublished": post.date,
+      "dateModified": post.lastModified || post.date,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": generateCanonicalUrl()
+      },
+      "keywords": post.tags,
+      "articleSection": post.category,
+      "wordCount": markdownContent.split(' ').length,
+      "timeRequired": post.readTime,
+      "url": generateCanonicalUrl(),
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://www.durgagairhe.com.np/blog"
+      }
+    };
+  };
 
   const CodeBlock = ({ node, inline, className, children, ...props }) => {
     const [copied, setCopied] = useState(false);
@@ -107,18 +165,25 @@ const BlogDetails = () => {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white">
-        <div className="container-custom section-padding text-center">
-          <h1 className="text-4xl font-bold mb-4">Post Not Found</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
-            The blog post you're looking for doesn't exist.
-          </p>
-          <button onClick={() => navigate("/")} className="btn-primary">
-            <ArrowLeftIcon className="w-5 h-5 mr-2" />
-            Back to Home
-          </button>
+      <>
+        <Helmet>
+          <title>Post Not Found - Durga Gairhe</title>
+          <meta name="description" content="The blog post you're looking for doesn't exist." />
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-white">
+          <div className="container-custom section-padding text-center">
+            <h1 className="text-4xl font-bold mb-4">Post Not Found</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-8">
+              The blog post you're looking for doesn't exist.
+            </p>
+            <button onClick={() => navigate("/")} className="btn-primary">
+              <ArrowLeftIcon className="w-5 h-5 mr-2" />
+              Back to Home
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -150,6 +215,49 @@ const BlogDetails = () => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <Helmet>
+        {/* Basic Meta Tags */}
+        <title>{post.title} - Durga Gairhe</title>
+        <meta name="description" content={generateMetaDescription()} />
+        <meta name="keywords" content={generateKeywords()} />
+        <meta name="author" content={post.author} />
+        <link rel="canonical" href={generateCanonicalUrl()} />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={generateMetaDescription()} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={generateCanonicalUrl()} />
+        <meta property="og:image" content={post.image || "https://www.durgagairhe.com.np/default-blog-image.jpg"} />
+        <meta property="og:site_name" content="Durga Gairhe" />
+        <meta property="article:author" content={post.author} />
+        <meta property="article:published_time" content={post.date} />
+        <meta property="article:modified_time" content={post.lastModified || post.date} />
+        <meta property="article:section" content={post.category} />
+        {post.tags.map((tag, index) => (
+          <meta key={index} property="article:tag" content={tag} />
+        ))}
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={generateMetaDescription()} />
+        <meta name="twitter:image" content={post.image || "https://www.durgagairhe.com.np/default-blog-image.jpg"} />
+        <meta name="twitter:creator" content="@durgagairhe" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="language" content="en" />
+        <meta name="revisit-after" content="7 days" />
+        
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(generateStructuredData())}
+        </script>
+      </Helmet>
+
       {/* Reading Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 dark:bg-dark-700 z-50">
         <div
@@ -220,7 +328,7 @@ const BlogDetails = () => {
                 </div>
                 <div className="flex items-center">
                   <CalendarIcon className="w-5 h-5 mr-2" />
-                  <span>{formatDate(post.date)}</span>
+                  <time dateTime={post.date}>{formatDate(post.date)}</time>
                 </div>
                 <div className="flex items-center">
                   <ClockIcon className="w-5 h-5 mr-2" />
@@ -286,6 +394,15 @@ const BlogDetails = () => {
                       a: ({ node, ...props }) => (
                         <a
                           className="text-primary-600 dark:text-primary-400 hover:underline"
+                          {...props}
+                        />
+                      ),
+                      img: ({ node, alt, src, ...props }) => (
+                        <img
+                          alt={alt || "Blog post image"}
+                          src={src}
+                          loading="lazy"
+                          className="rounded-lg shadow-md"
                           {...props}
                         />
                       ),
@@ -399,3 +516,4 @@ const BlogDetails = () => {
 };
 
 export default BlogDetails;
+

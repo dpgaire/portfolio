@@ -4,9 +4,12 @@ import Home from './pages/Home';
 import { ThemeProvider } from './context/ThemeContext';
 import BlogDetails from './pages/BlogDetails';
 import Layout from './layout';
+import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
   return (
+    <HelmetProvider>
+
    <Router>
         <ThemeProvider>
             <Layout>
@@ -17,6 +20,7 @@ function App() {
             </Layout>
         </ThemeProvider>
     </Router>
+    </HelmetProvider>
   )
 }
 
