@@ -124,7 +124,7 @@ const BlogDetails = () => {
 
     return !inline ? (
       <div className="relative">
-        <div className="absolute right-2 top-2 z-10">
+        <div className="absolute right-0 -top-4 z-10">
           <button
             onClick={handleCopy}
             className="flex items-center gap-1 rounded bg-gray-700/50 px-2 py-1 text-xs text-white hover:bg-gray-600/50 transition-colors"
