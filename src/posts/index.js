@@ -147,7 +147,7 @@ const blogPosts = [
     featured: true,
     image: "https://source.unsplash.com/featured/?ai,technology",
   },
-,
+
 {
   "id": 1752076529,
   "title": "How to Train Your Mindset for Consistent Growth as a Developer",
