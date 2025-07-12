@@ -15,24 +15,54 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
-  <!-- Blog Posts (Dynamic - Add each blog post) -->
-  <!-- Example blog post entries - replace with actual blog post data -->
-  <url>
-    <loc>https://www.durgagairhe.com.np/blog/1751967175</loc>
-    <lastmod>2025-06-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.durgagairhe.com.np/blog/1751884993</loc>
-    <lastmod>2025-06-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- Add more blog post URLs as needed -->
-  
-</urlset>
 
+  <!-- Blog Posts -->
+  <url>
+    <loc>https://www.durgagairhe.com.np/blog/how-to-build-your-own-ai-assistant-with-python-and-gemini-a-beginners-guide</loc>
+    <lastmod>2025-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.durgagairhe.com.np/blog/how-to-start-a-career-in-ai-your-guide-to-a-future-proof-profession</loc>
+    <lastmod>2025-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.durgagairhe.com.np/blog/mastering-automation-with-python-your-guide-to-effortless-efficiency</loc>
+    <lastmod>2025-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.durgagairhe.com.np/blog/top-frontend-trends-in-2025-shaping-the-future-of-web-development</loc>
+    <lastmod>2025-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.durgagairhe.com.np/blog/solo-developers-guide-to-building-desktop-apps-with-electron</loc>
+    <lastmod>2025-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.durgagairhe.com.np/blog/7-daily-habits-of-highly-effective-programmers-level-up-your-coding-game</loc>
+    <lastmod>2025-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.durgagairhe.com.np/blog/how-to-deploy-mistral-7b-instruct-as-an-api-with-ngrok-in-google-colab</loc>
+    <lastmod>2025-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.durgagairhe.com.np/blog/how-to-train-your-mindset-for-consistent-growth-as-a-developer</loc>
+    <lastmod>2025-07-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>
