@@ -5,17 +5,20 @@ import { ThemeProvider } from './context/ThemeContext';
 import BlogDetails from './pages/BlogDetails';
 import Layout from './layout';
 import { HelmetProvider } from 'react-helmet-async';
+import BlogPage from './pages/BlogPage';
+import ScrollToTop from './components/ui/ScrollToTop';
 
 function App() {
   return (
     <HelmetProvider>
-
    <Router>
         <ThemeProvider>
             <Layout>
+              <ScrollToTop/>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/blog/:id" element={<BlogDetails />} />
+            <Route path="/blog" element={<BlogPage />} />
           </Routes>
             </Layout>
         </ThemeProvider>
