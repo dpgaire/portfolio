@@ -33,7 +33,7 @@ const BlogDetails = () => {
   const [readingProgress, setReadingProgress] = useState(0);
   const [markdownContent, setMarkdownContent] = useState("");
 
-  const post = blogPosts.find((p) => p.id === parseInt(id));
+  const post = blogPosts.find((p) => p.slug === id);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -1,6 +1,7 @@
 const blogPosts = [
   {
     id: 1751878570,
+    slug: "how-to-build-your-own-ai-assistant-with-python-and-gemini-a-beginners-guide",
     title:
       "How to Build Your Own AI Assistant with Python and Gemini: A Beginner's Guide",
     excerpt:
@@ -30,6 +31,7 @@ const blogPosts = [
   },
   {
     id: 1751876765,
+    slug: "how-to-start-a-career-in-ai-your-guide-to-a-future-proof-profession",
     title:
       "How to Start a Career in AI: Your Guide to a Future-Proof Profession",
     excerpt:
@@ -47,6 +49,7 @@ const blogPosts = [
   },
   {
     id: 1751876773,
+    slug: "mastering-automation-with-python-your-guide-to-effortless-efficiency",
     title:
       "Mastering Automation with Python: Your Guide to Effortless Efficiency",
     excerpt:
@@ -64,6 +67,7 @@ const blogPosts = [
   },
   {
     id: 1751876780,
+    slug: "top-frontend-trends-in-2025-shaping-the-future-of-web-development",
     title: "Top Frontend Trends in 2025: Shaping the Future of Web Development",
     excerpt:
       "The world of web development is in constant flux, a whirlwind of innovation and evolution.  ",
@@ -80,6 +84,7 @@ const blogPosts = [
   },
   {
     id: 1751884993,
+    slug: "solo-developers-guide-to-building-desktop-apps-with-electron",
     title: "Solo Developer's Guide to Building Desktop Apps with Electron",
     excerpt:
       "Dreaming of crafting your own desktop application but feeling overwhelmed?  As a solo developer, tackling a project of this scale can seem daunting.",
@@ -106,6 +111,7 @@ const blogPosts = [
   },
   {
     id: 1751966976,
+    slug: "7-daily-habits-of-highly-effective-programmers-level-up-your-coding-game",
     title:
       "7 Daily Habits of Highly Effective Programmers: Level Up Your Coding Game",
     excerpt:
@@ -123,6 +129,7 @@ const blogPosts = [
   },
   {
     id: 1751967175,
+    slug: "how-to-deploy-mistral-7b-instruct-as-an-api-with-ngrok-in-google-colab",
     title:
       "How to Deploy Mistral-7B-Instruct as an API with ngrok in Google Colab",
     excerpt:
@@ -134,8 +141,7 @@ const blogPosts = [
     readTime: "12 min read",
     category: "AI Development",
     tags: [
-      "intro",
-      "to",
+      "Mistral-7B",
       "langchain",
       "automate",
       "tasks",
@@ -148,31 +154,35 @@ const blogPosts = [
     image: "https://source.unsplash.com/featured/?ai,technology",
   },
 
-{
-  "id": 1752076529,
-  "title": "How to Train Your Mindset for Consistent Growth as a Developer",
-  "excerpt": "The tech world is a whirlwind. New frameworks emerge daily, best practices shift, and the pressure to stay ahead feels relentless.  Feeling overwhelmed?  You're not alone.",
-  "content": "This isn't just about mastering the latest language; it's about cultivating the right mindset. This post will guide you on how to train your mindset for consistent growth as a developer, ensuring a fulfilling and successful career. Learning how to train your mindset for consistent growth as a developer is crucial for long-term success.\n\nMany developers focus solely on technical skills. While essential, technical expertise alone isn't enough. Consistent growth demands a proactive and adaptable mindset \u2013 one that embraces challenges, seeks continuous improvement, and navigates setbacks with resilience.  This is your key to unlocking your full potential and thriving in the ever-evolving landscape of software development.\n\n## Embrace a Growth Mindset: From Fixed to Fluid\n\nA fixed mindset believes talent is innate and unchangeable.  A growth mindset, however, sees abilities as skills that can be developed through dedication and hard work.  This fundamental shift is crucial for consistent growth as a developer.  Instead of fearing failure, view challenges as opportunities for learning and improvement.\n\n*   **Example:**  Encountering a bug you can't immediately solve?  A fixed mindset might lead to frustration and avoidance. A growth mindset encourages you to debug systematically, research solutions, and learn from the experience.  This process strengthens your problem-solving skills and builds resilience.\n*   **Actionable Step:**  Actively seek feedback, even if it's critical.  Use constructive criticism to pinpoint areas needing improvement and develop a plan to address them. Regularly reflect on your successes and failures, identifying key lessons learned.\n\n## Cultivate a Proactive Learning Approach: Beyond the Basics\n\nPassive learning, simply consuming information, won't cut it in the long run. To truly train your mindset for consistent growth as a developer, you need a proactive approach. This involves actively seeking out new knowledge and challenges, experimenting with different technologies, and pushing your boundaries.\n\n*   **Example:** Instead of just completing assigned tasks, explore related technologies or methodologies.  If you're working with React, delve into Redux or other state management solutions.  Contribute to open-source projects to collaborate with other developers and learn from their expertise.\n*   **Actionable Step:** Dedicate specific time each week for learning new skills.  This might involve following online courses, reading technical blogs, attending workshops, or participating in coding challenges.  Make it a habit, and you'll see continuous improvement.\n\n## Practice Self-Compassion and Resilience: Navigating Setbacks\n\nThe path of a developer is rarely linear.  You'll face frustrating bugs, challenging projects, and moments of self-doubt.  Developing self-compassion and resilience is essential for navigating these setbacks and maintaining consistent growth.\n\n*   **Example:**  A project deadline is missed?  Instead of berating yourself, analyze the contributing factors, learn from the experience, and adjust your approach for future projects.  Recognize that mistakes are opportunities for growth, and celebrate small wins along the way.\n*   **Actionable Step:** Practice mindfulness and self-care.  Regular exercise, adequate sleep, and stress-reducing activities can significantly improve your mental resilience and overall well-being.  Don't hesitate to seek support from mentors, colleagues, or online communities when facing challenges.\n\n\n**Conclusion:**\n\nTraining your mindset for consistent growth as a developer is a journey, not a destination. By cultivating a growth mindset, adopting a proactive learning approach, and practicing self-compassion, you'll equip yourself with the mental fortitude and adaptability necessary to thrive in this dynamic field. Embrace the challenges, celebrate the wins, and continuously strive for improvement \u2013 your future self will thank you for it!  Now, go forth and build amazing things!\n",
-  "author": "Durga Gairhe",
-  "date": "2025-07-09",
-  "readTime": "11 min read",
-  "category": "Mindset & Productivity",
-  "tags": [
-    "how",
-    "to",
-    "train",
-    "your",
-    "mindset",
-    "for",
-    "consistent",
-    "growth",
-    "as",
-    "a",
-    "developer"
-  ],
-  "likes": 926,
-  "featured": true,
-  "image": "https://source.unsplash.com/featured/?ai,technology"
-}];
+  {
+    id: 1752076529,
+    slug: "how-to-train-your-mindset-for-consistent-growth-as-a-developer",
+    title: "How to Train Your Mindset for Consistent Growth as a Developer",
+    excerpt:
+      "The tech world is a whirlwind. New frameworks emerge daily, best practices shift, and the pressure to stay ahead feels relentless.  Feeling overwhelmed?  You're not alone.",
+    content:
+      "This isn't just about mastering the latest language; it's about cultivating the right mindset. This post will guide you on how to train your mindset for consistent growth as a developer, ensuring a fulfilling and successful career. Learning how to train your mindset for consistent growth as a developer is crucial for long-term success.\n\nMany developers focus solely on technical skills. While essential, technical expertise alone isn't enough. Consistent growth demands a proactive and adaptable mindset \u2013 one that embraces challenges, seeks continuous improvement, and navigates setbacks with resilience.  This is your key to unlocking your full potential and thriving in the ever-evolving landscape of software development.\n\n## Embrace a Growth Mindset: From Fixed to Fluid\n\nA fixed mindset believes talent is innate and unchangeable.  A growth mindset, however, sees abilities as skills that can be developed through dedication and hard work.  This fundamental shift is crucial for consistent growth as a developer.  Instead of fearing failure, view challenges as opportunities for learning and improvement.\n\n*   **Example:**  Encountering a bug you can't immediately solve?  A fixed mindset might lead to frustration and avoidance. A growth mindset encourages you to debug systematically, research solutions, and learn from the experience.  This process strengthens your problem-solving skills and builds resilience.\n*   **Actionable Step:**  Actively seek feedback, even if it's critical.  Use constructive criticism to pinpoint areas needing improvement and develop a plan to address them. Regularly reflect on your successes and failures, identifying key lessons learned.\n\n## Cultivate a Proactive Learning Approach: Beyond the Basics\n\nPassive learning, simply consuming information, won't cut it in the long run. To truly train your mindset for consistent growth as a developer, you need a proactive approach. This involves actively seeking out new knowledge and challenges, experimenting with different technologies, and pushing your boundaries.\n\n*   **Example:** Instead of just completing assigned tasks, explore related technologies or methodologies.  If you're working with React, delve into Redux or other state management solutions.  Contribute to open-source projects to collaborate with other developers and learn from their expertise.\n*   **Actionable Step:** Dedicate specific time each week for learning new skills.  This might involve following online courses, reading technical blogs, attending workshops, or participating in coding challenges.  Make it a habit, and you'll see continuous improvement.\n\n## Practice Self-Compassion and Resilience: Navigating Setbacks\n\nThe path of a developer is rarely linear.  You'll face frustrating bugs, challenging projects, and moments of self-doubt.  Developing self-compassion and resilience is essential for navigating these setbacks and maintaining consistent growth.\n\n*   **Example:**  A project deadline is missed?  Instead of berating yourself, analyze the contributing factors, learn from the experience, and adjust your approach for future projects.  Recognize that mistakes are opportunities for growth, and celebrate small wins along the way.\n*   **Actionable Step:** Practice mindfulness and self-care.  Regular exercise, adequate sleep, and stress-reducing activities can significantly improve your mental resilience and overall well-being.  Don't hesitate to seek support from mentors, colleagues, or online communities when facing challenges.\n\n\n**Conclusion:**\n\nTraining your mindset for consistent growth as a developer is a journey, not a destination. By cultivating a growth mindset, adopting a proactive learning approach, and practicing self-compassion, you'll equip yourself with the mental fortitude and adaptability necessary to thrive in this dynamic field. Embrace the challenges, celebrate the wins, and continuously strive for improvement \u2013 your future self will thank you for it!  Now, go forth and build amazing things!\n",
+    author: "Durga Gairhe",
+    date: "2025-07-09",
+    readTime: "11 min read",
+    category: "Mindset & Productivity",
+    tags: [
+      "how",
+      "to",
+      "train",
+      "your",
+      "mindset",
+      "for",
+      "consistent",
+      "growth",
+      "as",
+      "a",
+      "developer",
+    ],
+    likes: 926,
+    featured: true,
+    image: "https://source.unsplash.com/featured/?ai,technology",
+  },
+];
 
 export { blogPosts };
