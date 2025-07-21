@@ -103,7 +103,8 @@ const About = () => {
                   {/* Placeholder for profile image */}
                   <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 flex items-center justify-center">
                    
-                    <img alt="profile" className=" h-full bg-cover" src="https://avatars.githubusercontent.com/u/48995103?s=400&u=bbcb7b8f5ccda2cc314d8212016b26843fa6d9fd&v=4" />
+                    <img alt="profile" className=" h-full bg-cover" src="/images/durga.png" />
+
                   </div>
                 </div>
                 {/* Floating badge */}

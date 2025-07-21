@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Home from "./pages/Home";
 import { ThemeProvider } from "./context/ThemeContext";
 import BlogDetails from "./pages/BlogDetails";
@@ -14,13 +15,13 @@ function App() {
       <Router>
         <ThemeProvider>
           <Layout>
+            <SpeedInsights />
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/blog/:id" element={<BlogDetails />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/projects" element={<ProjectPage />} />
-
             </Routes>
           </Layout>
         </ThemeProvider>
