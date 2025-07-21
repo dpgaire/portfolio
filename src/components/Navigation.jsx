@@ -62,7 +62,7 @@ const Navigation = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    navigate('/')
+    navigate(`/${href}`)
   };
 
   return (
@@ -82,7 +82,8 @@ const Navigation = () => {
             {/* Logo */}
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 cursor-pointer"
+              onClick={()=>navigate('/')}
             >
               <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">DG</span>

@@ -9,6 +9,8 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Projects = () => {
   const [ref, inView] = useInView({
@@ -20,55 +22,46 @@ const Projects = () => {
   const [filter, setFilter] = useState("all");
 
   const projects = [
-    // {
-    //   id: 1,
-    //   title: "Moru Digital Wallet",
-    //   category: "fintech",
-    //   description:
-    //     "Leading frontend development for a comprehensive digital wallet solution serving thousands of users daily.",
-    //   longDescription:
-    //     "A comprehensive digital wallet platform that enables users to manage their finances, make payments, and track transactions. Built with React, Node.js, and modern security practices.",
-    //   image: "/api/placeholder/600/400",
-    //   technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "AWS"],
-    //   liveUrl: "https://moru.com",
-    //   githubUrl: null,
-    //   featured: true,
-    //   status: "Live",
-    // },
+    {
+      id: 1,
+      title: "API Key Manager – Secure Local Storage CRUD Interface",
+      category: "developer-tools",
+      description:
+        "Manage API keys locally with secure storage, search, and full CRUD functionality using a modern UI.",
+      longDescription:
+        "API Key Manager is a lightweight and secure React-based application for managing API keys locally in the browser. Built with SADCN UI components and leveraging localStorage, it offers a clean and responsive interface for developers to store, retrieve, edit, and delete API keys. Features include real-time search, validation, and a user-friendly CRUD system. Ideal for developers looking to quickly manage keys without backend dependencies. The project emphasizes usability, simplicity, and data persistence.",
+      image: "/images/api-key-manager.png",
+      technologies: ["React", "SADCN UI", "JavaScript", "Local Storage"],
+      liveUrl: "https://api-key-manager-swart.vercel.app/",
+      githubUrl: "https://github.com/dpgaire/api-key-manager-",
+      featured: true,
+      status: "Published",
+    },
     {
       id: 2,
-      title: "Cosmic Content – AI-Powered Content Generator",
+      title:
+        "AI Content & Media Suite – Gemini-Powered Content Creation Platform",
       category: "ai",
       description:
-        "Web-based AI content generator using React, Tailwind CSS, and OpenRouter API.",
+        "A powerful AI-powered content and media management platform built with React and Gemini API for creators and marketers.",
       longDescription:
-        "Cosmic Content is a web application that enables users to generate high-quality AI content effortlessly. Built with React and styled using Tailwind CSS, it integrates OpenRouter's API to provide fast and customizable language model access for creating blog posts, marketing copy, and more.",
-      image: "/images/cosmic-content.png",
-      technologies: ["React", "Tailwind CSS", "OpenRouter API", "JavaScript"],
-      liveUrl: "https://cosmic-ai-content.vercel.app/",
-      githubUrl: "https://github.com/dpgaire/ai-cosmic-content", // Replace with your actual GitHub URL
+        "The AI Content & Media Suite is a feature-rich, user-friendly application that leverages the Google Gemini API to empower users with advanced tools for content generation, social media management, and media creation. Built with React, Vite, and Tailwind CSS, the app offers a seamless, responsive experience. Key features include blog and summary generators, multi-platform social media content management, intelligent hashtag suggestions, content scheduling, and a full media toolkit with AI image generation, thumbnail design, and Pexels integration. Ideal for marketers, content creators, and teams aiming to streamline their content workflows.",
+      image: "/images/ai-tool-pro.png",
+      technologies: [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Google Gemini API",
+        "Pexels API",
+        "ESLint",
+      ],
+      liveUrl: "https://ai-tool-pro.vercel.app/",
+      githubUrl: "https://github.com/dpgaire/ai-tool-pro",
       featured: true,
       status: "Published",
     },
-
     {
       id: 3,
-      title: "Art Studio Pro – Interactive Drawing Application",
-      category: "graphics",
-      description:
-        "Web-based drawing tool using React and Canvas API for interactive art creation.",
-      longDescription:
-        "Art Studio Pro is a creative web application that allows users to draw freely, create geometric shapes, and explore digital art tools. Built with React for the UI and powered by the HTML5 Canvas API through core JavaScript, it offers a responsive and intuitive drawing experience in the browser.",
-      image: "/images/art-studio.png",
-      technologies: ["React", "JavaScript", "HTML5 Canvas", "CSS"],
-      liveUrl: "https://art-studio-eight.vercel.app/", // Replace with your actual live URL
-      githubUrl: "https://github.com/dpgaire/art-studio", // Replace with your actual GitHub URL
-      featured: true,
-      status: "Published",
-    },
-
-    {
-      id: 4,
       title: "DevOS AI – Your AI-Powered Development Assistant",
       category: "ai",
       description:
@@ -83,14 +76,43 @@ const Projects = () => {
         "CLI",
         "Web Integration",
       ],
-      liveUrl: null, // Replace with your actual live URL
-      githubUrl: "https://github.com/dpgaire/dev-os-ai", // Replace with your actual GitHub URL
-      featured: true,
+      liveUrl: null,
+      githubUrl: "https://github.com/dpgaire/dev-os-ai",
+      featured: false,
       status: "Published",
     },
-
+    {
+      id: 4,
+      title: "Art Studio Pro – Interactive Drawing Application",
+      category: "graphics",
+      description:
+        "Web-based drawing tool using React and Canvas API for interactive art creation.",
+      longDescription:
+        "Art Studio Pro is a creative web application that allows users to draw freely, create geometric shapes, and explore digital art tools. Built with React for the UI and powered by the HTML5 Canvas API through core JavaScript, it offers a responsive and intuitive drawing experience in the browser.",
+      image: "/images/art-studio.png",
+      technologies: ["React", "JavaScript", "HTML5 Canvas", "CSS"],
+      liveUrl: "https://art-studio-eight.vercel.app/",
+      githubUrl: "https://github.com/dpgaire/art-studio",
+      featured: false,
+      status: "Published",
+    },
     {
       id: 5,
+      title: "Cosmic Content – AI-Powered Content Generator",
+      category: "ai",
+      description:
+        "Web-based AI content generator using React, Tailwind CSS, and OpenRouter API.",
+      longDescription:
+        "Cosmic Content is a web application that enables users to generate high-quality AI content effortlessly. Built with React and styled using Tailwind CSS, it integrates OpenRouter's API to provide fast and customizable language model access for creating blog posts, marketing copy, and more.",
+      image: "/images/cosmic-content.png",
+      technologies: ["React", "Tailwind CSS", "OpenRouter API", "JavaScript"],
+      liveUrl: "https://cosmic-ai-content.vercel.app/",
+      githubUrl: "https://github.com/dpgaire/ai-cosmic-content",
+      featured: false,
+      status: "Published",
+    },
+    {
+      id: 6,
       title: "Focus Mode – Pomodoro Task & Productivity Tracker",
       category: "productivity",
       description:
@@ -99,42 +121,68 @@ const Projects = () => {
         "Focus Mode is a productivity app that helps users manage tasks using the Pomodoro technique. Users can add tasks, set a 25-minute timer, and receive an audio reminder upon completion. It tracks daily progress and stores data locally in the browser using Local Storage. Built with React and styled with Tailwind CSS for a smooth, distraction-free experience.",
       image: "/images/focus-mode.png",
       technologies: ["React", "Tailwind CSS", "JavaScript", "Local Storage"],
-      liveUrl: "https://focus-mode-tau.vercel.app/", // Replace with your actual live URL
-      githubUrl: "https://github.com/dpgaire/focus-mode", // Replace with your actual GitHub URL
-      featured: true,
+      liveUrl: "https://focus-mode-tau.vercel.app/",
+      githubUrl: "https://github.com/dpgaire/focus-mode",
+      featured: false,
       status: "Published",
     },
-    // {
-    //   id: 6,
-    //   title: "Blockchain Voting System",
-    //   category: "blockchain",
-    //   description:
-    //     "Secure voting platform built on blockchain technology ensuring transparency and immutability.",
-    //   longDescription:
-    //     "A decentralized voting system built on Ethereum blockchain, ensuring transparent, secure, and immutable voting processes with smart contract integration.",
-    //   image: "/api/placeholder/600/400",
-    //   technologies: ["Solidity", "Web3.js", "React", "Ethereum", "IPFS"],
-    //   liveUrl: "https://vote.blockchain.com",
-    //   githubUrl: "https://github.com/durga-gairhe/blockchain-voting",
-    //   featured: true,
-    //   status: "Beta",
-    // },
+    {
+      id: 7,
+      title: "AI Content Repurposer – Multi-Platform Content Generator",
+      category: "ai",
+      description:
+        "Turn blogs or video scripts into LinkedIn posts, tweet threads, email intros, and summaries using AI.",
+      longDescription:
+        "AI Content Repurposer is a smart content automation tool that helps creators and marketers repurpose long-form content like blogs or video scripts into tailored formats for different platforms. With one click, users can generate LinkedIn posts, Twitter threads, email newsletters, and concise summaries. Built with React and integrated with GPT models, it enables fast, high-quality multi-channel content creation while matching brand voice. Includes features like content scheduling, style presets, and export options.",
+      image: "/images/content-flow.png",
+      technologies: ["React", "OpenAI", "Tailwind CSS", "JavaScript"],
+      liveUrl: "https://jovial-toffee-088eb0.netlify.app/",
+      githubUrl: "https://github.com/dpgaire/content-flow",
+      featured: false,
+      status: "Published",
+    },
+    {
+      id: 8,
+      title: "AI Favicon Generator – Generate Favicons from Prompts",
+      category: "ai",
+      description:
+        "Generate creative favicon designs from a single text prompt using AI. Supports light/dark themes and batch downloads.",
+      longDescription:
+        "AI Favicon Generator is a simple yet powerful web application that allows users to generate multiple favicon design concepts using a single text prompt. Built with React, Vite, and Tailwind CSS, it offers a clean and modern interface. Users can enter a description (e.g., 'a smiling robot head') and receive a grid of favicon variations generated via OpenRouter API. Features include support for multiple AI models, custom API key configuration, light and dark themes, and a convenient download-all button to export favicons as a ZIP file. Ideal for developers and designers looking to quickly ideate brand icons.",
+      image: "/images/fav-icon.png", // Replace with your actual image path
+      technologies: [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "OpenRouter API",
+        "Lucide React",
+      ],
+      liveUrl: "https://favicon-generator-blush.vercel.app/", // Replace with your actual live URL
+      githubUrl: "https://github.com/dpgaire/favicon-generator", // Replace with your actual GitHub URL
+      featured: false,
+      status: "Published",
+    },
   ];
 
   const categories = [
     { id: "all", label: "All Projects" },
-    { id: "fintech", label: "FinTech" },
     { id: "ai", label: "AI/ML" },
-    { id: "tools", label: "Tools" },
-    { id: "mobile", label: "Mobile" },
+    { id: "tools", label: "Developer Tools" },
+    { id: "productivity", label: "Productivity" },
+    { id: "graphics", label: "Graphics & Media" },
     { id: "web", label: "Web Apps" },
-    { id: "blockchain", label: "Blockchain" },
   ];
+
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const navigate = useNavigate();
 
   const filteredProjects =
     filter === "all"
       ? projects
       : projects.filter((project) => project.category === filter);
+
+  const featuredProjects = projects.filter((post) => post.featured);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -272,143 +320,259 @@ const Projects = () => {
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">Featured Projects</span>
+            <span className="gradient-text">
+              {" "}
+              {currentPath !== "/projects"
+                ? "Featured Projects"
+                : "Project Showcase"}
+            </span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Showcasing my latest work and creative solutions
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
         </motion.div>
-
-        {/* Filter Buttons */}
-        <motion.div
-          variants={itemVariants}
-          className="flex flex-wrap justify-center gap-2 mb-12"
-        >
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setFilter(category.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                filter === category.id
-                  ? "bg-primary-500 text-white shadow-lg"
-                  : "bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600"
-              }`}
-            >
-              {category.label}
-            </button>
-          ))}
-        </motion.div>
-
-        {/* Projects Grid */}
-        <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence>
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                variants={itemVariants}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                whileHover={{ y: -10 }}
-                className="card-hover group cursor-pointer overflow-hidden"
-                onClick={() => setSelectedProject(project)}
+        {currentPath !== "/projects" ? (
+          <motion.div variants={itemVariants} className="mb-16">
+            <div className="flex justify-between items-center">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
+                {currentPath !== "/projects"
+                  ? "Featured Projects"
+                  : "All projects"}
+              </h3>
+              <button
+                onClick={() => navigate("/projects")}
+                className="inline-flex items-center text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 group"
               >
-                {/* Project Image */}
-                <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    {/* <div className="text-2xl font-bold gradient-text">
-                      {project.title}hhh
-                    </div> */}
-                    <img src={project.image} alt={project.title} />
-                  </div>
+                View more
+                <ArrowRightIcon className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
+              </button>
+            </div>
+            <motion.div
+              layout
+              className="grid md:grid-cols-2 lg:grid-cols-2 gap-8"
+            >
+              <AnimatePresence>
+                {featuredProjects.map((project) => (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    whileHover={{ y: -10 }}
+                    className="card-hover group cursor-pointer overflow-hidden"
+                    onClick={() => setSelectedProject(project)}
+                  >
+                    {/* Project Image */}
+                    <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <img src={project.image} alt={project.title} />
+                      </div>
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="flex gap-2">
-                      <div className="p-2 bg-white/90 rounded-full">
-                        <EyeIcon className="w-5 h-5 text-gray-900" />
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <div className="flex gap-2">
+                          <div className="p-2 bg-white/90 rounded-full">
+                            <EyeIcon className="w-5 h-5 text-gray-900" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Featured Badge */}
+                      {project.featured && (
+                        <div className="absolute top-4 left-4 px-2 py-1 bg-accent-500 text-white text-xs font-medium rounded-full">
+                          Featured
+                        </div>
+                      )}
+
+                      {/* Status Badge */}
+                      <div
+                        className={`absolute top-4 right-4 px-2 py-1 text-xs font-medium rounded-full ${
+                          project.status === "Live"
+                            ? "bg-green-500 text-white"
+                            : project.status === "Beta"
+                            ? "bg-yellow-500 text-white"
+                            : "bg-blue-500 text-white"
+                        }`}
+                      >
+                        {project.status}
                       </div>
                     </div>
-                  </div>
 
-                  {/* Featured Badge */}
-                  {project.featured && (
-                    <div className="absolute top-4 left-4 px-2 py-1 bg-accent-500 text-white text-xs font-medium rounded-full">
-                      Featured
+                    {/* Project Content */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
+                        {project.title}
+                      </h3>
+
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                        {project.description}
+                      </p>
+
+                      {/* Technologies */}
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {project.technologies.slice(0, 3).map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded text-xs"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technologies.length > 3 && (
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded text-xs">
+                            +{project.technologies.length - 3}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Action Links */}
+                      <div className="flex gap-2">
+                        {project.liveUrl && (
+                          <button className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
+                            <EyeIcon className="w-4 h-4 mr-1" />
+                            View Live
+                          </button>
+                        )}
+                        {project.githubUrl && (
+                          <button className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
+                            <CodeBracketIcon className="w-4 h-4 mr-1" />
+                            Code
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  )}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </motion.div>
+        ) : (
+          <div>
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap justify-center gap-2 mb-12"
+            >
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setFilter(category.id)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    filter === category.id
+                      ? "bg-primary-500 text-white shadow-lg"
+                      : "bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600"
+                  }`}
+                >
+                  {category.label}
+                </button>
+              ))}
+            </motion.div>
 
-                  {/* Status Badge */}
-                  <div
-                    className={`absolute top-4 right-4 px-2 py-1 text-xs font-medium rounded-full ${
-                      project.status === "Live"
-                        ? "bg-green-500 text-white"
-                        : project.status === "Beta"
-                        ? "bg-yellow-500 text-white"
-                        : "bg-blue-500 text-white"
-                    }`}
+            {/* Projects Grid */}
+            <motion.div
+              layout
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              <AnimatePresence>
+                {filteredProjects.map((project) => (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    whileHover={{ y: -10 }}
+                    className="card-hover group cursor-pointer overflow-hidden"
+                    onClick={() => setSelectedProject(project)}
                   >
-                    {project.status}
-                  </div>
-                </div>
+                    {/* Project Image */}
+                    <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <img src={project.image} alt={project.title} />
+                      </div>
 
-                {/* Project Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
-                    {project.title}
-                  </h3>
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <div className="flex gap-2">
+                          <div className="p-2 bg-white/90 rounded-full">
+                            <EyeIcon className="w-5 h-5 text-gray-900" />
+                          </div>
+                        </div>
+                      </div>
 
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                    {project.description}
-                  </p>
+                      {/* Featured Badge */}
+                      {project.featured && (
+                        <div className="absolute top-4 left-4 px-2 py-1 bg-accent-500 text-white text-xs font-medium rounded-full">
+                          Featured
+                        </div>
+                      )}
 
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {project.technologies.slice(0, 3).map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded text-xs"
+                      {/* Status Badge */}
+                      <div
+                        className={`absolute top-4 right-4 px-2 py-1 text-xs font-medium rounded-full ${
+                          project.status === "Live"
+                            ? "bg-green-500 text-white"
+                            : project.status === "Beta"
+                            ? "bg-yellow-500 text-white"
+                            : "bg-blue-500 text-white"
+                        }`}
                       >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded text-xs">
-                        +{project.technologies.length - 3}
-                      </span>
-                    )}
-                  </div>
+                        {project.status}
+                      </div>
+                    </div>
 
-                  {/* Action Links */}
-                  <div className="flex gap-2">
-                    {project.liveUrl && (
-                      <button className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
-                        <EyeIcon className="w-4 h-4 mr-1" />
-                        View Live
-                      </button>
-                    )}
-                    {project.githubUrl && (
-                      <button className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
-                        <CodeBracketIcon className="w-4 h-4 mr-1" />
-                        Code
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                    {/* Project Content */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
+                        {project.title}
+                      </h3>
 
-        {/* View All Projects Button */}
-        {/* <motion.div variants={itemVariants} className="text-center mt-12">
-          <button className="btn-secondary group flex items-center">
-            View All Projects
-            <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-          </button>
-        </motion.div> */}
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                        {project.description}
+                      </p>
+
+                      {/* Technologies */}
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {project.technologies.slice(0, 3).map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded text-xs"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technologies.length > 3 && (
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded text-xs">
+                            +{project.technologies.length - 3}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Action Links */}
+                      <div className="flex gap-2">
+                        {project.liveUrl && (
+                          <button className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
+                            <EyeIcon className="w-4 h-4 mr-1" />
+                            View Live
+                          </button>
+                        )}
+                        {project.githubUrl && (
+                          <button className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
+                            <CodeBracketIcon className="w-4 h-4 mr-1" />
+                            Code
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        )}
       </motion.div>
 
       {/* Project Modal */}

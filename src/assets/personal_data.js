@@ -58,7 +58,7 @@ const personData = [
   {
     "id": "contact",
     "question": "How can you connect with Durga?",
-    "answer": "📧 **Email**: gairhedurga13@gmail.com\n📱 **Phone**: +977 9846724440\n🌍 **Location**: Kathmandu, Nepal\n💼 **GitHub**: https://github.com/dpgaire\n⏰ **Availability**: Open for freelance projects and full-time opportunities.\n🤝 **Consultation**: Free 30-min discovery calls available.\n\n**Follow Me:**\n- LinkedIn: https://linkedin.com/in/durga-gairhe]",
+    "answer": "📧 **Email**: gairhedurga13@gmail.com\n📱 **Phone**: +977 9846724440\n🌍 **Location**: Kathmandu, Nepal\n💼 **GitHub**: https://github.com/dpgaire\n⏰ **Availability**: Open for freelance projects and full-time opportunities.\n🤝 **Consultation**: Free 30-min discovery calls available.\n\n**Follow Me:**\n- LinkedIn: https://linkedin.com/in/durga-gairhe",
     "category": "contact",
     "tags": ["contact", "email", "phone", "github", "social"]
   },
@@ -75,8 +75,29 @@ const personData = [
     "answer": "👋 **Hello there!**\nI'm Durga — your go-to for full-stack solutions, mobile development, and AI-driven experiences.\nLet me know how I can help or ask about my availability!",
     "category": "greeting",
     "tags": ["hi", "hello", "hello hero", "durga", "greeting", "who","dpg","dp"]
+  },
+  {
+    "id": "ai-expertise",
+    "question": "What is Durga's expertise in AI and automation?",
+    "answer": "🤖 **AI Development**: Expert in building AI assistants with Python and Gemini API.\n⚡ **Automation Mastery**: Specializes in Python automation for file operations, web scraping, and email automation.\n🔧 **API Integration**: Experienced in integrating various APIs and services for enhanced functionality.\n📊 **Data Processing**: Skilled in data extraction, cleaning, and analysis using Python libraries.\n🚀 **Career Guidance**: Provides insights on starting careers in AI and staying updated with latest trends.",
+    "category": "skills",
+    "tags": ["ai", "automation", "python", "gemini", "apis", "data"]
+  },
+  {
+    "id": "blog-insights",
+    "question": "What insights does Durga share through his blog?",
+    "answer": "📝 **Technical Tutorials**: Step-by-step guides on building AI assistants, automation scripts, and modern web applications.\n💡 **Career Advice**: Comprehensive guides on starting careers in AI and becoming effective programmers.\n🔧 **Development Best Practices**: Insights on frontend trends, desktop app development with Electron, and productivity habits.\n🎯 **Practical Examples**: Real-world code examples and project implementations.\n📚 **Continuous Learning**: Regular updates on latest technologies and industry trends.",
+    "category": "knowledge",
+    "tags": ["blog", "tutorials", "career", "best-practices", "learning"]
+  },
+  {
+    "id": "python-automation",
+    "question": "How does Durga use Python for automation?",
+    "answer": "🔄 **File Operations**: Automated file management, renaming, organizing, and backup systems.\n🌐 **Web Scraping**: Data extraction from websites using BeautifulSoup and requests libraries.\n📧 **Email Automation**: Automated email communications and personalized messaging at scale.\n📊 **Data Processing**: Cleaning, transforming, and analyzing data with pandas and other libraries.\n⚙️ **Error Handling**: Robust automation with proper error handling and logging mechanisms.",
+    "category": "skills",
+    "tags": ["python", "automation", "file-operations", "web-scraping", "email", "data-processing"]
   }
 ];
 
-export {personData}
+export { personData };
 

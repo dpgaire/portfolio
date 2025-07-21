@@ -15,7 +15,13 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
+<!-- Blog Index -->
+  <url>
+    <loc>https://www.durgagairhe.com.np/projects</loc>
+    <lastmod>2025-06-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <!-- Blog Posts -->
   <url>
     <loc>https://www.durgagairhe.com.np/blog/how-to-build-your-own-ai-assistant-with-python-and-gemini-a-beginners-guide</loc>

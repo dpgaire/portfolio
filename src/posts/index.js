@@ -180,9 +180,36 @@ const blogPosts = [
       "developer",
     ],
     likes: 926,
-    featured: true,
+    featured: false,
     image: "https://source.unsplash.com/featured/?ai,technology",
   },
+ {
+  id: 1752076529,
+  slug: "create-github-repo-using-gh-cli-and-bash-script",
+  title: "Create GitHub Repository Using gh CLI and Bash Script",
+  excerpt:
+    "Managing GitHub repositories from the command line can save developers a lot of time. With GitHub's CLI tool (gh), you can automate repository creation, initialization, and pushing code with a single script.",
+  content: "In this guide, we’ll walk through automating the creation of a GitHub repository using the **gh CLI** and a **Bash script**. This is particularly useful when you frequently create new repositories and want to avoid repetitive manual steps.\n\n---\n\n### **Why Use `gh` CLI?**\nThe `gh` CLI is an official GitHub tool that allows developers to interact with GitHub directly from the command line. It supports tasks like creating repositories, managing pull requests, and more, without needing to open the GitHub website.\n\n---\n\n### **Step 1: Install `gh` CLI**\nTo get started, you need to have the GitHub CLI installed.\n\n**For Linux:**\n```bash\nsudo apt update\nsudo apt install gh -y\n```\n\n**For Fedora:**\n```bash\nsudo dnf install 'dnf-command(config-manager)' -y\nsudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo\nsudo dnf install gh -y\n```\n\n**For macOS (Homebrew):**\n```bash\nbrew install gh\n```\n\nAfter installation, authenticate with your GitHub account:\n```bash\ngh auth login\n```\nFollow the prompts to log in securely.\n\n---\n\n### **Step 2: Create the Bash Script**\nHere’s the script to automate GitHub repository creation and initialization:\n\n```bash\n#!/bin/bash\n\n# Exit on error\nset -e\n\n# Usage help\nusage() {\n    echo \"Usage: $0 -n <repo-name> [-d <description>] [-p (public|private)]\"\n    exit 1\n}\n\n# Default values\nDESCRIPTION=\"\"\nVISIBILITY=\"private\"\n\n# Parse flags\nwhile getopts \":n:d:p:\" opt; do\n  case $opt in\n    n) REPO_NAME=\"$OPTARG\"\n    ;;\n    d) DESCRIPTION=\"$OPTARG\"\n    ;;\n    p)\n      if [[ \"$OPTARG\" != \"public\" && \"$OPTARG\" != \"private\" ]]; then\n        echo \"Visibility must be either 'public' or 'private'\"\n        usage\n      fi\n      VISIBILITY=\"$OPTARG\"\n    ;;\n    \\?) echo \"Invalid option -$OPTARG\" >&2; usage\n    ;;\n    :) echo \"Option -$OPTARG requires an argument.\" >&2; usage\n    ;;\n  esac\ndone\n\nif [ -z \"$REPO_NAME\" ]; then\n    echo \"Repository name is required\"\n    usage\nfi\n\n# Create repo on GitHub using gh CLI\ngh repo create \"$REPO_NAME\" --$VISIBILITY --description \"$DESCRIPTION\" --confirm\n\n# Initialize local repo and push\ngit init\ngit add .\ngit commit -m \"Initial commit\"\ngit branch -M main\ngit remote add origin \"git@github.com:$(gh api user --jq '.login')/$REPO_NAME.git\"\ngit push -u origin main\n\necho \"✅ Repository '$REPO_NAME' created and pushed successfully!\"\n```\n\nSave this script as `create-repo.sh` and make it executable:\n```bash\nchmod +x create-repo.sh\n```\n\n---\n\n### **Step 3: How to Use the Script**\nRun the script with the following syntax:\n```bash\n./create-repo.sh -n my-new-repo -d \"My new awesome project\" -p public\n```\n\nOptions:\n- `-n` – **Repository name** (required)\n- `-d` – **Description** (optional)\n- `-p` – **Visibility** (public or private; default: private)\n\n---\n\n### **Step 4: Verify Your Repository**\nAfter execution, the script will:\n- Create a GitHub repository.\n- Initialize a local Git repository.\n- Make the initial commit.\n- Push the code to the `main` branch.\n\nYou can now visit your GitHub profile to see the new repository.\n\n---\n\n### **Conclusion**\nWith this script, you can automate GitHub repository creation, saving time and effort. By combining `gh` CLI with Bash scripting, you create a repeatable, efficient workflow for initializing new projects.\n\nWould you like me to create a **second version of this script** that also sets up a default README.md, `.gitignore`, and LICENSE file automatically?",
+  author: "Durga Gairhe",
+  date: "2025-07-09",
+  readTime: "11 min read",
+  category: "Automation & DevOps",
+  tags: [
+    "create",
+    "github",
+    "repo",
+    "using",
+    "gh",
+    "cli",
+    "and",
+    "bash",
+    "script"
+  ],
+  likes: 926,
+  featured: true,
+  image: "https://source.unsplash.com/featured/?bash,github"
+}
+
 ];
 
 export { blogPosts };

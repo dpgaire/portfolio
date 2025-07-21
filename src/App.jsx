@@ -6,6 +6,7 @@ import Layout from "./layout";
 import { HelmetProvider } from "react-helmet-async";
 import BlogPage from "./pages/BlogPage";
 import ScrollToTop from "./components/ui/ScrollToTop";
+import ProjectPage from "./pages/ProjectPage";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/blog/:id" element={<BlogDetails />} />
               <Route path="/blog" element={<BlogPage />} />
+              <Route path="/projects" element={<ProjectPage />} />
+
             </Routes>
           </Layout>
         </ThemeProvider>
