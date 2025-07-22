@@ -86,7 +86,7 @@ const Navigation = () => {
               onClick={()=>navigate('/')}
             >
               <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">DG</span>
+                <span onClick={()=>navigate('/')} className="text-white font-bold text-sm">DG</span>
               </div>
               <span className="text-xl font-bold gradient-text hidden sm:block">
                 Durga Gairhe
