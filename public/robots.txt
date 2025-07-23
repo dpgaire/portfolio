@@ -14,8 +14,6 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-# Crawl delay (optional - helps prevent server overload)
-Crawl-delay: 1
 
 # Sitemap location
 Sitemap: https://www.durgagairhe.com.np/sitemap.xml

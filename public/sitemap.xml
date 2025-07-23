@@ -10,9 +10,9 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://www.durgagairhe.com.np/images/durga.png</image:loc>
-      <image:title>Durga Gairhe - Full Stack Developer & System Architect</image:title>
-    </image:image>
+  <image:loc>https://www.durgagairhe.com.np/images/durga.png</image:loc>
+  <image:title>Durga Gairhe - Full Stack Developer &amp; System Architect</image:title>
+</image:image>
   </url>
 
   <!-- Blog Index -->
