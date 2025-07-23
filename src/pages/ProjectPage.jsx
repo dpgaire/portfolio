@@ -15,7 +15,7 @@ const ProjectPage = () => {
         <link rel="canonical" href="https://www.durgagairhe.com.np/projects" />
 
         {/* Open Graph for Social Media */}
-        <meta property="og:title" content="Durga Gairhe - Portfolio Projects & Developer Tools" />
+        <meta property="og:title" content="Portfolio Projects & Developer Tools" />
         <meta name="keywords" content="Durga Gairhe, projects, frontend developer, react, javascript, tools, ai, nepal, portfolio, tailwind, vite, openrouter, apis, productivity apps, developer projects" />
         <meta
           property="og:description"

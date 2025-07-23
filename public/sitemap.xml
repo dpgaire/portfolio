@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
   <!-- Homepage -->
   <url>
     <loc>https://www.durgagairhe.com.np/</loc>
     <lastmod>2025-06-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.durgagairhe.com.np/images/durga.png</image:loc>
+      <image:title>Durga Gairhe - Full Stack Developer & System Architect</image:title>
+    </image:image>
   </url>
-  
+
   <!-- Blog Index -->
   <url>
     <loc>https://www.durgagairhe.com.np/blog</loc>
@@ -15,13 +22,15 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-<!-- Blog Index -->
+
+  <!-- Projects Page -->
   <url>
     <loc>https://www.durgagairhe.com.np/projects</loc>
     <lastmod>2025-06-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <!-- Blog Posts -->
   <url>
     <loc>https://www.durgagairhe.com.np/blog/how-to-build-your-own-ai-assistant-with-python-and-gemini-a-beginners-guide</loc>
@@ -29,46 +38,54 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://www.durgagairhe.com.np/blog/how-to-start-a-career-in-ai-your-guide-to-a-future-proof-profession</loc>
     <lastmod>2025-07-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://www.durgagairhe.com.np/blog/mastering-automation-with-python-your-guide-to-effortless-efficiency</loc>
     <lastmod>2025-07-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://www.durgagairhe.com.np/blog/top-frontend-trends-in-2025-shaping-the-future-of-web-development</loc>
     <lastmod>2025-07-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://www.durgagairhe.com.np/blog/solo-developers-guide-to-building-desktop-apps-with-electron</loc>
     <lastmod>2025-07-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://www.durgagairhe.com.np/blog/7-daily-habits-of-highly-effective-programmers-level-up-your-coding-game</loc>
     <lastmod>2025-07-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://www.durgagairhe.com.np/blog/how-to-deploy-mistral-7b-instruct-as-an-api-with-ngrok-in-google-colab</loc>
     <lastmod>2025-07-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://www.durgagairhe.com.np/blog/how-to-train-your-mindset-for-consistent-growth-as-a-developer</loc>
     <lastmod>2025-07-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
 </urlset>
