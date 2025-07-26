@@ -4,10 +4,7 @@ import { useInView } from "react-intersection-observer";
 import {
   EyeIcon,
   CodeBracketIcon,
-  ArrowTopRightOnSquareIcon,
   XMarkIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -149,7 +146,7 @@ const Projects = () => {
         "Generate creative favicon designs from a single text prompt using AI. Supports light/dark themes and batch downloads.",
       longDescription:
         "AI Favicon Generator is a simple yet powerful web application that allows users to generate multiple favicon design concepts using a single text prompt. Built with React, Vite, and Tailwind CSS, it offers a clean and modern interface. Users can enter a description (e.g., 'a smiling robot head') and receive a grid of favicon variations generated via OpenRouter API. Features include support for multiple AI models, custom API key configuration, light and dark themes, and a convenient download-all button to export favicons as a ZIP file. Ideal for developers and designers looking to quickly ideate brand icons.",
-      image: "/images/fav-icon.png", // Replace with your actual image path
+      image: "/images/fav-icon.png",
       technologies: [
         "React",
         "Vite",
@@ -157,8 +154,44 @@ const Projects = () => {
         "OpenRouter API",
         "Lucide React",
       ],
-      liveUrl: "https://favicon-generator-blush.vercel.app/", // Replace with your actual live URL
-      githubUrl: "https://github.com/dpgaire/favicon-generator", // Replace with your actual GitHub URL
+      liveUrl: "https://favicon-generator-blush.vercel.app/",
+      githubUrl: "https://github.com/dpgaire/favicon-generator",
+      featured: false,
+      status: "Published",
+    },
+    {
+      id: 9,
+      title: "NudgeWheel – Spin to Decide & Beat Choice Paralysis",
+      category: "web",
+      description:
+        "Transform your daily micro-decisions into a fun, engaging experience. Let the wheel decide and eliminate choice paralysis!",
+      longDescription:
+        "NudgeWheel is a lightweight decision-making web app that helps users overcome choice paralysis by turning micro-decisions into a game-like experience. Built with React, Vite, and Tailwind CSS, it offers a fast and responsive UI. Users can input custom choices and spin the wheel to let chance decide. All data is stored in the browser using Local Storage, ensuring privacy and instant access. Ideal for productivity hacks, personal wellness, or just having fun with friends.",
+      image: "/images/nudgeWheel.png",
+      technologies: ["React", "Vite", "Tailwind CSS", "Local Storage"],
+      liveUrl: "https://nudge-wheel.vercel.app/",
+      githubUrl: "https://github.com/dpgaire/nudge-wheel",
+      featured: false,
+      status: "Published",
+    },
+    {
+      id: 9,
+      title: "AutoText – Smart Message Generator (No AI)",
+      category: "productivity",
+      description:
+        "Generate personalized messages based on relationship, emotion, and intent—without AI. Ideal for quick replies, emotional clarity, and polite communication.",
+      longDescription:
+        "AutoText is a lightweight and smart message generator that helps users craft emotionally intelligent and context-aware messages in seconds—no AI or backend required. Built with React, Vite, and Tailwind CSS, it uses a simple rule engine and JSON templates to provide tailored messages based on three core inputs: relationship (e.g., friend, boss), emotion (e.g., frustrated, grateful), and intent (e.g., ask a favor, say thanks). Users can copy, personalize, and save messages for later. The app supports tone adjustment, message length toggles, and offline usage, making it a handy everyday communication tool.",
+      image: "/images/auto-text-email.png",
+      technologies: [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "LocalStorage",
+        "Mustache.js (or custom templating)",
+      ],
+      liveUrl: "https://auto-text-email.vercel.app/",
+      githubUrl: "https://github.com/dpgaire/auto-text-email",
       featured: false,
       status: "Published",
     },

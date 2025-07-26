@@ -26,8 +26,8 @@ const Navigation = () => {
   const navItems = [
     { id: 'home', label: 'Home', icon: HomeIcon, href: '#home' },
     { id: 'about', label: 'About', icon: UserIcon, href: '#about' },
-    { id: 'projects', label: 'Projects', icon: CodeBracketIcon, href: '#projects' },
     { id: 'skills', label: 'Skills', icon: WrenchScrewdriverIcon, href: '#skills' },
+    { id: 'projects', label: 'Projects', icon: CodeBracketIcon, href: '#projects' },
     { id: 'blog', label: 'Blog', icon: DocumentTextIcon, href: '#blog' },
     { id: 'contact', label: 'Contact', icon: EnvelopeIcon, href: '#contact' },
   ];
