@@ -183,58 +183,61 @@ const blogPosts = [
     featured: false,
     image: "https://source.unsplash.com/featured/?ai,technology",
   },
- {
-  id: 1752076529,
-  slug: "create-github-repo-using-gh-cli-and-bash-script",
-  title: "Create GitHub Repository Using gh CLI and Bash Script",
-  excerpt:
-    "Managing GitHub repositories from the command line can save developers a lot of time. With GitHub's CLI tool (gh), you can automate repository creation, initialization, and pushing code with a single script.",
-  content: "In this guide, we’ll walk through automating the creation of a GitHub repository using the **gh CLI** and a **Bash script**. This is particularly useful when you frequently create new repositories and want to avoid repetitive manual steps.\n\n---\n\n### **Why Use `gh` CLI?**\nThe `gh` CLI is an official GitHub tool that allows developers to interact with GitHub directly from the command line. It supports tasks like creating repositories, managing pull requests, and more, without needing to open the GitHub website.\n\n---\n\n### **Step 1: Install `gh` CLI**\nTo get started, you need to have the GitHub CLI installed.\n\n**For Linux:**\n```bash\nsudo apt update\nsudo apt install gh -y\n```\n\n**For Fedora:**\n```bash\nsudo dnf install 'dnf-command(config-manager)' -y\nsudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo\nsudo dnf install gh -y\n```\n\n**For macOS (Homebrew):**\n```bash\nbrew install gh\n```\n\nAfter installation, authenticate with your GitHub account:\n```bash\ngh auth login\n```\nFollow the prompts to log in securely.\n\n---\n\n### **Step 2: Create the Bash Script**\nHere’s the script to automate GitHub repository creation and initialization:\n\n```bash\n#!/bin/bash\n\n# Exit on error\nset -e\n\n# Usage help\nusage() {\n    echo \"Usage: $0 -n <repo-name> [-d <description>] [-p (public|private)]\"\n    exit 1\n}\n\n# Default values\nDESCRIPTION=\"\"\nVISIBILITY=\"private\"\n\n# Parse flags\nwhile getopts \":n:d:p:\" opt; do\n  case $opt in\n    n) REPO_NAME=\"$OPTARG\"\n    ;;\n    d) DESCRIPTION=\"$OPTARG\"\n    ;;\n    p)\n      if [[ \"$OPTARG\" != \"public\" && \"$OPTARG\" != \"private\" ],
+  {
+    id: 1753627920,
+    title: "How Automation is Revolutionizing Business Efficiency and Growth",
+    slug: "how-automation-is-revolutionizing-business-efficiency-and-growth",
+    description: "",
+    excerpt:
+      "Are you feeling overwhelmed by repetitive tasks?  Do you dream of a business that runs smoother, faster, and more profitably?  The answer might lie in automatio",
+    content:
+      "# How Automation is Revolutionizing Business Efficiency and Growth\n\nAre you feeling overwhelmed by repetitive tasks?  Do you dream of a business that runs smoother, faster, and more profitably?  The answer might lie in automation.  How automation is revolutionizing business efficiency and growth is no longer a futuristic concept; it's a present-day reality transforming industries and empowering entrepreneurs. This post explores how you can harness the power of automation to boost your productivity and propel your business forward.\n\nBusinesses of all sizes face the challenge of balancing growth with operational efficiency.  Manual processes are time-consuming, prone to errors, and limit scalability.  But what if you could automate many of these tasks, freeing up valuable time and resources to focus on strategic initiatives? That's the promise of automation, and it's delivering on that promise in remarkable ways.  Understanding how automation is revolutionizing business efficiency and growth is crucial for staying competitive in today's fast-paced market.\n\n## Streamlining Operations with Automated Workflows\n\nAutomation isn't just about robots; it's about intelligent systems that optimize workflows. Think about the mundane tasks that bog down your day: data entry, email marketing, social media posting, invoice generation. These can all be automated using various tools and software.  For example, customer relationship management (CRM) systems automatically track customer interactions, freeing your sales team to focus on building relationships.  Marketing automation tools streamline email campaigns, personalize messaging, and analyze campaign performance, resulting in higher conversion rates.  By automating these repetitive tasks, you improve accuracy, reduce errors, and free your employees to focus on higher-value activities.  This is a key aspect of how automation is revolutionizing business efficiency and growth.\n\n## Enhancing Customer Experience Through Personalized Automation\n\nAutomation isn't just about internal efficiency; it drastically improves customer experience.  Imagine a system that instantly responds to customer inquiries, provides personalized recommendations, and proactively addresses potential issues.  This level of personalized service is achievable through automated chatbots, intelligent email responses, and targeted marketing campaigns.  For example, an e-commerce business can use automation to send personalized product recommendations based on past purchases or browsing history. This not only improves customer satisfaction but also increases sales conversions. Understanding how automation is revolutionizing business efficiency and growth in this context is crucial for building strong customer loyalty.\n\n## Data-Driven Decision Making Through Automated Analytics\n\nThe data generated by automated systems provides invaluable insights for strategic decision-making. Automated analytics tools collect, process, and interpret data from various sources, offering real-time performance dashboards and predictive analytics. This empowers businesses to identify trends, optimize strategies, and make informed choices. For instance, a retail business can use automated analytics to understand customer purchasing patterns, optimize inventory management, and personalize pricing strategies.  This data-driven approach is fundamental to how automation is revolutionizing business efficiency and growth, enabling businesses to adapt quickly and effectively to market changes.\n\n\n## Conclusion: Embracing the Automation Revolution\n\nUnderstanding how automation is revolutionizing business efficiency and growth is no longer a luxury; it's a necessity. By implementing automated workflows, enhancing customer experiences, and leveraging data-driven insights, businesses can significantly improve their efficiency, increase profitability, and gain a competitive edge. Don't be left behind \u2013 start exploring automation solutions today and unlock the full potential of your business.  The future of business is automated, and embracing this revolution is the key to sustainable growth and success.\n",
+    author: "Durga Gairhe",
+    date: "2025-07-27",
+    readTime: "12 min read",
+    category: "Mindset & Productivity",
+    tags: [
+      "how",
+      "automation",
+      "is",
+      "revolutionizing",
+      "business",
+      "efficiency",
+      "and",
+      "growth",
+    ],
+    likes: 526,
+    featured: false,
+    image: "https://source.unsplash.com/featured/?ai,technology",
+  }
+  
+,
 {
-  "id": 1753627920,
-  "title": "How Automation is Revolutionizing Business Efficiency and Growth",
-  "slug": "how-automation-is-revolutionizing-business-efficiency-and-growth",
+  "id": 1753628526,
+  "title": "Mastering Clean Code: Best Practices Every Software Engineer Should Know",
+  "slug": "mastering-clean-code:-best-practices-every-software-engineer-should-know",
   "description": "",
-  "excerpt": "Are you feeling overwhelmed by repetitive tasks?  Do you dream of a business that runs smoother, faster, and more profitably?  The answer might lie in automatio",
-  "content": "# How Automation is Revolutionizing Business Efficiency and Growth\n\nAre you feeling overwhelmed by repetitive tasks?  Do you dream of a business that runs smoother, faster, and more profitably?  The answer might lie in automation.  How automation is revolutionizing business efficiency and growth is no longer a futuristic concept; it's a present-day reality transforming industries and empowering entrepreneurs. This post explores how you can harness the power of automation to boost your productivity and propel your business forward.\n\nBusinesses of all sizes face the challenge of balancing growth with operational efficiency.  Manual processes are time-consuming, prone to errors, and limit scalability.  But what if you could automate many of these tasks, freeing up valuable time and resources to focus on strategic initiatives? That's the promise of automation, and it's delivering on that promise in remarkable ways.  Understanding how automation is revolutionizing business efficiency and growth is crucial for staying competitive in today's fast-paced market.\n\n## Streamlining Operations with Automated Workflows\n\nAutomation isn't just about robots; it's about intelligent systems that optimize workflows. Think about the mundane tasks that bog down your day: data entry, email marketing, social media posting, invoice generation. These can all be automated using various tools and software.  For example, customer relationship management (CRM) systems automatically track customer interactions, freeing your sales team to focus on building relationships.  Marketing automation tools streamline email campaigns, personalize messaging, and analyze campaign performance, resulting in higher conversion rates.  By automating these repetitive tasks, you improve accuracy, reduce errors, and free your employees to focus on higher-value activities.  This is a key aspect of how automation is revolutionizing business efficiency and growth.\n\n## Enhancing Customer Experience Through Personalized Automation\n\nAutomation isn't just about internal efficiency; it drastically improves customer experience.  Imagine a system that instantly responds to customer inquiries, provides personalized recommendations, and proactively addresses potential issues.  This level of personalized service is achievable through automated chatbots, intelligent email responses, and targeted marketing campaigns.  For example, an e-commerce business can use automation to send personalized product recommendations based on past purchases or browsing history. This not only improves customer satisfaction but also increases sales conversions. Understanding how automation is revolutionizing business efficiency and growth in this context is crucial for building strong customer loyalty.\n\n## Data-Driven Decision Making Through Automated Analytics\n\nThe data generated by automated systems provides invaluable insights for strategic decision-making. Automated analytics tools collect, process, and interpret data from various sources, offering real-time performance dashboards and predictive analytics. This empowers businesses to identify trends, optimize strategies, and make informed choices. For instance, a retail business can use automated analytics to understand customer purchasing patterns, optimize inventory management, and personalize pricing strategies.  This data-driven approach is fundamental to how automation is revolutionizing business efficiency and growth, enabling businesses to adapt quickly and effectively to market changes.\n\n\n## Conclusion: Embracing the Automation Revolution\n\nUnderstanding how automation is revolutionizing business efficiency and growth is no longer a luxury; it's a necessity. By implementing automated workflows, enhancing customer experiences, and leveraging data-driven insights, businesses can significantly improve their efficiency, increase profitability, and gain a competitive edge. Don't be left behind \u2013 start exploring automation solutions today and unlock the full potential of your business.  The future of business is automated, and embracing this revolution is the key to sustainable growth and success.\n",
+  "excerpt": "Software development isn't just about making code that works; it's about creating code that's readable, maintainable, and scalable.  Mastering clean code is cru",
+  "content": "# Mastering Clean Code: Best Practices Every Software Engineer Should Know\n\nSoftware development isn't just about making code that works; it's about creating code that's readable, maintainable, and scalable.  Mastering clean code is crucial for any software engineer, regardless of experience level.  This article dives into essential best practices to help you write cleaner, more efficient code, ultimately improving your workflow and the quality of your projects.  Learning to master clean code is an ongoing process, but with consistent effort, you'll reap significant rewards.\n\nClean code isn't merely about aesthetics; it's about reducing complexity and improving collaboration.  Imagine inheriting a project riddled with messy code\u2014a nightmare for anyone! By adhering to clean code principles, you ensure your projects remain understandable and manageable, even as they grow in size and complexity.  This directly impacts productivity, reduces debugging time, and promotes a more efficient development process. This guide on Mastering Clean Code: Best Practices Every Software Engineer Should Know will help you achieve this.\n\n\n## 1. Meaningful Naming and Consistent Formatting: The Foundation of Readability\n\nOne of the most fundamental aspects of clean code is using descriptive and consistent naming conventions.  Avoid abbreviations or cryptic names; choose names that clearly indicate the purpose of variables, functions, and classes.  For example, instead of `x`, use `customerName` or `orderTotal`.  This seemingly small detail significantly boosts readability and comprehension.\n\nConsistency in formatting is equally important.  Adhere to a style guide (like PEP 8 for Python) to ensure consistent indentation, spacing, and line lengths throughout your codebase. This allows others (and your future self) to easily navigate and understand your work.  Tools like linters can automatically enforce formatting rules, ensuring consistency across your projects.\n\n*   **Example (Good):** `calculateTotalOrderValue()`\n*   **Example (Bad):** `calcOrdVal()`\n\n\n## 2. Keep It DRY (Don't Repeat Yourself) and Embrace Modularity\n\nRedundant code is a major enemy of clean code.  The DRY principle emphasizes writing code once and reusing it effectively.  If you find yourself repeating the same logic in multiple places, extract it into a reusable function or class. This reduces the risk of errors and makes updates much simpler.  It also improves the overall readability and maintainability of your codebase.\n\nModularity is closely related. Break down complex tasks into smaller, self-contained modules.  This improves code organization, making it easier to test, debug, and maintain individual components.  Well-defined modules are often reusable across different parts of the application or even in other projects.\n\n\n## 3. Comments and Documentation:  Guiding Your Future Self (and Others)\n\nComments aren\u2019t a substitute for clear, well-written code, but they can be incredibly helpful in explaining complex logic or providing context.  Focus on explaining *why* the code does something, not *what* it does (the code itself should explain *what*).  Similarly, clear, concise documentation is vital for larger projects, helping others understand the architecture, usage, and functionality of your code.  Tools like JSDoc for JavaScript or Sphinx for Python can greatly assist in generating documentation from your code comments.\n\n*   **Good comment:**  `// This function calculates the total tax based on the customer's location and order value.  Different tax rates apply depending on the region.`\n*   **Bad comment:** `// This function adds the tax.` (The code should already make that clear)\n\n\n**Conclusion:** Mastering clean code is a journey, not a destination. By consistently applying these best practices\u2014meaningful naming, DRY principles, modularity, and effective commenting\u2014you will significantly improve the quality, maintainability, and scalability of your software projects.  Embrace these strategies in your daily coding practice and witness the positive impact on your productivity and the overall quality of your work.  Start implementing these clean code principles today and become a more efficient and effective software engineer. Mastering Clean Code: Best Practices Every Software Engineer Should Know is a vital skill for long-term success.\n",
   "author": "Durga Gairhe",
   "date": "2025-07-27",
-  "readTime": "12 min read",
-  "category": "Mindset & Productivity",
+  "readTime": "5 min read",
+  "category": "Web Development",
   "tags": [
-    "how",
-    "automation",
-    "is",
-    "revolutionizing",
-    "business",
-    "efficiency",
-    "and",
-    "growth"
+    "mastering",
+    "clean",
+    "code:",
+    "best",
+    "practices",
+    "every",
+    "software",
+    "engineer",
+    "should",
+    "know"
   ],
-  "likes": 526,
+  "likes": 491,
   "featured": false,
   "image": "https://source.unsplash.com/featured/?ai,technology"
-}]; then\n        echo \"Visibility must be either 'public' or 'private'\"\n        usage\n      fi\n      VISIBILITY=\"$OPTARG\"\n    ;;\n    \\?) echo \"Invalid option -$OPTARG\" >&2; usage\n    ;;\n    :) echo \"Option -$OPTARG requires an argument.\" >&2; usage\n    ;;\n  esac\ndone\n\nif [ -z \"$REPO_NAME\" ]; then\n    echo \"Repository name is required\"\n    usage\nfi\n\n# Create repo on GitHub using gh CLI\ngh repo create \"$REPO_NAME\" --$VISIBILITY --description \"$DESCRIPTION\" --confirm\n\n# Initialize local repo and push\ngit init\ngit add .\ngit commit -m \"Initial commit\"\ngit branch -M main\ngit remote add origin \"git@github.com:$(gh api user --jq '.login')/$REPO_NAME.git\"\ngit push -u origin main\n\necho \"✅ Repository '$REPO_NAME' created and pushed successfully!\"\n```\n\nSave this script as `create-repo.sh` and make it executable:\n```bash\nchmod +x create-repo.sh\n```\n\n---\n\n### **Step 3: How to Use the Script**\nRun the script with the following syntax:\n```bash\n./create-repo.sh -n my-new-repo -d \"My new awesome project\" -p public\n```\n\nOptions:\n- `-n` – **Repository name** (required)\n- `-d` – **Description** (optional)\n- `-p` – **Visibility** (public or private; default: private)\n\n---\n\n### **Step 4: Verify Your Repository**\nAfter execution, the script will:\n- Create a GitHub repository.\n- Initialize a local Git repository.\n- Make the initial commit.\n- Push the code to the `main` branch.\n\nYou can now visit your GitHub profile to see the new repository.\n\n---\n\n### **Conclusion**\nWith this script, you can automate GitHub repository creation, saving time and effort. By combining `gh` CLI with Bash scripting, you create a repeatable, efficient workflow for initializing new projects.\n\nWould you like me to create a **second version of this script** that also sets up a default README.md, `.gitignore`, and LICENSE file automatically?",
-  author: "Durga Gairhe",
-  date: "2025-07-09",
-  readTime: "11 min read",
-  category: "Automation & DevOps",
-  tags: [
-    "create",
-    "github",
-    "repo",
-    "using",
-    "gh",
-    "cli",
-    "and",
-    "bash",
-    "script"
-  ],
-  likes: 926,
-  featured: true,
-  image: "https://source.unsplash.com/featured/?bash,github"
-}
-
-];
+}];
 
 export { blogPosts };
