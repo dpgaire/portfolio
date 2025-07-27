@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const quickLinks = [
     { name: "Home", href: "#home" },
@@ -42,7 +42,7 @@ const Footer = () => {
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-     navigate(`/${href}`)
+    navigate(`/${href}`);
   };
 
   return (
@@ -190,13 +190,13 @@ const Footer = () => {
                 className="flex space-x-4"
               >
                 <button
-                  onClick={() => handleNavClick("#home")}
+                  onClick={() => navigate("/privacy-policy")}
                   className="hover:text-primary-500 dark:hover:text-white transition-colors duration-200"
                 >
                   Privacy Policy
                 </button>
                 <button
-                  onClick={() => handleNavClick("#home")}
+                  onClick={() => navigate("/terms-of-service")}
                   className="hover:text-primary-500 dark:hover:text-white transition-colors duration-200"
                 >
                   Terms of Service
@@ -206,20 +206,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
-      {/* Optional Scroll To Top */}
-      {/* <motion.button
-        onClick={scrollToTop}
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
-        viewport={{ once: true }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-4 right-4 w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
-      >
-        <ArrowUpIcon className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
-      </motion.button> */}
     </footer>
   );
 };

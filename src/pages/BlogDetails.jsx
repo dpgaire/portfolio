@@ -281,7 +281,7 @@ const BlogDetails = () => {
               Back to Blog
             </motion.button>
 
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-6xl mx-auto">
               {/* Category */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -341,7 +341,7 @@ const BlogDetails = () => {
 
         {/* Content */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="max-w-3xl sm:max-w-4xl mx-auto">
+          <div className="max-w-3xl sm:max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12">
               {/* Main Content */}
               <div className="lg:col-span-3">

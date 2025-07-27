@@ -10,6 +10,8 @@ import ScrollToTop from "./components/ui/ScrollToTop";
 import ProjectPage from "./pages/ProjectPage";
 import InstallPWAButton from "./components/InstallPWAButton";
 import SplashScreen from "./components/SplashScreen";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   return (
@@ -25,6 +27,9 @@ function App() {
               <Route path="/blog/:id" element={<BlogDetails />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/projects" element={<ProjectPage />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+
             </Routes>
           </Layout>
         </ThemeProvider>
