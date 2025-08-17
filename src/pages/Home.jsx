@@ -4,6 +4,7 @@ import Projects from "../components/Projects";
 import Skills from "../components/Skills";
 import Blog from "../components/Blog";
 import Contact from "../components/Contact";
+import Courses from "../components/Courses";
 import { Helmet } from "react-helmet-async";
 
 const Home = () => {
@@ -61,6 +62,9 @@ const Home = () => {
         </section>
         <section id="blog">
           <Blog />
+        </section>
+        <section id="courses">
+          <Courses />
         </section>
         <section id="contact">
           <Contact />

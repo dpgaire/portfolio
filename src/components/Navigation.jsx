@@ -11,7 +11,8 @@ import {
   CodeBracketIcon,
   WrenchScrewdriverIcon,
   DocumentTextIcon,
-  EnvelopeIcon
+  EnvelopeIcon,
+  BookOpenIcon
 } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,6 +30,7 @@ const Navigation = () => {
     { id: 'skills', label: 'Skills', icon: WrenchScrewdriverIcon, href: '#skills' },
     { id: 'projects', label: 'Projects', icon: CodeBracketIcon, href: '#projects' },
     { id: 'blog', label: 'Blog', icon: DocumentTextIcon, href: '#blog' },
+    { id: 'courses', label: 'Courses', icon: BookOpenIcon, href: '#courses' },
     { id: 'contact', label: 'Contact', icon: EnvelopeIcon, href: '#contact' },
   ];
 
