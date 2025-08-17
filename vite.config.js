@@ -12,7 +12,7 @@ export default defineConfig({
       manifest: {
         name: 'DurGairhe',
         short_name: 'DG',
-        description: 'Senior Frontend Developer',
+        description: 'Software Engineer',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',

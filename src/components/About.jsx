@@ -144,7 +144,7 @@ const About = () => {
             {/* Main Description */}
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Senior Frontend Developer with{' '}
+                Software Engineer with{' '}
                 <span className="gradient-text">5+ years</span> of experience
               </h3>
               

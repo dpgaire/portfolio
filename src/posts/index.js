@@ -209,35 +209,179 @@ const blogPosts = [
     likes: 526,
     featured: false,
     image: "https://source.unsplash.com/featured/?ai,technology",
-  }
-  
-,
-{
-  "id": 1753628526,
-  "title": "Mastering Clean Code: Best Practices Every Software Engineer Should Know",
-  "slug": "mastering-clean-code:-best-practices-every-software-engineer-should-know",
-  "description": "",
-  "excerpt": "Software development isn't just about making code that works; it's about creating code that's readable, maintainable, and scalable.  Mastering clean code is cru",
-  "content": "# Mastering Clean Code: Best Practices Every Software Engineer Should Know\n\nSoftware development isn't just about making code that works; it's about creating code that's readable, maintainable, and scalable.  Mastering clean code is crucial for any software engineer, regardless of experience level.  This article dives into essential best practices to help you write cleaner, more efficient code, ultimately improving your workflow and the quality of your projects.  Learning to master clean code is an ongoing process, but with consistent effort, you'll reap significant rewards.\n\nClean code isn't merely about aesthetics; it's about reducing complexity and improving collaboration.  Imagine inheriting a project riddled with messy code\u2014a nightmare for anyone! By adhering to clean code principles, you ensure your projects remain understandable and manageable, even as they grow in size and complexity.  This directly impacts productivity, reduces debugging time, and promotes a more efficient development process. This guide on Mastering Clean Code: Best Practices Every Software Engineer Should Know will help you achieve this.\n\n\n## 1. Meaningful Naming and Consistent Formatting: The Foundation of Readability\n\nOne of the most fundamental aspects of clean code is using descriptive and consistent naming conventions.  Avoid abbreviations or cryptic names; choose names that clearly indicate the purpose of variables, functions, and classes.  For example, instead of `x`, use `customerName` or `orderTotal`.  This seemingly small detail significantly boosts readability and comprehension.\n\nConsistency in formatting is equally important.  Adhere to a style guide (like PEP 8 for Python) to ensure consistent indentation, spacing, and line lengths throughout your codebase. This allows others (and your future self) to easily navigate and understand your work.  Tools like linters can automatically enforce formatting rules, ensuring consistency across your projects.\n\n*   **Example (Good):** `calculateTotalOrderValue()`\n*   **Example (Bad):** `calcOrdVal()`\n\n\n## 2. Keep It DRY (Don't Repeat Yourself) and Embrace Modularity\n\nRedundant code is a major enemy of clean code.  The DRY principle emphasizes writing code once and reusing it effectively.  If you find yourself repeating the same logic in multiple places, extract it into a reusable function or class. This reduces the risk of errors and makes updates much simpler.  It also improves the overall readability and maintainability of your codebase.\n\nModularity is closely related. Break down complex tasks into smaller, self-contained modules.  This improves code organization, making it easier to test, debug, and maintain individual components.  Well-defined modules are often reusable across different parts of the application or even in other projects.\n\n\n## 3. Comments and Documentation:  Guiding Your Future Self (and Others)\n\nComments aren\u2019t a substitute for clear, well-written code, but they can be incredibly helpful in explaining complex logic or providing context.  Focus on explaining *why* the code does something, not *what* it does (the code itself should explain *what*).  Similarly, clear, concise documentation is vital for larger projects, helping others understand the architecture, usage, and functionality of your code.  Tools like JSDoc for JavaScript or Sphinx for Python can greatly assist in generating documentation from your code comments.\n\n*   **Good comment:**  `// This function calculates the total tax based on the customer's location and order value.  Different tax rates apply depending on the region.`\n*   **Bad comment:** `// This function adds the tax.` (The code should already make that clear)\n\n\n**Conclusion:** Mastering clean code is a journey, not a destination. By consistently applying these best practices\u2014meaningful naming, DRY principles, modularity, and effective commenting\u2014you will significantly improve the quality, maintainability, and scalability of your software projects.  Embrace these strategies in your daily coding practice and witness the positive impact on your productivity and the overall quality of your work.  Start implementing these clean code principles today and become a more efficient and effective software engineer. Mastering Clean Code: Best Practices Every Software Engineer Should Know is a vital skill for long-term success.\n",
-  "author": "Durga Gairhe",
-  "date": "2025-07-27",
-  "readTime": "5 min read",
-  "category": "Web Development",
-  "tags": [
-    "mastering",
-    "clean",
-    "code:",
-    "best",
-    "practices",
-    "every",
-    "software",
-    "engineer",
-    "should",
-    "know"
-  ],
-  "likes": 491,
-  "featured": false,
-  "image": "https://source.unsplash.com/featured/?ai,technology"
-}];
+  },
+
+  {
+    id: 1753628526,
+    title:
+      "Mastering Clean Code: Best Practices Every Software Engineer Should Know",
+    slug: "mastering-clean-code:-best-practices-every-software-engineer-should-know",
+    description: "",
+    excerpt:
+      "Software development isn't just about making code that works; it's about creating code that's readable, maintainable, and scalable.",
+    content:
+      "# Mastering clean code is crucial for any software engineer, regardless of experience level.  This article dives into essential best practices to help you write cleaner, more efficient code, ultimately improving your workflow and the quality of your projects.  Learning to master clean code is an ongoing process, but with consistent effort, you'll reap significant rewards.\n\nClean code isn't merely about aesthetics; it's about reducing complexity and improving collaboration.  Imagine inheriting a project riddled with messy code\u2014a nightmare for anyone! By adhering to clean code principles, you ensure your projects remain understandable and manageable, even as they grow in size and complexity.  This directly impacts productivity, reduces debugging time, and promotes a more efficient development process. This guide on Mastering Clean Code: Best Practices Every Software Engineer Should Know will help you achieve this.\n\n\n## 1. Meaningful Naming and Consistent Formatting: The Foundation of Readability\n\nOne of the most fundamental aspects of clean code is using descriptive and consistent naming conventions.  Avoid abbreviations or cryptic names; choose names that clearly indicate the purpose of variables, functions, and classes.  For example, instead of `x`, use `customerName` or `orderTotal`.  This seemingly small detail significantly boosts readability and comprehension.\n\nConsistency in formatting is equally important.  Adhere to a style guide (like PEP 8 for Python) to ensure consistent indentation, spacing, and line lengths throughout your codebase. This allows others (and your future self) to easily navigate and understand your work.  Tools like linters can automatically enforce formatting rules, ensuring consistency across your projects.\n\n*   **Example (Good):** `calculateTotalOrderValue()`\n*   **Example (Bad):** `calcOrdVal()`\n\n\n## 2. Keep It DRY (Don't Repeat Yourself) and Embrace Modularity\n\nRedundant code is a major enemy of clean code.  The DRY principle emphasizes writing code once and reusing it effectively.  If you find yourself repeating the same logic in multiple places, extract it into a reusable function or class. This reduces the risk of errors and makes updates much simpler.  It also improves the overall readability and maintainability of your codebase.\n\nModularity is closely related. Break down complex tasks into smaller, self-contained modules.  This improves code organization, making it easier to test, debug, and maintain individual components.  Well-defined modules are often reusable across different parts of the application or even in other projects.\n\n\n## 3. Comments and Documentation:  Guiding Your Future Self (and Others)\n\nComments aren\u2019t a substitute for clear, well-written code, but they can be incredibly helpful in explaining complex logic or providing context.  Focus on explaining *why* the code does something, not *what* it does (the code itself should explain *what*).  Similarly, clear, concise documentation is vital for larger projects, helping others understand the architecture, usage, and functionality of your code.  Tools like JSDoc for JavaScript or Sphinx for Python can greatly assist in generating documentation from your code comments.\n\n*   **Good comment:**  `// This function calculates the total tax based on the customer's location and order value.  Different tax rates apply depending on the region.`\n*   **Bad comment:** `// This function adds the tax.` (The code should already make that clear)\n\n\n**Conclusion:** Mastering clean code is a journey, not a destination. By consistently applying these best practices\u2014meaningful naming, DRY principles, modularity, and effective commenting\u2014you will significantly improve the quality, maintainability, and scalability of your software projects.  Embrace these strategies in your daily coding practice and witness the positive impact on your productivity and the overall quality of your work.  Start implementing these clean code principles today and become a more efficient and effective software engineer. Mastering Clean Code: Best Practices Every Software Engineer Should Know is a vital skill for long-term success.\n",
+    author: "Durga Gairhe",
+    date: "2025-07-27",
+    readTime: "5 min read",
+    category: "Web Development",
+    tags: [
+      "mastering",
+      "clean",
+      "code:",
+      "best",
+      "practices",
+      "every",
+      "software",
+      "engineer",
+      "should",
+      "know",
+    ],
+    likes: 491,
+    featured: false,
+    image: "https://source.unsplash.com/featured/?ai,technology",
+  },
+  {
+    id: 1753628527,
+    title: "How HTML and CSS Work Behind the Scenes: A Developer's Guide",
+    slug: "how-html-and-css-work-behind-the-scenes-a-developers-guide",
+    description:
+      "Ever wondered what happens when you load a webpage? Dive deep into the fascinating process of how browsers transform HTML and CSS code into the interactive websites you see every day.",
+    excerpt:
+      "When you type a website address into your browser and hit Enter, a lot more happens than just the page magically appearing. Your browser goes through a series of steps to transform raw code into interactive web pages.",
+    content:
+      "## How Browsers Render HTML and CSS: A Behind-the-Scenes Look\n\nWhen you type a website address into your browser and hit Enter, a lot more happens than just the page magically appearing. Your browser, a sophisticated piece of software, goes through a series of steps to transform raw code into the interactive web pages you see. This process involves HTML and CSS working together in a fascinating dance.\n\n### The Browser Engine: The Brains Behind the Operation\n\nEvery major web browser (like Chrome, Firefox, Safari, Edge) has a core component called a **browser engine**. This engine is responsible for interpreting the web code and displaying it on your screen. Different browsers use different engines (e.g., Chrome uses Blink, Firefox uses Gecko), but their fundamental job is the same: to render web content.\n\n### From Raw Bytes to the DOM: Understanding HTML\n\nWhen your browser receives an HTML file (either from a web server or your local disk), it doesn't immediately understand the characters you've written. Instead, it receives raw bytes of data. The first crucial step is converting these raw bytes into something meaningful:\n\n1. **Bytes to Characters:** The browser converts the raw bytes into actual characters based on the character encoding of the HTML file.\n2. **Characters to Tokens:** These characters are then parsed into tokens. Think of tokens as small, meaningful units of the HTML code, like `<p>`, `<div>`, or `<h1>`.\n3. **Tokens to Nodes:** These tokens are then converted into 'nodes'. Each node represents a distinct element or piece of content in the HTML document.\n4. **Nodes to DOM (Document Object Model):** Finally, these nodes are linked together in a tree-like structure called the DOM. The DOM represents the logical structure of the HTML document, showing the parent-child relationships and sibling relationships between all the elements. This tree structure is what the browser truly works with to understand the page's layout and content.\n\n![HTML Parsing Process](html_parsing.png)\n\n### Fetching and Processing CSS: Building the CSSOM\n\nWhile the browser is busy constructing the DOM from the HTML, it also encounters `<link>` tags that point to CSS files. Just like with HTML, the browser fetches these CSS files as raw bytes and goes through a similar process:\n\n1. **Bytes to Characters, Characters to Tokens, Tokens to Nodes:** The raw CSS bytes are converted into characters, then tokenized, and finally transformed into nodes, much like HTML.\n2. **Nodes to CSSOM (CSS Object Model):** These CSS nodes are then organized into another tree-like structure called the CSSOM. The CSSOM contains all the styling information for the elements on the page, including how styles are inherited and how conflicts between different CSS rules are resolved (this is where the 'cascade' in CSS comes in).\n\n![CSS Parsing Process](css_parsing.png)\n\n### The Render Tree: Combining HTML and CSS\n\nAt this point, the browser has two independent trees: the DOM (representing the structure of the HTML) and the CSSOM (representing the styles). To actually display something on the screen, the browser needs to combine these two:\n\n1. **Building the Render Tree:** The browser combines the DOM and CSSOM into a new tree called the **render tree**. This tree only includes elements that will be visible on the page (e.g., `<head>` and `display: none` elements are excluded). Each node in the render tree contains both the layout information (from the DOM) and the style information (from the CSSOM).\n\n![Render Tree Construction](render_tree.png)\n\n### Layout (Reflow) and Painting\n\nOnce the render tree is built, the browser proceeds with two more crucial steps:\n\n1. **Layout (Reflow):** The browser calculates the exact position and size of each object in the render tree. This process is also known as 'reflow' because if an element's size or position changes, it can cause other elements to adjust and be re-rendered. This is a performance-intensive process, so developers try to minimize reflows.\n2. **Painting:** After layout, the browser paints the individual pixels on the screen. This involves drawing everything from text and colors to images and borders. The browser essentially converts the render tree into actual pixels that you can see.\n\n![Layout and Painting Process](layout_painting.png)\n\n### Compositing: Bringing It All Together\n\nFinally, the browser combines all the painted layers into a single image on your screen. This process is called **compositing**. Modern browsers often use hardware acceleration for compositing, making it a very efficient process.\n\n## Putting It All Together: The Steps\n\nHere's a simplified breakdown of how your browser renders a web page:\n\n1. **Loading:** The browser fetches the HTML file and any linked CSS files.\n2. **Parsing HTML & Building DOM:** The HTML is parsed, and the Document Object Model (DOM) tree is built.\n3. **Parsing CSS & Building CSSOM:** The CSS is parsed, and the CSS Object Model (CSSOM) tree is built.\n4. **Building Render Tree:** The DOM and CSSOM are combined to create the Render Tree, which contains both the structure and style of the visible elements.\n5. **Layout (Reflow):** The browser calculates the precise position and size of each element in the Render Tree.\n6. **Painting:** The browser draws the pixels for each element onto the screen.\n7. **Compositing:** All the painted layers are combined to display the final web page.\n\n## Why Does This Matter?\n\nUnderstanding this behind-the-scenes process is crucial for web developers. It helps you:\n\n- **Optimize Performance:** By understanding how reflows and repaints work, you can write more efficient CSS and JavaScript that minimizes these performance-intensive operations.\n- **Debug Layout Issues:** Knowing how the DOM and CSSOM interact can help you pinpoint why your styles aren't applying as expected.\n- **Write Better Code:** A deeper understanding of the browser's rendering pipeline leads to more thoughtful and performant code.\n\nSo, the next time you visit a website, take a moment to appreciate the intricate dance of HTML and CSS happening behind the scenes to bring it to life!",
+    author: "Durga Gairhe",
+    date: "2025-08-17",
+    readTime: "8 min read",
+    category: "Web Development",
+    tags: [
+      "html",
+      "css",
+      "browser",
+      "rendering",
+      "dom",
+      "cssom",
+      "web",
+      "development",
+      "performance",
+      "behind",
+      "the",
+      "scenes",
+    ],
+    likes: 10,
+    featured: true,
+    image: "https://source.unsplash.com/featured/?web,development,code",
+  },
+  {
+    id: 1753628527,
+    title: "How JavaScript Works Behind the Scenes: A Peek Under the Hood",
+    slug: "how-javascript-works-behind-the-scenes-a-peek-under-the-hood",
+    description:
+      "Ever wondered what magic happens when you click a button on a website? Dive into the core of JavaScript and explore the key components that make your code run!",
+    excerpt:
+      "Understanding how JavaScript operates can feel like trying to decipher a secret code. In this blog post, we'll take a fun and easy-to-understand journey into the core of JavaScript, exploring the JavaScript engine, call stack, event loop, and memory heap.",
+    content: `# How JavaScript Works Behind the Scenes: A Peek Under the Hood
+
+Ever wondered what magic happens when you click a button on a website or see dynamic content appear on your screen? Chances are, JavaScript is working its wonders behind the scenes! While many of us use JavaScript daily to build interactive web experiences, understanding how it actually operates can feel a bit like trying to decipher a secret code. But don't worry, it's not as complicated as it seems!
+
+In this blog post, we're going to take a fun and easy-to-understand journey into the core of JavaScript. We'll explore the key components that make your code run, from the moment you write it to when it finally executes. Get ready to demystify the JavaScript engine, the call stack, the event loop, and the memory heap. By the end of this, you'll have a much clearer picture of what's really going on when your JavaScript code comes to life!
+
+Let's dive in!
+
+## The JavaScript Engine: The Heart of the Operation
+
+At the very core of how JavaScript works is something called the **JavaScript Engine**. Think of it as the brain that reads, understands, and executes your JavaScript code. Every major web browser (like Chrome, Firefox, and Edge) has its own JavaScript engine. For example, Google Chrome uses the V8 engine, which is also what powers Node.js (meaning JavaScript can run outside of a browser too!).
+
+So, what does this engine actually do? It takes your human-readable JavaScript code and translates it into something the computer can understand and execute. This process involves a few key steps:
+
+1.  **Parsing:** When your code first enters the engine, it's parsed. This means the engine breaks down your code into a data structure called an Abstract Syntax Tree (AST). It's like checking your grammar and making sure everything is in the right place.
+2.  **Compilation:** After parsing, the engine compiles the AST into machine code. Modern JavaScript engines use a technique called Just-In-Time (JIT) compilation, which is a mix of interpretation and compilation. It compiles the code while it's running, making it super fast.
+3.  **Execution:** Finally, the machine code is executed. This is where the magic happens, and your code actually does what you told it to do!
+
+Here's a simplified visual of how the JavaScript Engine works:
+
+![JavaScript Engine Diagram](javascript_engine.png)
+
+Inside every JavaScript engine, there are two crucial components that we'll explore next: the Call Stack and the Memory Heap. These two work hand-in-hand to manage your code's execution and data storage.
+
+## The Call Stack: Keeping Track of Your Code
+
+Imagine you're following a recipe. You start with the main steps, but then one step tells you to make a sauce, and that sauce recipe tells you to chop onions. You need to finish chopping onions before you can finish the sauce, and you need to finish the sauce before you can finish the main dish. The **Call Stack** in JavaScript works in a very similar way.
+
+The Call Stack is a data structure that keeps track of all the functions that are currently being executed. When a function is called, it's added (or "pushed") onto the top of the stack. When a function finishes executing, it's removed (or "popped") from the top of the stack. JavaScript is single-threaded, meaning it can only do one thing at a time. The Call Stack ensures that functions are executed in the correct order, one after another.
+
+If you call a function that calls another function, and so on, each function call gets added to the stack. The function at the very top of the stack is the one currently being executed. Once it's done, it's removed, and the JavaScript engine moves on to the function below it.
+
+Here's a visual representation of how the Call Stack operates:
+
+![JavaScript Call Stack Diagram](javascript_call_stack.png)
+
+If the Call Stack gets too full (meaning too many functions are nested and waiting to execute), you might encounter a "Stack Overflow" error. This usually happens with infinite recursion, where a function keeps calling itself without a proper exit condition.
+
+## The Event Loop: Handling Asynchronous Magic
+
+JavaScript is single-threaded, which means it can only execute one piece of code at a time. So, how does it handle things like fetching data from a server, setting timers, or responding to user clicks without freezing the entire browser? This is where the **Event Loop** comes into play – it's the unsung hero of asynchronous JavaScript!
+
+The Event Loop is a continuously running process that checks if the Call Stack is empty. If the Call Stack is empty, it looks into a place called the **Callback Queue** (also known as the Message Queue or Task Queue). The Callback Queue holds all the functions that are ready to be executed after an asynchronous operation (like a \`setTimeout\` or a network request) has completed.
+
+Here's how it generally works:
+
+1.  When an asynchronous operation (like \`setTimeout\`, \`fetch\`, or a DOM event listener) is encountered, it's sent to a **Web API** (if in a browser environment) or a similar environment-specific API (like in Node.js).
+2.  The Web API handles the operation in the background. Once the operation is complete, its associated callback function is moved to the Callback Queue.
+3.  The Event Loop constantly monitors two things: the Call Stack and the Callback Queue. If the Call Stack is empty, the Event Loop takes the first function from the Callback Queue and pushes it onto the Call Stack for execution.
+
+This mechanism allows JavaScript to perform non-blocking operations, making it highly efficient for web applications. It ensures that long-running tasks don't block the main thread, keeping your user interface responsive.
+
+Check out this diagram to visualize the Event Loop in action:
+
+![JavaScript Event Loop Diagram](javascript_event_loop.png)
+
+Without the Event Loop, JavaScript would be a very different, and much less powerful, language!
+
+## The Memory Heap: Where Your Data Lives
+
+While the Call Stack handles the execution flow of your code, the **Memory Heap** is where all your JavaScript objects and data are actually stored. Think of it as a large, unstructured region of memory where JavaScript allocates space for things like variables, objects, arrays, and functions.
+
+When you declare a variable and assign it a value, or create an object, that data needs a place to live in your computer's memory. The Memory Heap is that place. Unlike the Call Stack, which is very organized and operates in a Last-In, First-Out (LIFO) manner, the Memory Heap is more dynamic and less structured. Data can be allocated and deallocated in any order.
+
+JavaScript has an automatic memory management system that includes a **Garbage Collector**. This Garbage Collector periodically scans the Memory Heap to identify data that is no longer being used or referenced by your program. Once identified, this "garbage" data is automatically removed from the heap, freeing up memory for new data. This prevents memory leaks and helps keep your applications running smoothly.
+
+Here's a simple illustration of the Memory Heap:
+
+![JavaScript Memory Heap Diagram](javascript_memory_heap.png)
+
+Understanding the Memory Heap helps you grasp how JavaScript manages the data your programs use, and how it keeps things tidy behind the scenes.
+
+## Conclusion: The Invisible Orchestra of JavaScript
+
+So there you have it! We've taken a journey behind the curtain to see how JavaScript, the language that powers so much of the web, actually works. From the JavaScript Engine tirelessly translating your code, to the Call Stack meticulously managing execution order, the Event Loop gracefully handling asynchronous tasks, and the Memory Heap diligently storing your data – it's like a well-coordinated orchestra playing in the background.
+
+Understanding these fundamental concepts not only satisfies your curiosity but also empowers you to write more efficient, performant, and bug-free JavaScript code. When you know how the pieces fit together, you can better anticipate how your code will behave and debug issues more effectively.
+
+Next time you see a dynamic web page, remember the invisible magic of the JavaScript engine and its components working in harmony. Happy coding!`,
+    author: "Durga Gairhe",
+    date: "2025-08-17",
+    readTime: "8 min read",
+    category: "Web Development",
+    tags: [
+      "javascript",
+      "engine",
+      "call",
+      "stack",
+      "event",
+      "loop",
+      "memory",
+      "heap",
+      "behind",
+      "scenes",
+      "web",
+      "development",
+    ],
+    likes: 0,
+    featured: false,
+    image: "https://source.unsplash.com/featured/?javascript,programming",
+  },
+];
 
 export { blogPosts };
