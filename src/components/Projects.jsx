@@ -175,7 +175,7 @@ const Projects = () => {
       status: "Published",
     },
     {
-      id: 9,
+      id: 10,
       title: "AutoText – Smart Message Generator (No AI)",
       category: "productivity",
       description:
@@ -196,7 +196,7 @@ const Projects = () => {
       status: "Published",
     },
     {
-  id: 10,
+  id: 11,
   title: "Explainify – Multi-Level Text Explanation App",
   category: "web",
   description:
