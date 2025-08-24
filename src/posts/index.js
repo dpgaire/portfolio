@@ -274,7 +274,7 @@ const blogPosts = [
     image: "https://source.unsplash.com/featured/?web,development,code",
   },
   {
-    id: 1753628527,
+    id: 17536828527,
     title: "How JavaScript Works Behind the Scenes: A Peek Under the Hood",
     slug: "how-javascript-works-behind-the-scenes-a-peek-under-the-hood",
     description:

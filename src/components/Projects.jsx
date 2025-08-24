@@ -196,29 +196,28 @@ const Projects = () => {
       status: "Published",
     },
     {
-  id: 11,
-  title: "Explainify – Multi-Level Text Explanation App",
-  category: "web",
-  description:
-    "A premium web app that explains complex text at 4 levels (Kid, Beginner, Student, Pro) with a stunning glassmorphism UI, themes, and smooth animations.",
-  longDescription:
-    "Explainify is a modern React-based web application that simplifies complex content by breaking it down into four levels of explanations: Kid (fun and simple analogies), Beginner (easy to understand), Student (academic level), and Pro (technical detail). It supports multiple AI providers including OpenRouter, OpenAI, Claude, and Gemini. With its glassmorphism design, smooth animations, and dark/light themes, Explainify offers an elegant and responsive user experience. Settings, API keys, and preferences are securely stored in localStorage, ensuring privacy with no data sent to external servers. Ideal for students, professionals, and anyone who wants to understand difficult text in a tailored way.",
-  image: "/images/explainify.png",
-  technologies: [
-    "React 19",
-    "Vite",
-    "Tailwind CSS",
-    "Framer Motion",
-    "shadcn/ui",
-    "next-themes",
-    "Lucide React"
-  ],
-  liveUrl: "https://explainify-eta.vercel.app/", // Replace with your deployed URL
-  githubUrl: "https://github.com/dpgaire/explainify", // Replace with actual repo URL
-  featured: false,
-  status: "Published"
-}
-
+      id: 11,
+      title: "Explainify – Multi-Level Text Explanation App",
+      category: "web",
+      description:
+        "A premium web app that explains complex text at 4 levels (Kid, Beginner, Student, Pro) with a stunning glassmorphism UI, themes, and smooth animations.",
+      longDescription:
+        "Explainify is a modern React-based web application that simplifies complex content by breaking it down into four levels of explanations: Kid (fun and simple analogies), Beginner (easy to understand), Student (academic level), and Pro (technical detail). It supports multiple AI providers including OpenRouter, OpenAI, Claude, and Gemini. With its glassmorphism design, smooth animations, and dark/light themes, Explainify offers an elegant and responsive user experience. Settings, API keys, and preferences are securely stored in localStorage, ensuring privacy with no data sent to external servers. Ideal for students, professionals, and anyone who wants to understand difficult text in a tailored way.",
+      image: "/images/explainify.png",
+      technologies: [
+        "React 19",
+        "Vite",
+        "Tailwind CSS",
+        "Framer Motion",
+        "shadcn/ui",
+        "next-themes",
+        "Lucide React",
+      ],
+      liveUrl: "https://explainify-eta.vercel.app/", // Replace with your deployed URL
+      githubUrl: "https://github.com/dpgaire/explainify", // Replace with actual repo URL
+      featured: false,
+      status: "Published",
+    },
   ];
 
   const categories = [
