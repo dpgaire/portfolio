@@ -36,10 +36,6 @@ const Footer = () => {
     },
   ];
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const handleNavClick = (href) => {
     const element = document.querySelector(href);
     if (element) {
