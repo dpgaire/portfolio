@@ -25,11 +25,12 @@ import {
   ChevronDown,
   ChevronUp,
   Settings,
+  Maximize2,
+  Minimize2,
+  CornerDownRight,
 } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { personData } from "../assets/personal_data";
-
-// Integrated person data directly in the component
 
 const smartSuggestions = [
   {
@@ -73,6 +74,7 @@ const quickStarters = [
 
 const PremiumChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef(null);
   const [messages, setMessages] = useState([
     {
@@ -336,91 +338,190 @@ Answer:`;
   }
 
   // Enhanced Message Component
-  const renderMessage = (message) => {
-    const isBot = message.sender === "bot";
-    const isWelcome = message.type === "welcome";
-    const isSystem = message.type === "system";
+  // const renderMessage = (message) => {
+  //   const isBot = message.sender === "bot";
+  //   const isWelcome = message.type === "welcome";
+  //   const isSystem = message.type === "system";
 
-    return (
+  //   return (
+  //     <div
+  //       key={message.id}
+  //       className={`flex ${
+  //         isBot ? "justify-start" : "justify-end"
+  //       } mb-4 transition-all duration-300 `}
+  //     >
+  //       <div className={`max-w-[85%] h-full ${isBot ? "mr-12" : "ml-12"}`}>
+  //         <div
+  //           className={`p-4 rounded-2xl relative  ${
+  //             isBot
+  //               ? isWelcome || isSystem
+  //                 ? "bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-100 shadow-md"
+  //                 : "bg-white border border-gray-100 shadow-sm"
+  //               : "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-lg"
+  //           }`}
+  //         >
+  //           {/* Decorative elements for welcome message */}
+  //           {(isWelcome || isSystem) && (
+  //             <>
+  //               <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-full -mr-4 -mt-4"></div>
+  //               <div className="absolute bottom-0 left-0 w-12 h-12 bg-purple-500/5 rounded-full -ml-4 -mb-4"></div>
+  //             </>
+  //           )}
+
+  //           <div className="flex items-start space-x-3 relative z-10">
+  //             {isBot && (
+  //               <div
+  //                 className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ${
+  //                   isWelcome || isSystem
+  //                     ? "bg-gradient-to-br from-blue-500 to-purple-600"
+  //                     : "bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-200"
+  //                 }`}
+  //               >
+  //                 <Bot
+  //                   className={`w-4 h-4 ${
+  //                     isWelcome || isSystem ? "text-white" : "text-purple-600"
+  //                   }`}
+  //                 />
+  //               </div>
+  //             )}
+  //             <div className="flex-1">
+  //               <p
+  //                 dangerouslySetInnerHTML={{ __html: message.text }}
+  //                 className={`text-sm leading-relaxed whitespace-pre-line ${
+  //                   isBot ? "text-gray-800" : "text-white"
+  //                 }`}
+  //               ></p>
+  //               <p
+  //                 className={`text-xs mt-2 ${
+  //                   isBot ? "text-gray-500" : "text-blue-100"
+  //                 }`}
+  //               >
+  //                 {message.timestamp.toLocaleTimeString([], {
+  //                   hour: "2-digit",
+  //                   minute: "2-digit",
+  //                 })}
+  //               </p>
+  //             </div>
+  //             {!isBot && (
+  //               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+  //                 <User className="w-4 h-4 text-white" />
+  //               </div>
+  //             )}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
+  const renderMessage = (message) => {
+  const isBot = message.sender === "bot";
+  const isWelcome = message.type === "welcome";
+  const isSystem = message.type === "system";
+
+  return (
+    <div
+      key={message.id}
+      className={`flex ${
+        isBot ? "justify-start" : "justify-end"
+      } mb-6 transition-all duration-500`}
+    >
       <div
-        key={message.id}
-        className={`flex ${
-          isBot ? "justify-start" : "justify-end"
-        } mb-4 transition-all duration-300`}
+        className={`max-w-[80%] h-full ${
+          isBot ? "mr-12" : "ml-12"
+        } relative`}
       >
-        <div className={`max-w-[85%] ${isBot ? "mr-12" : "ml-12"}`}>
-          <div
-            className={`p-4 rounded-2xl relative overflow-hidden ${
+        <div
+          className={`p-5 rounded-3xl relative overflow-hidden backdrop-blur-xl border 
+            ${
               isBot
                 ? isWelcome || isSystem
-                  ? "bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-100 shadow-md"
-                  : "bg-white border border-gray-100 shadow-sm"
-                : "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-lg"
+                  ? "bg-gradient-to-br from-blue-50/70 to-purple-50/70 border-white/30 shadow-xl"
+                  : "bg-white/80 border-gray-200/50 shadow-lg"
+                : "bg-gradient-to-br from-blue-700 via-purple-700 to-indigo-800 text-white shadow-2xl"
             }`}
-          >
-            {/* Decorative elements for welcome message */}
-            {(isWelcome || isSystem) && (
-              <>
-                <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-full -mr-4 -mt-4"></div>
-                <div className="absolute bottom-0 left-0 w-12 h-12 bg-purple-500/5 rounded-full -ml-4 -mb-4"></div>
-              </>
+        >
+          {/* Floating glowing elements for premium feel */}
+          {(isWelcome || isSystem) && (
+            <>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-blue-400/10 blur-2xl rounded-full -mr-6 -mt-6 animate-pulse"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 bg-purple-400/10 blur-2xl rounded-full -ml-6 -mb-6 animate-pulse"></div>
+            </>
+          )}
+
+          <div className="flex items-start space-x-3 relative z-10">
+            {isBot && (
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-offset-2
+                  ${
+                    isWelcome || isSystem
+                      ? "bg-gradient-to-br from-blue-500 to-purple-600 ring-purple-300"
+                      : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300"
+                  }`}
+              >
+                <Bot
+                  className={`w-5 h-5 ${
+                    isWelcome || isSystem ? "text-white" : "text-purple-600"
+                  }`}
+                />
+              </div>
             )}
 
-            <div className="flex items-start space-x-3 relative z-10">
-              {isBot && (
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ${
-                    isWelcome || isSystem
-                      ? "bg-gradient-to-br from-blue-500 to-purple-600"
-                      : "bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-200"
+            <div className="flex-1">
+              <p
+                dangerouslySetInnerHTML={{ __html: message.text }}
+                className={`text-[15px] leading-relaxed tracking-wide whitespace-pre-line
+                  ${
+                    isBot
+                      ? "text-gray-800 font-medium"
+                      : "text-white font-semibold"
                   }`}
-                >
-                  <Bot
-                    className={`w-4 h-4 ${
-                      isWelcome || isSystem ? "text-white" : "text-purple-600"
-                    }`}
-                  />
-                </div>
-              )}
-              <div className="flex-1">
-                <p
-                  dangerouslySetInnerHTML={{ __html: message.text }}
-                  className={`text-sm leading-relaxed whitespace-pre-line ${
-                    isBot ? "text-gray-800" : "text-white"
-                  }`}
-                ></p>
-                <p
-                  className={`text-xs mt-2 ${
-                    isBot ? "text-gray-500" : "text-blue-100"
-                  }`}
-                >
-                  {message.timestamp.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </p>
-              </div>
-              {!isBot && (
-                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <User className="w-4 h-4 text-white" />
-                </div>
-              )}
+              ></p>
+              <p
+                className={`text-xs mt-2 ${
+                  isBot ? "text-gray-500" : "text-blue-100/80"
+                }`}
+              >
+                {message.timestamp.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
             </div>
+
+            {!isBot && (
+              <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/20">
+                <User className="w-5 h-5 text-white" />
+              </div>
+            )}
           </div>
         </div>
       </div>
-    );
-  };
-
+    </div>
+  );
+};
   return (
-    <div className="fixed -bottom-8 h-auto right-0 lg:bottom-6 lg:right-4 z-50">
+    <div
+      className={`fixed z-50 transition-all duration-500 ease-in-out ${
+        isExpanded
+          ? "inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm"
+          : "bottom-0 right-0 lg:bottom-6 lg:right-4"
+      }`}
+      onClick={(e) => {
+        if (isExpanded && e.target === e.currentTarget) {
+          setIsExpanded(false);
+        }
+      }}
+    >
       <div
-        className={`w-full lg:w-96 transition-all duration-300 ${
-          isMinimized ? "h-24" : "h-auto lg:h-[600px]"
-        }`}
+        className={`bg-white rounded-2xl shadow-2xl flex flex-col transition-all duration-500 ${
+          isExpanded
+            ? "w-11/12 h-5/6 max-w-4xl"
+            : "w-full lg:w-96 h-[70vh] lg:h-[600px]"
+        } ${isMinimized ? "h-24" : ""}`}
       >
         {/* Chat Header */}
-        <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white rounded-t-2xl p-4 shadow-lg">
+        <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white rounded-t-2xl p-4 shadow-lg flex-shrink-0">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm opacity-30"></div>
           <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -437,20 +538,31 @@ Answer:`;
             </div>
             <div className="flex items-center space-x-2">
               <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="p-1.5 rounded-lg hover:bg-white/20 transition-colors duration-200"
+                title={isExpanded ? "Minimize" : "Expand"}
+              >
+                {isExpanded ? (
+                  <Minimize2 className="w-4 h-4" />
+                ) : (
+                  <Maximize2 className="w-4 h-4" />
+                )}
+              </button>
+              <button
                 onClick={() => setIsMinimized(!isMinimized)}
-                className="p-1 rounded-full hover:bg-white/20 transition-colors duration-200"
+                className="p-1.5 rounded-lg hover:bg-white/20 transition-colors duration-200"
               >
                 {isMinimized ? (
-                  <ChevronUp className="w-5 h-5" />
+                  <ChevronUp className="w-4 h-4" />
                 ) : (
-                  <ChevronDown className="w-5 h-5" />
+                  <ChevronDown className="w-4 h-4" />
                 )}
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 rounded-full hover:bg-white/20 transition-colors duration-200"
+                className="p-1.5 rounded-lg hover:bg-white/20 transition-colors duration-200"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -463,45 +575,45 @@ Answer:`;
             <Code className="w-4 h-4 animate-bounce" />
           </div>
         </div>
-        {/* Chat Body */}
+
+        {/* Chat Body - Fixed layout with proper flex structure */}
         {!isMinimized && (
-          <div className="bg-white border-x border-gray-100 h-[500px] flex flex-col">
-            {/* Messages Area */}
-
-            {/* Smart Suggestions */}
+          <div className="flex flex-col flex-1 min-h-0 bg-white border-x border-gray-100">
+            {/* Messages Area - This will now properly scroll */}
             {showSuggestions && messages.length <= 2 ? (
-              <div className="px-4 h-full w-full  py-3 bg-gray-50/80 border-t border-gray-100">
-                <div className="flex  h-full w-full flex-col justify-center items-start">
-                  {/* <p className="text-xs font-semibold text-gray-600 mb-3 flex items-center">
-                  <Lightbulb className="w-3 h-3 mr-1 text-blue-500" />
-                  <span className="text-center">
-
-                  Popular Questions
-                  </span>
-                </p> */}
-                  <div className="grid grid-cols-2 w-full  gap-2">
-                    {smartSuggestions.slice(0, 8).map((suggestion, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleQuickQuestion(suggestion.text)}
-                        className={`text-xs h-8 px-3 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                          suggestion.popular
-                            ? "bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-200 text-blue-700 hover:shadow-md"
-                            : "bg-white border border-gray-200 text-gray-700 hover:border-blue-300"
-                        }`}
-                      >
-                        {suggestion.icon && (
-                          <suggestion.icon className="w-3 h-3 mr-1" />
-                        )}
-                        {suggestion.text}
-                      </button>
-                    ))}
+              <div className="flex-1 px-4 py-3 bg-gradient-to-b from-gray-50/80 to-white border-t border-gray-100 overflow-y-auto">
+                <div className="flex flex-col justify-center items-start h-full">
+                  <div className="w-full">
+                    <p className="text-xs font-semibold text-gray-600 mb-3 flex items-center">
+                      <Lightbulb className="w-3 h-3 mr-1 text-blue-500" />
+                      Popular Questions
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {smartSuggestions.slice(0, 8).map((suggestion, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleQuickQuestion(suggestion.text)}
+                          className={`text-xs h-8 px-3 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                            suggestion.popular
+                              ? "bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-200 text-blue-700 hover:shadow-md"
+                              : "bg-white border border-gray-200 text-gray-700 hover:border-blue-300"
+                          }`}
+                        >
+                          {suggestion.icon && (
+                            <suggestion.icon className="w-3 h-3 mr-1" />
+                          )}
+                          {suggestion.text}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="flex-1 overflow-y-auto p-4 bg-gradient-to-b from-gray-50/50 to-white">
-                {messages.map(renderMessage)}
+              <div className="flex-1 overflow-y-auto p-4 bg-gradient-to-b from-gray-50/50 to-white min-h-0">
+                <div className="space-y-2">
+                  {messages.map((message) => renderMessage(message))}
+                </div>
                 {/* Typing Indicator */}
                 {isTyping && (
                   <div className="flex justify-start mb-4">
@@ -530,9 +642,9 @@ Answer:`;
                 <div ref={messagesEndRef} />
               </div>
             )}
-
-            {/* Input Area */}
-            <div className="p-4 bg-white border-t border-gray-100">
+            
+            {/* Input Area - Fixed at bottom */}
+            <div className="flex-shrink-0 p-4 bg-white border-t border-gray-100">
               <div className="flex space-x-2">
                 <div className="relative flex-1">
                   <input
@@ -554,25 +666,24 @@ Answer:`;
               </div>
 
               {/* Quick starters */}
-              <div className="flex justify-center items-center w-full">
-                <div className="flex w-full flex-wrap justify-center gap-2 mt-3">
-                  {quickStarters.slice(0, 4).map((starter, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleQuickQuestion(starter)}
-                      className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-600 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200"
-                    >
-                      {starter}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {quickStarters.slice(0, 4).map((starter, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleQuickQuestion(starter)}
+                    className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-600 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 flex items-center"
+                  >
+                    <CornerDownRight className="w-3 h-3 mr-1" />
+                    {starter}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
         )}
 
         {/* Chat Footer */}
-        <div className="bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-500/10 rounded-b-2xl border-t border-gray-200 p-2 text-center">
+        <div className="flex-shrink-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-500/10 rounded-b-2xl border-t border-gray-200 p-2 text-center">
           <p className="text-xs text-gray-500">
             {API_KEY ? "Powered by Gemini AI" : "Local Knowledge Base"} • Always
             learning
@@ -584,3 +695,4 @@ Answer:`;
 };
 
 export default PremiumChatbot;
+
