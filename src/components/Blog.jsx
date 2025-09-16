@@ -12,8 +12,10 @@ import {
   MagnifyingGlassIcon,
   ExclamationTriangleIcon, // Import the icon
 } from "@heroicons/react/24/outline";
+import { useTranslation } from "react-i18next";
 
 const Blog = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -24,18 +26,18 @@ const Blog = () => {
   const currentPath = location.pathname;
 
   const categories = [
-    "All",
-    "Web Development",
-    "AI & Automation",
-    "Career",
-    "Open Source",
-    "Mindset & Productivity",
+    t('blog_filter_all'),
+    t('blog_filter_web_dev'),
+    t('blog_filter_ai'),
+    t('blog_filter_career'),
+    t('blog_filter_open_source'),
+    t('blog_filter_mindset'),
   ];
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState(t('blog_filter_all'));
   const [searchQuery, setSearchQuery] = useState(""); // Add state for search query
 
   const filteredPosts = blogPosts.filter((post) => {
-    const categoryMatch = selectedCategory === "All" || post.category === selectedCategory;
+    const categoryMatch = selectedCategory === t('blog_filter_all') || post.category === selectedCategory;
     const searchMatch = 
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -89,10 +91,10 @@ const Blog = () => {
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">Blog & Insights</span>
+            <span className="gradient-text">{t('blog_title')}</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Sharing knowledge and insights from my development journey
+            {t('blog_subtitle')}
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
         </motion.div>
@@ -102,13 +104,13 @@ const Blog = () => {
           <motion.div variants={itemVariants} className="mb-16">
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
-                Featured Articles
+                {t('blog_featured_title')}
               </h3>
               <button
                 onClick={() => navigate("/blog")}
                 className="inline-flex items-center text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 group"
               >
-                View more
+                {t('blog_view_more')}
                 <ArrowRightIcon className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
             </div>
@@ -174,7 +176,7 @@ const Blog = () => {
                         }}
                         className="inline-flex items-center text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 group"
                       >
-                        Read More
+                        {t('blog_read_more')}
                         <ArrowRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
                       </button>
                     </div>
@@ -190,7 +192,7 @@ const Blog = () => {
                 <div className="relative w-full sm:w-auto">
                   <input
                     type="text"
-                    placeholder="Search articles..."
+                    placeholder={t('blog_search_placeholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full sm:w-64 px-4 py-2 pl-10 bg-gray-100 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
@@ -269,7 +271,7 @@ const Blog = () => {
                           }}
                           className="inline-flex items-center text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 group"
                         >
-                          Read
+                          {t('blog_read_more')}
                           <ArrowRightIcon className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
                         </button>
                       </div>
@@ -284,10 +286,10 @@ const Blog = () => {
               >
                 <ExclamationTriangleIcon className="w-16 h-16 mx-auto text-yellow-400 mb-4" />
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  No Results Found
+                  {t('blog_no_results_title')}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Sorry, no articles matched your search criteria. Try a different search term or category.
+                  {t('blog_no_results_subtitle')}
                 </p>
               </motion.div>
             )}

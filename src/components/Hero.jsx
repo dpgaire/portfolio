@@ -7,8 +7,10 @@ import {
   CodeBracketIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslation } from "react-i18next";
 
 const Hero = () => {
+  const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -123,7 +125,7 @@ const Hero = () => {
           <span className="flex flex-wrap items-center justify-start p-2 lg:justify-center gap-2  bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50 max-w-xs sm:max-w-none">
             <SparklesIcon className="w-4 h-4 text-primary-500" />
             <span className="whitespace-normal">
-              Welcome to my digital space
+              {t('hero_greeting')}
             </span>
           </span>
         </motion.div>
@@ -134,7 +136,7 @@ const Hero = () => {
           className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
         >
           <span className="block text-gray-900 dark:text-white">
-            Hi, I'm <span className="gradient-text">Durga Gairhe</span>
+            {t('hero_name')}
           </span>
         </motion.h1>
 
@@ -145,17 +147,17 @@ const Hero = () => {
         >
           <TypeAnimation
             sequence={[
-              "Full-Stack Developer",
+              t('hero_title_1'),
               2000,
-              "System Architect",
+              t('hero_title_2'),
               2000,
-              "React Specialist",
+              t('hero_title_3'),
               2000,
-              "Node.js Expert",
+              t('hero_title_4'),
               2000,
-              "UI/UX Enthusiast",
+              t('hero_title_5'),
               2000,
-              "Problem Solver",
+              t('hero_title_6'),
               2000,
             ]}
             wrapper="span"
@@ -170,10 +172,7 @@ const Hero = () => {
           variants={itemVariants}
           className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
         >
-          A one-person dev powerhouse with a sharp eye for design and a mind
-          wired for structure. I craft tailored solutions from React setups to
-          dynamic APIs, bringing precision and a DIY attitude that sets projects
-          apart.
+          {t('hero_description')}
         </motion.p>
 
         {/* CTA Buttons */}
@@ -188,7 +187,7 @@ const Hero = () => {
             className="btn-primary group flex items-center"
           >
             <CodeBracketIcon className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-            View My Work
+            {t('hero_button_1')}
           </motion.a>
 
           <motion.a
@@ -199,7 +198,7 @@ const Hero = () => {
             className="btn-secondary group flex items-center"
           >
             <DocumentArrowDownIcon className="w-5 h-5 mr-2 group-hover:translate-y-1 transition-transform duration-300" />
-            Download Resume
+            {t('hero_button_2')}
           </motion.a>
         </motion.div>
 
@@ -209,7 +208,7 @@ const Hero = () => {
           className="flex flex-col items-center"
         >
           <span className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-            Scroll to explore
+            {t('hero_scroll')}
           </span>
           <motion.div
             animate={{ y: [0, 10, 0] }}

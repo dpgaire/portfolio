@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useTranslation } from 'react-i18next';
 
 const Skills = () => {
+  const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true
@@ -9,7 +11,7 @@ const Skills = () => {
 
   const skillCategories = [
     {
-      title: "Frontend Development",
+      title: t('skills_category_1_title'),
       icon: "🎨",
       skills: [
         { name: "React", level: 95, color: "from-blue-500 to-cyan-500" },
@@ -20,7 +22,7 @@ const Skills = () => {
       ]
     },
     {
-      title: "Backend Development",
+      title: t('skills_category_2_title'),
       icon: "⚙️",
       skills: [
         { name: "Node.js", level: 88, color: "from-green-600 to-green-400" },
@@ -32,7 +34,7 @@ const Skills = () => {
       ]
     },
     {
-      title: "Mobile Development",
+      title: t('skills_category_3_title'),
       icon: "📱",
       skills: [
         { name: "React Native", level: 87, color: "from-blue-500 to-purple-500" },
@@ -43,7 +45,7 @@ const Skills = () => {
       ]
     },
     {
-      title: "Tools & Technologies",
+      title: t('skills_category_4_title'),
       icon: "🛠️",
       skills: [
         { name: "Git & GitHub", level: 93, color: "from-gray-800 to-gray-600" },
@@ -102,10 +104,10 @@ const Skills = () => {
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">Skills & Expertise</span>
+            <span className="gradient-text">{t('skills_title')}</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Technologies and tools I use to bring ideas to life
+            {t('skills_subtitle')}
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
         </motion.div>
@@ -178,7 +180,7 @@ const Skills = () => {
         <motion.div variants={itemVariants} className="mt-16">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Additional Technologies
+              {t('skills_additional_title')}
             </h3>
           </div>
 
@@ -211,10 +213,10 @@ const Skills = () => {
                 <span className="text-2xl">🏆</span>
               </div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                AWS Certified
+                {t('skills_cert_1_title')}
               </h4>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                Solutions Architect Associate
+                {t('skills_cert_1_desc')}
               </p>
             </div>
 
@@ -223,10 +225,10 @@ const Skills = () => {
                 <span className="text-2xl">📜</span>
               </div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                Google Developer Expert
+                {t('skills_cert_2_title')}
               </h4>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                Web Technologies
+                {t('skills_cert_2_desc')}
               </p>
             </div>
 
@@ -235,10 +237,10 @@ const Skills = () => {
                 <span className="text-2xl">⭐</span>
               </div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                Open Source Contributor
+                {t('skills_cert_3_title')}
               </h4>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                500+ contributions on GitHub
+                {t('skills_cert_3_desc')}
               </p>
             </div>
           </div>

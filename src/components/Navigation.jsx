@@ -14,8 +14,11 @@ import {
   EnvelopeIcon
 } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './ui/LanguageSwitcher';
 
 const Navigation = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -24,12 +27,12 @@ const Navigation = () => {
   const navigate = useNavigate()
 
   const navItems = [
-    { id: 'home', label: 'Home', icon: HomeIcon, href: '#home' },
-    { id: 'about', label: 'About', icon: UserIcon, href: '#about' },
-    { id: 'skills', label: 'Skills', icon: WrenchScrewdriverIcon, href: '#skills' },
-    { id: 'projects', label: 'Projects', icon: CodeBracketIcon, href: '#projects' },
-    { id: 'blog', label: 'Blog', icon: DocumentTextIcon, href: '#blog' },
-    { id: 'contact', label: 'Contact', icon: EnvelopeIcon, href: '#contact' },
+    { id: 'home', label: t('home'), icon: HomeIcon, href: '#home' },
+    { id: 'about', label: t('about'), icon: UserIcon, href: '#about' },
+    { id: 'skills', label: t('skills'), icon: WrenchScrewdriverIcon, href: '#skills' },
+    { id: 'projects', label: t('projects'), icon: CodeBracketIcon, href: '#projects' },
+    { id: 'blog', label: t('blog'), icon: DocumentTextIcon, href: '#blog' },
+    { id: 'contact', label: t('contact'), icon: EnvelopeIcon, href: '#contact' },
   ];
 
   useEffect(() => {
@@ -54,7 +57,7 @@ const Navigation = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [navItems]);
 
   const handleNavClick = (href) => {
     setIsOpen(false);
@@ -89,7 +92,7 @@ const Navigation = () => {
                 <span onClick={()=>navigate('/')} className="text-white font-bold text-sm">DG</span>
               </div>
               <span className="text-xl font-bold gradient-text hidden sm:block">
-                Durga Gairhe
+               { t('nav_title')}
               </span>
             </motion.div>
 
@@ -101,13 +104,15 @@ const Navigation = () => {
                   onClick={() => handleNavClick(item.href)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                     activeSection === item.id
                       ? 'bg-primary-500 text-white shadow-lg'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700'
                   }`}
+                  aria-label={`Go to ${item.label}`}
+                  aria-current={activeSection === item.id ? "page" : undefined}
                 >
-                  <item.icon className="w-4 h-4" />
+                  <item.icon className="w-4 h-4" aria-hidden="true" />
                   <span>{item.label}</span>
                 </motion.button>
               ))}
@@ -115,16 +120,23 @@ const Navigation = () => {
 
             {/* Theme Toggle & Mobile Menu Button */}
             <div className="flex items-center space-x-2">
+              <LanguageSwitcher />
               <motion.button
                 onClick={toggleTheme}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-300"
+                className="p-2 rounded-lg bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                aria-label={
+                  theme === "dark"
+                    ? "Switch to light mode"
+                    : "Switch to dark mode"
+                }
+                aria-pressed={theme === "dark"}
               >
                 {theme === 'dark' ? (
-                  <SunIcon className="w-5 h-5" />
+                  <SunIcon className="w-5 h-5" aria-hidden="true" />
                 ) : (
-                  <MoonIcon className="w-5 h-5" />
+                  <MoonIcon className="w-5 h-5" aria-hidden="true" />
                 )}
               </motion.button>
 
@@ -133,12 +145,15 @@ const Navigation = () => {
                 onClick={() => setIsOpen(!isOpen)}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-300"
+                className="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
               >
                 {isOpen ? (
-                  <XMarkIcon className="w-5 h-5" />
+                  <XMarkIcon className="w-5 h-5" aria-hidden="true" />
                 ) : (
-                  <Bars3Icon className="w-5 h-5" />
+                  <Bars3Icon className="w-5 h-5" aria-hidden="true" />
                 )}
               </motion.button>
             </div>
@@ -149,9 +164,9 @@ const Navigation = () => {
       {/* Mobile Navigation Menu */}
       <motion.div
         initial={{ opacity: 0, x: '100%' }}
-        animate={{ 
-          opacity: isOpen ? 1 : 0, 
-          x: isOpen ? '0%' : '100%' 
+        animate={{
+          opacity: isOpen ? 1 : 0,
+          x: isOpen ? '0%' : '100%',
         }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
         className={`fixed top-0 right-0 h-full w-80 max-w-full bg-white dark:bg-dark-900 shadow-2xl z-40 md:hidden ${
@@ -161,26 +176,21 @@ const Navigation = () => {
         <div className="flex flex-col h-full pt-20 px-6">
           {/* Mobile Navigation Items */}
           <div className="space-y-2">
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <motion.button
                 key={item.id}
                 onClick={() => handleNavClick(item.href)}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ 
-                  opacity: isOpen ? 1 : 0, 
-                  x: isOpen ? 0 : 20 
-                }}
-                transition={{ 
-                  duration: 0.3, 
-                  delay: isOpen ? index * 0.1 : 0 
-                }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left font-medium transition-all duration-300 ${
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                   activeSection === item.id
                     ? 'bg-primary-500 text-white shadow-lg'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-800'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700'
                 }`}
+                aria-label={`Go to ${item.label}`}
+                aria-current={activeSection === item.id ? "page" : undefined}
               >
-                <item.icon className="w-5 h-5" />
+                <item.icon className="w-4 h-4" aria-hidden="true" />
                 <span>{item.label}</span>
               </motion.button>
             ))}
@@ -189,7 +199,7 @@ const Navigation = () => {
           {/* Mobile Footer */}
           <div className="mt-auto pb-6">
             <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-              <p>© {currentYear} Durga Gairhe</p>
+              <p>© {currentYear}     {t('nav_title')}</p>
               <p className="mt-1">Full-Stack Developer</p>
             </div>
           </div>

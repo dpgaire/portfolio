@@ -13,6 +13,7 @@ import SplashScreen from "./components/SplashScreen";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFoundPage from "./pages/NotFoundPage"; // Import the new page
+import ProjectDetails from "./pages/ProjectDetails"; // Import the new page
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/blog/:id" element={<BlogDetails />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/projects" element={<ProjectPage />} />
+              <Route path="/project/:id" element={<ProjectDetails />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFoundPage />} /> 
