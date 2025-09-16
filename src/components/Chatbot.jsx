@@ -28,48 +28,121 @@ import {
   Maximize2,
   Minimize2,
   CornerDownRight,
+  Compass,
+  Cpu,
+  PenTool,
 } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { personData } from "../assets/personal_data";
+import { personData, priorityMatches } from "../assets/personal_data";
 
 const smartSuggestions = [
   {
     icon: Sparkles,
     text: "Why hire Durga?",
-    category: "hiring",
+    category: "why-hire",
     popular: true,
+    id: "why-hire",
   },
-  { icon: Code, text: "Show me his skills", category: "skills", popular: true },
-  { icon: Award, text: "Latest projects", category: "projects", popular: true },
-  { icon: Zap, text: "What's DevOS AI?", category: "current", popular: true },
+  {
+    icon: Code,
+    text: "Show me his frontend & backend skills",
+    category: "skills",
+    popular: true,
+    id: "frontend-skills", // default focus
+  },
+  {
+    icon: Award,
+    text: "Latest & featured projects",
+    category: "projects",
+    popular: true,
+    id: "featured-projects",
+  },
+  {
+    icon: Zap,
+    text: "What's DevOS AI?",
+    category: "projects",
+    popular: true,
+    id: "current-project",
+  },
   {
     icon: Github,
     text: "GitHub portfolio",
     category: "contact",
     popular: true,
+    id: "contact",
   },
   {
     icon: Briefcase,
     text: "Is he available?",
     category: "availability",
     popular: true,
+    id: "availability",
   },
   {
     icon: TrendingUp,
     text: "Key achievements",
     category: "achievements",
     popular: true,
+    id: "achievements",
   },
-  { icon: Mail, text: "Contact details", category: "contact", popular: true },
+  {
+    icon: Mail,
+    text: "Contact details",
+    category: "contact",
+    popular: true,
+    id: "contact",
+  },
+  {
+    icon: BookOpen,
+    text: "Educational background",
+    category: "education",
+    popular: false,
+    id: "education",
+  },
+  {
+    icon: Compass,
+    text: "Durga's vision & mission",
+    category: "vision",
+    popular: false,
+    id: "vision",
+  },
+  {
+    icon: Lightbulb,
+    text: "Development philosophy",
+    category: "philosophy",
+    popular: false,
+    id: "philosophy",
+  },
+  {
+    icon: Cpu,
+    text: "AI & automation expertise",
+    category: "skills",
+    popular: false,
+    id: "ai-expertise",
+  },
+  {
+    icon: PenTool,
+    text: "Blog insights",
+    category: "knowledge",
+    popular: false,
+    id: "blog-insights",
+  },
 ];
 
 const quickStarters = [
-  "latest project?",
-  "Contact him?",
-  "Available for projects?",
-  "Achievements",
-  "Durga's expertise",
+  "Show me his latest project",
+  "How can I contact him?",
+  "Is Durga available for projects?",
+  "What are his key achievements?",
+  "Tell me Durga's expertise",
   "Why should I hire him?",
+  "Show me his GitHub",
+  "What’s DevOS AI?",
+  "What is his educational background?",
+  "What’s his long-term vision?",
+  "Explain his development philosophy",
+  "Does he work with AI & automation?",
+  "What does he write about in his blog?",
 ];
 
 const PremiumChatbot = () => {
@@ -109,70 +182,16 @@ const PremiumChatbot = () => {
   };
 
   const findLocalAnswer = (question) => {
-    const lowerQuestion = question.toLowerCase();
+    const lowerQuestion = question.toLowerCase().trim();
 
-    // Priority matching for key questions
-    const priorityMatches = [
-      {
-        keywords: ["hire", "why", "choose", "reason", "benefit"],
-        id: "why-hire",
-      },
-      {
-        keywords: ["devos", "ai", "current", "building", "working"],
-        id: "current-project",
-      },
-      {
-        keywords: ["skill", "expertise", "technology", "tech", "ability"],
-        id: "frontend-skills",
-      },
-      {
-        keywords: ["project", "work", "portfolio", "example"],
-        id: "featured-projects",
-      },
-      {
-        keywords: ["contact", "email", "phone", "reach", "connect"],
-        id: "contact",
-      },
-      { keywords: ["available", "free", "hire", "work"], id: "availability" },
-      {
-        keywords: ["achievement", "success", "accomplishment"],
-        id: "achievements",
-      },
-      {
-        keywords: ["backend", "server", "database", "api"],
-        id: "backend-skills",
-      },
-      { keywords: ["who", "about", "introduce"], id: "intro" },
-      {
-        keywords: [
-          "exceptional",
-          "special",
-          "unique",
-          "different",
-          "experience",
-        ],
-        id: "expertise",
-      },
-      {
-        keywords: [
-          "hi",
-          "hello",
-          "hello hero",
-          "durga",
-          "greeting",
-          "who",
-          "hero",
-          "DP",
-          "dp",
-          "dpg",
-          "gaire",
-          "Gairhe",
-        ],
-        id: "greeting",
-      },
-    ];
+    // 1. Exact Match
+    const exactMatch = personData.find(
+      (item) => item.question.toLowerCase().trim() === lowerQuestion
+    );
+    if (exactMatch) {
+      return exactMatch.answer;
+    }
 
-    // Find best match
     for (const match of priorityMatches) {
       if (match.keywords.some((keyword) => lowerQuestion.includes(keyword))) {
         const faq = personData.find((item) => item.id === match.id);
@@ -180,7 +199,7 @@ const PremiumChatbot = () => {
       }
     }
 
-    // Fallback: search through all data for partial matches
+    // 3. Fallback: search through all data for partial matches
     for (const item of personData) {
       const questionWords = lowerQuestion.split(" ");
       const itemTags = item.tags.join(" ").toLowerCase();
@@ -221,23 +240,13 @@ const PremiumChatbot = () => {
         )
         .join("\n\n");
 
-      const prompt = `You are Durga Gairhe's AI assistant. Based on the following information about Durga, answer the user's question in a short, sweet, and helpful manner. Keep responses concise but informative.
+      const prompt = `You are Durga Gairhe's AI assistant. Based on the following information about Durga, answer the user's question in a short, sweet, and helpful manner. Keep responses concise but informative.\n\nContext about Durga Gairhe:\n${context}\n\nUser Question: ${question}\n\nInstructions:\n- Keep responses short and sweet (2-3 sentences max unless more detail is specifically requested)\n- Use the provided context to answer accurately\n- If the question is not covered in the context, politely redirect to available information\n- Maintain a professional but friendly tone\n- Use emojis sparingly and appropriately\n\nAnswer:`;
 
-Context about Durga Gairhe:
-${context}
+      const generationConfig = {
+        temperature: 0.2,
+      };
 
-User Question: ${question}
-
-Instructions:
-- Keep responses short and sweet (2-3 sentences max unless more detail is specifically requested)
-- Use the provided context to answer accurately
-- If the question is not covered in the context, politely redirect to available information
-- Maintain a professional but friendly tone
-- Use emojis sparingly and appropriately
-
-Answer:`;
-
-      const result = await model.generateContent(prompt, API_KEY);
+      const result = await model.generateContent(prompt, generationConfig);
       const response = await result.response;
       return response.text();
     } catch (error) {
@@ -337,102 +346,23 @@ Answer:`;
     );
   }
 
-  // Enhanced Message Component
-  // const renderMessage = (message) => {
-  //   const isBot = message.sender === "bot";
-  //   const isWelcome = message.type === "welcome";
-  //   const isSystem = message.type === "system";
-
-  //   return (
-  //     <div
-  //       key={message.id}
-  //       className={`flex ${
-  //         isBot ? "justify-start" : "justify-end"
-  //       } mb-4 transition-all duration-300 `}
-  //     >
-  //       <div className={`max-w-[85%] h-full ${isBot ? "mr-12" : "ml-12"}`}>
-  //         <div
-  //           className={`p-4 rounded-2xl relative  ${
-  //             isBot
-  //               ? isWelcome || isSystem
-  //                 ? "bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-100 shadow-md"
-  //                 : "bg-white border border-gray-100 shadow-sm"
-  //               : "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-lg"
-  //           }`}
-  //         >
-  //           {/* Decorative elements for welcome message */}
-  //           {(isWelcome || isSystem) && (
-  //             <>
-  //               <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-full -mr-4 -mt-4"></div>
-  //               <div className="absolute bottom-0 left-0 w-12 h-12 bg-purple-500/5 rounded-full -ml-4 -mb-4"></div>
-  //             </>
-  //           )}
-
-  //           <div className="flex items-start space-x-3 relative z-10">
-  //             {isBot && (
-  //               <div
-  //                 className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ${
-  //                   isWelcome || isSystem
-  //                     ? "bg-gradient-to-br from-blue-500 to-purple-600"
-  //                     : "bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-200"
-  //                 }`}
-  //               >
-  //                 <Bot
-  //                   className={`w-4 h-4 ${
-  //                     isWelcome || isSystem ? "text-white" : "text-purple-600"
-  //                   }`}
-  //                 />
-  //               </div>
-  //             )}
-  //             <div className="flex-1">
-  //               <p
-  //                 dangerouslySetInnerHTML={{ __html: message.text }}
-  //                 className={`text-sm leading-relaxed whitespace-pre-line ${
-  //                   isBot ? "text-gray-800" : "text-white"
-  //                 }`}
-  //               ></p>
-  //               <p
-  //                 className={`text-xs mt-2 ${
-  //                   isBot ? "text-gray-500" : "text-blue-100"
-  //                 }`}
-  //               >
-  //                 {message.timestamp.toLocaleTimeString([], {
-  //                   hour: "2-digit",
-  //                   minute: "2-digit",
-  //                 })}
-  //               </p>
-  //             </div>
-  //             {!isBot && (
-  //               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-  //                 <User className="w-4 h-4 text-white" />
-  //               </div>
-  //             )}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
   const renderMessage = (message) => {
-  const isBot = message.sender === "bot";
-  const isWelcome = message.type === "welcome";
-  const isSystem = message.type === "system";
+    const isBot = message.sender === "bot";
+    const isWelcome = message.type === "welcome";
+    const isSystem = message.type === "system";
 
-  return (
-    <div
-      key={message.id}
-      className={`flex ${
-        isBot ? "justify-start" : "justify-end"
-      } mb-6 transition-all duration-500`}
-    >
+    return (
       <div
-        className={`max-w-[80%] h-full ${
-          isBot ? "mr-12" : "ml-12"
-        } relative`}
+        key={message.id}
+        className={`flex ${
+          isBot ? "justify-start" : "justify-end"
+        } mb-6 transition-all duration-500`}
       >
         <div
-          className={`p-5 rounded-3xl relative overflow-hidden backdrop-blur-xl border 
+          className={`max-w-[80%] h-full ${isBot ? "mr-12" : "ml-12"} relative`}
+        >
+          <div
+            className={`p-5 rounded-3xl relative overflow-hidden backdrop-blur-xl border 
             ${
               isBot
                 ? isWelcome || isSystem
@@ -440,66 +370,66 @@ Answer:`;
                   : "bg-white/80 border-gray-200/50 shadow-lg"
                 : "bg-gradient-to-br from-blue-700 via-purple-700 to-indigo-800 text-white shadow-2xl"
             }`}
-        >
-          {/* Floating glowing elements for premium feel */}
-          {(isWelcome || isSystem) && (
-            <>
-              <div className="absolute top-0 right-0 w-20 h-20 bg-blue-400/10 blur-2xl rounded-full -mr-6 -mt-6 animate-pulse"></div>
-              <div className="absolute bottom-0 left-0 w-16 h-16 bg-purple-400/10 blur-2xl rounded-full -ml-6 -mb-6 animate-pulse"></div>
-            </>
-          )}
+          >
+            {/* Floating glowing elements for premium feel */}
+            {(isWelcome || isSystem) && (
+              <>
+                <div className="absolute top-0 right-0 w-20 h-20 bg-blue-400/10 blur-2xl rounded-full -mr-6 -mt-6 animate-pulse"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-purple-400/10 blur-2xl rounded-full -ml-6 -mb-6 animate-pulse"></div>
+              </>
+            )}
 
-          <div className="flex items-start space-x-3 relative z-10">
-            {isBot && (
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-offset-2
+            <div className="flex items-start space-x-3 relative z-10">
+              {isBot && (
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-offset-2
                   ${
                     isWelcome || isSystem
                       ? "bg-gradient-to-br from-blue-500 to-purple-600 ring-purple-300"
                       : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300"
                   }`}
-              >
-                <Bot
-                  className={`w-5 h-5 ${
-                    isWelcome || isSystem ? "text-white" : "text-purple-600"
-                  }`}
-                />
-              </div>
-            )}
+                >
+                  <Bot
+                    className={`w-5 h-5 ${
+                      isWelcome || isSystem ? "text-white" : "text-purple-600"
+                    }`}
+                  />
+                </div>
+              )}
 
-            <div className="flex-1">
-              <p
-                dangerouslySetInnerHTML={{ __html: message.text }}
-                className={`text-[15px] leading-relaxed tracking-wide whitespace-pre-line
+              <div className="flex-1">
+                <p
+                  dangerouslySetInnerHTML={{ __html: message.text }}
+                  className={`text-[15px] leading-relaxed tracking-wide whitespace-pre-line
                   ${
                     isBot
                       ? "text-gray-800 font-medium"
                       : "text-white font-semibold"
                   }`}
-              ></p>
-              <p
-                className={`text-xs mt-2 ${
-                  isBot ? "text-gray-500" : "text-blue-100/80"
-                }`}
-              >
-                {message.timestamp.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
-            </div>
-
-            {!isBot && (
-              <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/20">
-                <User className="w-5 h-5 text-white" />
+                ></p>
+                <p
+                  className={`text-xs mt-2 ${
+                    isBot ? "text-gray-500" : "text-blue-100/80"
+                  }`}
+                >
+                  {message.timestamp.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
               </div>
-            )}
+
+              {!isBot && (
+                <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/20">
+                  <User className="w-5 h-5 text-white" />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
   return (
     <div
       className={`fixed z-50 transition-all duration-500 ease-in-out ${
@@ -518,7 +448,7 @@ Answer:`;
           isExpanded
             ? "w-11/12 h-5/6 max-w-4xl"
             : "w-full lg:w-96 h-[70vh] lg:h-[600px]"
-        } ${isMinimized ? "h-24" : ""}`}
+        }`}
       >
         {/* Chat Header */}
         <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white rounded-t-2xl p-4 shadow-lg flex-shrink-0">
@@ -549,16 +479,6 @@ Answer:`;
                 )}
               </button>
               <button
-                onClick={() => setIsMinimized(!isMinimized)}
-                className="p-1.5 rounded-lg hover:bg-white/20 transition-colors duration-200"
-              >
-                {isMinimized ? (
-                  <ChevronUp className="w-4 h-4" />
-                ) : (
-                  <ChevronDown className="w-4 h-4" />
-                )}
-              </button>
-              <button
                 onClick={() => setIsOpen(false)}
                 className="p-1.5 rounded-lg hover:bg-white/20 transition-colors duration-200"
               >
@@ -577,7 +497,7 @@ Answer:`;
         </div>
 
         {/* Chat Body - Fixed layout with proper flex structure */}
-        {!isMinimized && (
+       
           <div className="flex flex-col flex-1 min-h-0 bg-white border-x border-gray-100">
             {/* Messages Area - This will now properly scroll */}
             {showSuggestions && messages.length <= 2 ? (
@@ -589,12 +509,12 @@ Answer:`;
                       Popular Questions
                     </p>
                     <div className="grid grid-cols-2 gap-2">
-                      {smartSuggestions.slice(0, 8).map((suggestion, index) => (
+                      {smartSuggestions.map((suggestion, index) => (
                         <button
                           key={index}
                           onClick={() => handleQuickQuestion(suggestion.text)}
                           className={`text-xs h-8 px-3 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                            suggestion.popular
+                            suggestion
                               ? "bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-200 text-blue-700 hover:shadow-md"
                               : "bg-white border border-gray-200 text-gray-700 hover:border-blue-300"
                           }`}
@@ -642,7 +562,7 @@ Answer:`;
                 <div ref={messagesEndRef} />
               </div>
             )}
-            
+
             {/* Input Area - Fixed at bottom */}
             <div className="flex-shrink-0 p-4 bg-white border-t border-gray-100">
               <div className="flex space-x-2">
@@ -667,20 +587,22 @@ Answer:`;
 
               {/* Quick starters */}
               <div className="flex flex-wrap gap-2 mt-3">
-                {quickStarters.slice(0, 4).map((starter, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleQuickQuestion(starter)}
-                    className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-600 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 flex items-center"
-                  >
-                    <CornerDownRight className="w-3 h-3 mr-1" />
-                    {starter}
-                  </button>
-                ))}
+                {(!isExpanded ? quickStarters.slice(0, 4) : quickStarters).map(
+                  (starter, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleQuickQuestion(starter)}
+                      className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-600 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 flex items-center"
+                    >
+                      <CornerDownRight className="w-3 h-3 mr-1" />
+                      {starter}
+                    </button>
+                  )
+                )}
               </div>
             </div>
           </div>
-        )}
+      
 
         {/* Chat Footer */}
         <div className="flex-shrink-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-500/10 rounded-b-2xl border-t border-gray-200 p-2 text-center">
@@ -695,4 +617,3 @@ Answer:`;
 };
 
 export default PremiumChatbot;
-
