@@ -4,21 +4,12 @@ import { useInView } from "react-intersection-observer";
 import {
   EyeIcon,
   CodeBracketIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const Projects = () => {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
-
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [filter, setFilter] = useState("all");
-
-  const projects = [
+export const projects = [
     {
       id: 1,
       title: "API Key Manager – Secure Local Storage CRUD Interface",
@@ -33,6 +24,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/api-key-manager-",
       featured: true,
       status: "Published",
+      problem: "Developers often need to manage multiple API keys for various services, and storing them in plaintext files is insecure. There was a need for a simple, secure, and client-side tool to manage these keys.",
+      process: "I started by designing a simple and intuitive UI. Then, I implemented the core CRUD functionality using React hooks and localStorage. I also added features like search and copy-to-clipboard to improve usability.",
+      solution: "The result is a lightweight and secure API key manager that runs entirely in the browser. It provides a simple and effective solution for developers to manage their API keys without relying on a backend service.",
+      screenshots: [
+        "/images/api-key-manager.png",
+        "/images/api-key-manager.png",
+      ],
     },
     {
       id: 2,
@@ -56,6 +54,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/ai-tool-pro",
       featured: true,
       status: "Published",
+      problem: "Content creators and marketers struggle to produce high-quality content consistently across multiple platforms. They need a unified tool to generate, manage, and schedule content efficiently.",
+      process: "I identified the core needs of content creators, such as idea generation, writing assistance, and social media scheduling. I then designed a modular system with features for blog writing, social media post generation, and media creation, all powered by the Gemini API.",
+      solution: "The AI Content & Media Suite provides a comprehensive solution for content creation. It streamlines the workflow, from generating blog posts and social media content to designing thumbnails, all within a single, user-friendly platform.",
+      screenshots: [
+        "/images/ai-tool-pro.png",
+        "/images/ai-tool-pro.png",
+      ],
     },
     {
       id: 3,
@@ -77,6 +82,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/dev-os-ai",
       featured: false,
       status: "Published",
+      problem: "Developers spend a significant amount of time on repetitive tasks, such as writing boilerplate code, debugging, and managing project files. An intelligent assistant that understands natural language commands can significantly boost productivity.",
+      process: "I built a core engine in Python that interfaces with the OpenRouter API to understand user intent. I then created a set of modules for different tasks, such as file management, code generation, and error diagnosis. The assistant can be accessed via a CLI or a web interface.",
+      solution: "DevOS AI acts as a personal AI assistant for developers, automating tedious tasks and providing intelligent suggestions. It helps developers write code faster, debug more effectively, and manage their projects with ease.",
+      screenshots: [
+        "/images/dev-ai-os.png",
+        "/images/dev-ai-os.png",
+      ],
     },
     {
       id: 4,
@@ -92,6 +104,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/art-studio",
       featured: false,
       status: "Published",
+      problem: "There is a lack of simple, web-based drawing tools that are both powerful and easy to use. Many existing tools are either too complex for casual users or too basic for serious artists.",
+      process: "I started by implementing the basic drawing functionalities using the HTML5 Canvas API. I then added features like shape tools, color pickers, and layer management. The UI was built with React to be responsive and intuitive.",
+      solution: "Art Studio Pro provides a user-friendly and powerful web-based drawing tool for users of all skill levels. It offers a range of features for creative expression, from freehand drawing to creating complex geometric patterns.",
+      screenshots: [
+        "/images/art-studio.png",
+        "/images/art-studio.png",
+      ],
     },
     {
       id: 5,
@@ -107,6 +126,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/ai-cosmic-content",
       featured: false,
       status: "Published",
+      problem: "Generating high-quality content for blogs, websites, and social media can be time-consuming. A tool that can quickly generate creative and engaging content based on a simple prompt is highly valuable.",
+      process: "I designed a clean and simple UI that allows users to enter a prompt and select a content type. The backend is powered by the OpenRouter API, which provides access to a variety of language models. The generated content is then displayed in a rich text editor for further refinement.",
+      solution: "Cosmic Content is a powerful AI-powered content generation tool that helps users create high-quality content in a fraction of the time. It is a valuable tool for bloggers, marketers, and anyone who needs to create engaging content.",
+      screenshots: [
+        "/images/cosmic-content.png",
+        "/images/cosmic-content.png",
+      ],
     },
     {
       id: 6,
@@ -122,6 +148,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/focus-mode",
       featured: false,
       status: "Published",
+      problem: "Maintaining focus and productivity can be challenging in a world full of distractions. The Pomodoro Technique is a proven method for improving focus, but there is a need for a simple and effective tool to implement it.",
+      process: "I designed a minimalist UI that focuses on the core Pomodoro workflow: a timer, a task list, and progress tracking. I used React for the UI and localStorage to store user data, making the app fast and private.",
+      solution: "Focus Mode is a simple yet effective Pomodoro timer that helps users stay focused and productive. It provides a clean and distraction-free environment for working on tasks and tracking progress.",
+      screenshots: [
+        "/images/focus-mode.png",
+        "/images/focus-mode.png",
+      ],
     },
     {
       id: 7,
@@ -137,6 +170,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/content-flow",
       featured: false,
       status: "Published",
+      problem: "Repurposing content for different platforms is a time-consuming task. A tool that can automatically generate platform-specific content from a single source can save a lot of time and effort.",
+      process: "I designed a simple workflow where users can input a blog post or video script. The app then uses AI to generate different versions of the content for various platforms, such as LinkedIn, Twitter, and email. Users can then review and edit the generated content before publishing.",
+      solution: "The AI Content Repurposer is a powerful tool that automates the process of content repurposing. It helps content creators and marketers save time and effort while ensuring that their content is optimized for each platform.",
+      screenshots: [
+        "/images/content-flow.png",
+        "/images/content-flow.png",
+      ],
     },
     {
       id: 8,
@@ -158,6 +198,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/favicon-generator",
       featured: false,
       status: "Published",
+      problem: "Creating a unique and memorable favicon can be a challenging and time-consuming task. A tool that can quickly generate a variety of favicon designs from a simple text prompt can be a great time-saver.",
+      process: "I designed a simple interface where users can enter a text prompt and generate a grid of favicon designs. The app uses the OpenRouter API to generate the images. Users can then download their favorite favicons as a ZIP file.",
+      solution: "The AI Favicon Generator is a fun and useful tool for developers and designers who need to create a favicon for their website or application. It is a great way to quickly generate a variety of design ideas.",
+      screenshots: [
+        "/images/fav-icon.png",
+        "/images/fav-icon.png",
+      ],
     },
     {
       id: 9,
@@ -173,6 +220,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/nudge-wheel",
       featured: false,
       status: "Published",
+      problem: "Making decisions, even small ones, can be a source of stress and anxiety. A fun and engaging tool that helps users make decisions can be a great way to reduce stress and improve well-being.",
+      process: "I designed a simple and fun UI that allows users to create a spinning wheel with their own custom choices. The app uses localStorage to save the user's wheels, so they can be used again later.",
+      solution: "NudgeWheel is a fun and simple tool that helps users make decisions in a playful way. It is a great way to overcome choice paralysis and reduce stress.",
+      screenshots: [
+        "/images/nudgeWheel.png",
+        "/images/nudgeWheel.png",
+      ],
     },
     {
       id: 10,
@@ -194,6 +248,13 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/auto-text-email",
       featured: false,
       status: "Published",
+      problem: "Crafting the right message can be difficult, especially when you're short on time or dealing with a sensitive situation. A tool that can help you generate well-written and emotionally intelligent messages can be a great asset.",
+      process: "I designed a simple interface where users can select a relationship, emotion, and intent to generate a message. The app uses a set of predefined templates and a simple rule engine to generate the messages. Users can then customize the message before sending it.",
+      solution: "AutoText is a useful tool for anyone who wants to improve their communication skills. It helps users craft clear, concise, and emotionally intelligent messages in a variety of situations.",
+      screenshots: [
+        "/images/auto-text-email.png",
+        "/images/auto-text-email.png",
+      ],
     },
     {
       id: 11,
@@ -217,16 +278,32 @@ const Projects = () => {
       githubUrl: "https://github.com/dpgaire/explainify", // Replace with actual repo URL
       featured: false,
       status: "Published",
+      problem: "Understanding complex text can be challenging. A tool that can explain text at different levels of complexity can be a great help for students, professionals, and anyone who wants to learn something new.",
+      process: "I designed a simple interface where users can paste text and choose an explanation level. The app then uses an AI model to generate an explanation at the chosen level. The app also features a beautiful glassmorphism UI and smooth animations.",
+      solution: "Explainify is a powerful tool that makes complex text easy to understand. It is a great resource for students, professionals, and anyone who wants to learn something new.",
+      screenshots: [
+        "/images/explainify.png",
+        "/images/explainify.png",
+      ],
     },
   ];
 
+const Projects = () => {
+  const { t } = useTranslation();
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
+
+  const [filter, setFilter] = useState("all");
+
   const categories = [
-    { id: "all", label: "All Projects" },
-    { id: "ai", label: "AI/ML" },
-    { id: "tools", label: "Developer Tools" },
-    { id: "productivity", label: "Productivity" },
-    { id: "graphics", label: "Graphics & Media" },
-    { id: "web", label: "Web Apps" },
+    { id: "all", label: t('projects_filter_all') },
+    { id: "ai", label: t('projects_filter_ai') },
+    { id: "tools", label: t('projects_filter_tools') },
+    { id: "productivity", label: t('projects_filter_productivity') },
+    { id: "graphics", label: t('projects_filter_graphics') },
+    { id: "web", label: t('projects_filter_web') },
   ];
 
   const location = useLocation();
@@ -263,107 +340,6 @@ const Projects = () => {
     },
   };
 
-  const ProjectModal = ({ project, onClose }) => {
-    if (!project) return null;
-
-    return (
-      <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={onClose}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white dark:bg-dark-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative">
-              <button
-                onClick={onClose}
-                className="absolute top-4 right-4 z-20 p-2 bg-black/20 hover:bg-black/40 rounded-full text-white transition-colors duration-200"
-              >
-                <XMarkIcon className="w-6 h-6" />
-              </button>
-
-              <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-t-2xl flex items-center justify-center">
-                <img src={project.image} alt={project.title} />
-              </div>
-            </div>
-
-            <div className="p-8">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {project.title}
-                </h3>
-                <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    project.status === "Live"
-                      ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
-                      : project.status === "Beta"
-                      ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"
-                      : "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400"
-                  }`}
-                >
-                  {project.status}
-                </span>
-              </div>
-
-              <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                {project.longDescription}
-              </p>
-
-              <div className="mb-6">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  Technologies Used
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 bg-primary-100 dark:bg-primary-900/20 text-primary-800 dark:text-primary-300 rounded-full text-sm font-medium"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary flex items-center justify-center"
-                  >
-                    <EyeIcon className="w-5 h-5 mr-2" />
-                    View Live
-                  </a>
-                )}
-                {project.githubUrl && (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary flex items-center justify-center"
-                  >
-                    <CodeBracketIcon className="w-5 h-5 mr-2" />
-                    View Code
-                  </a>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
-    );
-  };
-
   return (
     <section className="section-padding bg-white dark:bg-dark-900">
       <motion.div
@@ -379,12 +355,12 @@ const Projects = () => {
             <span className="gradient-text">
               {" "}
               {currentPath !== "/projects"
-                ? "Featured Projects"
-                : "Project Showcase"}
+                ? t('projects_featured_title')
+                : t('projects_title')}
             </span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Showcasing my latest work and creative solutions
+            {t('projects_subtitle')}
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
         </motion.div>
@@ -393,14 +369,14 @@ const Projects = () => {
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
                 {currentPath !== "/projects"
-                  ? "Featured Projects"
-                  : "All projects"}
+                  ? t('projects_featured_title')
+                  : t('projects_all_title')}
               </h3>
               <button
                 onClick={() => navigate("/projects")}
                 className="inline-flex items-center text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 group"
               >
-                View more
+                {t('projects_view_more')}
                 <ArrowRightIcon className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
             </div>
@@ -419,7 +395,7 @@ const Projects = () => {
                     exit="hidden"
                     whileHover={{ y: -10 }}
                     className="card-hover group cursor-pointer overflow-hidden"
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => navigate(`/project/${project.id}`)}
                   >
                     {/* Project Image */}
                     <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
@@ -489,13 +465,13 @@ const Projects = () => {
                         {project.liveUrl && (
                           <button className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
                             <EyeIcon className="w-4 h-4 mr-1" />
-                            View Live
+                            {t('projects_view_live')}
                           </button>
                         )}
                         {project.githubUrl && (
                           <button className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
                             <CodeBracketIcon className="w-4 h-4 mr-1" />
-                            Code
+                            {t('projects_view_code')}
                           </button>
                         )}
                       </div>
@@ -542,7 +518,7 @@ const Projects = () => {
                     exit="hidden"
                     whileHover={{ y: -10 }}
                     className="card-hover group cursor-pointer overflow-hidden"
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => navigate(`/project/${project.id}`)}
                   >
                     {/* Project Image */}
                     <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
@@ -612,13 +588,13 @@ const Projects = () => {
                         {project.liveUrl && (
                           <button className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
                             <EyeIcon className="w-4 h-4 mr-1" />
-                            View Live
+                            {t('projects_view_live')}
                           </button>
                         )}
                         {project.githubUrl && (
                           <button className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
                             <CodeBracketIcon className="w-4 h-4 mr-1" />
-                            Code
+                            {t('projects_view_code')}
                           </button>
                         )}
                       </div>
@@ -630,14 +606,9 @@ const Projects = () => {
           </div>
         )}
       </motion.div>
-
-      {/* Project Modal */}
-      <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
     </section>
   );
 };
 
 export default Projects;
+

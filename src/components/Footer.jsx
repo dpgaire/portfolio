@@ -6,18 +6,21 @@ import {
 } from "@heroicons/react/24/outline";
 import { Github, Linkedin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
+
   const quickLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Projects", href: "#projects" },
-    { name: "Skills", href: "#skills" },
-    { name: "Blog", href: "#blog" },
-    { name: "Contact", href: "#contact" },
+    { name: t("home"), href: "#home" },
+    { name: t("about"), href: "#about" },
+    { name: t("projects"), href: "#projects" },
+    { name: t("skills"), href: "#skills" },
+    { name: t("blog"), href: "#blog" },
+    { name: t("contact"), href: "#contact" },
   ];
 
   const socialLinks = [
@@ -73,7 +76,7 @@ const Footer = () => {
                     <span className="text-white font-bold">DG</span>
                   </div>
                   <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500">
-                    Durga Gairhe
+                    {t("nav_title")}
                   </span>
                 </div>
 
@@ -90,13 +93,16 @@ const Footer = () => {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1, y: -2 }}
+                      whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
-                      className="w-12 h-12 bg-gray-100 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group"
+                      className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                      aria-label={`Visit ${social.name}`}
                     >
-                      <span className="text-xl text-gray-600 dark:text-gray-300 group-hover:text-white">
+                      <span className="text-xl" aria-hidden="true">
                         {social.icon}
                       </span>
+                      {/* Hidden text for screen readers (optional alternative to aria-label) */}
+                      {/* <span className="sr-only">{social.name}</span> */}
                     </motion.a>
                   ))}
                 </div>
@@ -175,7 +181,9 @@ const Footer = () => {
                 viewport={{ once: true }}
                 className="flex flex-wrap items-center justify-center gap-1"
               >
-                <span>© {currentYear} Durga Gairhe. Made with</span>
+                <span>
+                  © {currentYear} {t("nav_title")}. Made with
+                </span>
                 <HeartIcon className="w-4 h-4 text-red-500" />
                 <span>and</span>
                 <CodeBracketIcon className="w-4 h-4 text-primary-500" />

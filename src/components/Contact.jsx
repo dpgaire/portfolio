@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Github, Linkedin } from "lucide-react";
 import emailjs from "emailjs-com";
+import { useTranslation } from "react-i18next";
 
 import {
   EnvelopeIcon,
@@ -14,6 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -62,19 +64,19 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: EnvelopeIcon,
-      label: "Email",
+      label: t('contact_info_email_label'),
       value: "gairhedurga13@gmail.com",
       href: "mailto:gairhedurga13@gmail.com",
     },
     {
       icon: PhoneIcon,
-      label: "Phone",
+      label: t('contact_info_phone_label'),
       value: "+977 9846724440",
       href: "tel:+9779846724440",
     },
     {
       icon: MapPinIcon,
-      label: "Location",
+      label: t('contact_info_location_label'),
       value: "Kathmandu, Nepal",
       href: "https://maps.google.com/?q=Kathmandu,Nepal",
     },
@@ -170,7 +172,7 @@ const Contact = () => {
 
       setFormStatus({
         type: "success",
-        message: "Thank you! Your message has been sent successfully.",
+        message: t('contact_form_success'),
       });
 
       setTimeout(() => {
@@ -181,7 +183,7 @@ const Contact = () => {
       setFormStatus({
         type: "error",
         message:
-          "Sorry, there was an error sending your message. Please try again.",
+          t('contact_form_error'),
       });
     }
   };
@@ -198,10 +200,10 @@ const Contact = () => {
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">Get In Touch</span>
+            <span className="gradient-text">{t('contact_title')}</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Let's discuss your next project or just say hello
+            {t('contact_subtitle')}
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
         </motion.div>
@@ -211,13 +213,10 @@ const Contact = () => {
           <motion.div variants={itemVariants} className="space-y-8">
             <div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                Let's Start a Conversation
+                {t('contact_info_title')}
               </h3>
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-                I'm always excited to work on new projects and collaborate with
-                amazing people. Whether you have a project in mind, need
-                technical consultation, or just want to connect, I'd love to
-                hear from you.
+                {t('contact_info_subtitle')}
               </p>
             </div>
 
@@ -255,23 +254,29 @@ const Contact = () => {
             {/* Social Links */}
             <div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Follow Me
+                {t('contact_follow_title')}
               </h4>
-              <div className="flex space-x-4">
-                {socialLinks.map((social) => (
-                  <motion.a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group"
-                  >
-                    <span className="text-xl">{social.icon}</span>
-                  </motion.a>
-                ))}
-              </div>
+             <div className="flex space-x-4">
+  {socialLinks.map((social) => (
+    <motion.a
+      key={social.name}
+      href={social.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      aria-label={`Visit ${social.name}`}
+    >
+      <span className="text-xl" aria-hidden="true">
+        {social.icon}
+      </span>
+      {/* Hidden text for screen readers (optional alternative to aria-label) */}
+      {/* <span className="sr-only">{social.name}</span> */}
+    </motion.a>
+  ))}
+</div>
+
             </div>
 
             {/* Availability Status */}
@@ -282,12 +287,11 @@ const Contact = () => {
               <div className="flex items-center mb-3">
                 <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse mr-3"></div>
                 <h4 className="font-semibold text-gray-900 dark:text-white">
-                  Available for New Projects
+                  {t('contact_availability_title')}
                 </h4>
               </div>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                I'm currently accepting new freelance projects and full-time
-                opportunities. Let's build something amazing together!
+                {t('contact_availability_desc')}
               </p>
             </motion.div>
           </motion.div>
@@ -296,7 +300,7 @@ const Contact = () => {
           <motion.div variants={itemVariants}>
             <div className="card p-8">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                Send Me a Message
+                {t('contact_form_title')}
               </h3>
 
               {/* Form Status */}
@@ -333,7 +337,7 @@ const Contact = () => {
                       htmlFor="name"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      Name *
+                      {t('contact_form_name_label')}
                     </label>
                     <input
                       type="text"
@@ -343,7 +347,7 @@ const Contact = () => {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
-                      placeholder="Your name"
+                      placeholder={t('contact_form_name_placeholder')}
                     />
                   </div>
                   <div>
@@ -351,7 +355,7 @@ const Contact = () => {
                       htmlFor="email"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      Email *
+                      {t('contact_form_email_label')}
                     </label>
                     <input
                       type="email"
@@ -361,7 +365,7 @@ const Contact = () => {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
-                      placeholder="your.email@example.com"
+                      placeholder={t('contact_form_email_placeholder')}
                     />
                     <input
                       type="text"
@@ -381,7 +385,7 @@ const Contact = () => {
                     htmlFor="subject"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
-                    Subject *
+                    {t('contact_form_subject_label')}
                   </label>
                   <input
                     type="text"
@@ -391,7 +395,7 @@ const Contact = () => {
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
-                    placeholder="What's this about?"
+                    placeholder={t('contact_form_subject_placeholder')}
                   />
                 </div>
 
@@ -401,7 +405,7 @@ const Contact = () => {
                     htmlFor="message"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
-                    Message *
+                    {t('contact_form_message_label')}
                   </label>
                   <textarea
                     id="message"
@@ -411,7 +415,7 @@ const Contact = () => {
                     required
                     rows={6}
                     className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 resize-none"
-                    placeholder="Tell me about your project or just say hello..."
+                    placeholder={t('contact_form_message_placeholder')}
                   />
                 </div>
 
@@ -437,7 +441,7 @@ const Contact = () => {
                   ) : (
                     <div className="flex items-center justify-center">
                       <PaperAirplaneIcon className="w-5 h-5 mr-2" />
-                      Send Message
+                      {t('contact_form_button')}
                     </div>
                   )}
                 </motion.button>

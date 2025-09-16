@@ -8,8 +8,10 @@ import {
   GlobeAltIcon,
   RocketLaunchIcon
 } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 
 const About = () => {
+  const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true
@@ -39,32 +41,32 @@ const About = () => {
   };
 
   const stats = [
-    { number: "50+", label: "Projects Delivered", icon: RocketLaunchIcon },
-    { number: "5+", label: "Years Experience", icon: BoltIcon },
-    { number: "15+", label: "Technologies", icon: CpuChipIcon },
-    { number: "100%", label: "Client Satisfaction", icon: GlobeAltIcon }
+    { number: "50+", label: t('about_stat_1_label'), icon: RocketLaunchIcon },
+    { number: "5+", label: t('about_stat_2_label'), icon: BoltIcon },
+    { number: "15+", label: t('about_stat_3_label'), icon: CpuChipIcon },
+    { number: "100%", label: t('about_stat_4_label'), icon: GlobeAltIcon }
   ];
 
   const expertise = [
     {
       icon: CodeBracketIcon,
-      title: "Full-Stack Development",
-      description: "Building end-to-end solutions with React, Node.js, and modern databases"
+      title: t('about_expertise_1_title'),
+      description: t('about_expertise_1_desc')
     },
     {
       icon: DevicePhoneMobileIcon,
-      title: "Mobile Development",
-      description: "Creating cross-platform mobile apps with React Native and Expo"
+      title: t('about_expertise_2_title'),
+      description: t('about_expertise_2_desc')
     },
     {
       icon: GlobeAltIcon,
-      title: "Web Applications",
-      description: "Crafting responsive, performant web applications with modern frameworks"
+      title: t('about_expertise_3_title'),
+      description: t('about_expertise_3_desc')
     },
     {
       icon: CpuChipIcon,
-      title: "System Architecture",
-      description: "Designing scalable systems and optimizing application performance"
+      title: t('about_expertise_4_title'),
+      description: t('about_expertise_4_desc')
     }
   ];
 
@@ -80,10 +82,10 @@ const About = () => {
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">About Me</span>
+            <span className="gradient-text">{t('about_title')}</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Passionate developer creating exceptional digital experiences
+            {t('about_subtitle')}
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
         </motion.div>
@@ -144,22 +146,15 @@ const About = () => {
             {/* Main Description */}
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Software Engineer with{' '}
-                <span className="gradient-text">5+ years</span> of experience
+                {t('about_description_1')}
               </h3>
               
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                crafting exceptional digital experiences. Currently leading frontend development at{' '}
-                <span className="font-semibold text-primary-600 dark:text-primary-400">
-                  Moru Digital Wallet
-                </span>
-                , where I architect scalable solutions that serve thousands of users daily.
+                {t('about_description_2')}
               </p>
 
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                My expertise spans across modern web technologies, desktop applications, and mobile development. 
-                I'm passionate about building tools that solve real problems—from rich text editors and VS Code 
-                extensions to AI-powered automation agents.
+                {t('about_description_3')}
               </p>
             </div>
 
@@ -198,11 +193,10 @@ const About = () => {
               className="p-6 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/10 dark:to-secondary-900/10 rounded-xl border border-primary-200/50 dark:border-primary-800/50"
             >
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                My Development Philosophy
+                {t('about_philosophy_title')}
               </h4>
               <p className="text-gray-600 dark:text-gray-400 italic">
-                "I believe in writing clean, maintainable code that not only works today but scales for tomorrow. 
-                Every line of code should serve a purpose, and every user interaction should feel intuitive and delightful."
+                {t('about_philosophy_desc')}
               </p>
             </motion.div>
           </motion.div>
