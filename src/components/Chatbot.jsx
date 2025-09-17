@@ -161,7 +161,6 @@ const PremiumChatbot = () => {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const [isMinimized, setIsMinimized] = useState(false);
   const messagesEndRef = useRef(null);
 
   const API_KEY = import.meta.env.VITE_GEMINI_KEY;
@@ -359,7 +358,7 @@ const PremiumChatbot = () => {
         } mb-6 transition-all duration-500`}
       >
         <div
-          className={`max-w-[80%] h-full ${isBot ? "mr-12" : "ml-12"} relative`}
+          className={`lg:max-w-[80%] w-full h-full ${isBot ? "mr-12" : "ml-12"} relative`}
         >
           <div
             className={`p-5 rounded-3xl relative overflow-hidden backdrop-blur-xl border 
@@ -400,7 +399,7 @@ const PremiumChatbot = () => {
               <div className="flex-1">
                 <p
                   dangerouslySetInnerHTML={{ __html: message.text }}
-                  className={`text-[15px] leading-relaxed tracking-wide whitespace-pre-line
+                  className={`lg:text-[15px] text-sm leading-relaxed tracking-wide whitespace-pre-line
                   ${
                     isBot
                       ? "text-gray-800 font-medium"
@@ -435,7 +434,7 @@ const PremiumChatbot = () => {
       className={`fixed z-50 transition-all duration-500 ease-in-out ${
         isExpanded
           ? "inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm"
-          : "bottom-0 right-0 lg:bottom-6 lg:right-4"
+          : "right-0 bottom-0 lg:right-2"
       }`}
       onClick={(e) => {
         if (isExpanded && e.target === e.currentTarget) {
@@ -447,7 +446,7 @@ const PremiumChatbot = () => {
         className={`bg-white rounded-2xl shadow-2xl flex flex-col transition-all duration-500 ${
           isExpanded
             ? "w-11/12 h-5/6 max-w-4xl"
-            : "w-full lg:w-96 h-[70vh] lg:h-[600px]"
+            : "w-full lg:w-96 h-full max-h-[91vh] lg:h-[600px]"
         }`}
       >
         {/* Chat Header */}
@@ -509,7 +508,7 @@ const PremiumChatbot = () => {
                       Popular Questions
                     </p>
                     <div className="grid grid-cols-2 gap-2">
-                      {smartSuggestions.map((suggestion, index) => (
+                      {smartSuggestions.slice(0, 4).map((suggestion, index) => (
                         <button
                           key={index}
                           onClick={() => handleQuickQuestion(suggestion.text)}
@@ -587,7 +586,7 @@ const PremiumChatbot = () => {
 
               {/* Quick starters */}
               <div className="flex flex-wrap gap-2 mt-3">
-                {(!isExpanded ? quickStarters.slice(0, 4) : quickStarters).map(
+                {quickStarters.slice(0, 4).map(
                   (starter, index) => (
                     <button
                       key={index}
