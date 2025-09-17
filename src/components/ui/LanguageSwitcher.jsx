@@ -5,9 +5,7 @@ import { ChevronDown } from "lucide-react";
 const languages = [
   { code: "en", name: "English", flag: "🇬🇧" },
   { code: "ne", name: "Nepali", flag: "🇳🇵" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "de", name: "Deutsch", flag: "🇩🇪" },
+  { code: "hi", name: "Hindi", flag: "🇮🇳" },
 ];
 
 const LanguageSwitcher = () => {
