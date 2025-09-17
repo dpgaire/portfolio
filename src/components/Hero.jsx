@@ -10,7 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 const Hero = () => {
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -142,6 +142,7 @@ const Hero = () => {
 
         {/* Animated Subtitle */}
         <motion.div
+          key={i18n.language}
           variants={itemVariants}
           className="text-xl sm:text-2xl lg:text-3xl font-medium mb-8 text-gray-700 dark:text-gray-300 min-h-[2.5rem]"
         >

@@ -77,9 +77,8 @@ const Footer = () => {
                 </div>
 
                 <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-6 max-w-md">
-                  Full-Stack Developer passionate about creating exceptional
-                  digital experiences. Building the future, one line of code at
-                  a time.
+                  {t('footer_intro')}
+                  
                 </p>
 
                 <div className="flex space-x-4">
@@ -137,27 +136,27 @@ const Footer = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <h3 className="text-lg font-semibold mb-4">Get In Touch</h3>
+                <h3 className="text-lg font-semibold mb-4">{t("contact_title")}</h3>
                 <div className="space-y-3 text-gray-600 dark:text-gray-400">
                   <p>
                     <span className="font-medium text-gray-800 dark:text-white block">
-                      Email
+                     {t("contact_info_email_label")}
                     </span>
                     gairhedurga13@gmail.com
                   </p>
                   <p>
                     <span className="font-medium text-gray-800 dark:text-white block">
-                      Location
+                      {t("contact_info_location_label")}
                     </span>
                     Kathmandu, Nepal
                   </p>
                   <p>
                     <span className="font-medium text-gray-800 dark:text-white block">
-                      Availability
+                     {t("footer_availability_title")}
                     </span>
                     <span className="inline-flex items-center">
                       <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse" />
-                      Available for projects
+                     {t("contact_availability_title")}
                     </span>
                   </p>
                 </div>
@@ -176,14 +175,10 @@ const Footer = () => {
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
                 className="flex flex-wrap items-center justify-center gap-1"
-              >
-                <span>
-                  © {currentYear} {t("nav_title")}. Made with
-                </span>
-                <HeartIcon className="w-4 h-4 text-red-500" />
-                <span>and</span>
-                <CodeBracketIcon className="w-4 h-4 text-primary-500" />
-                <span>in Nepal</span>
+              ><span>
+  {t("footer_text", { year: currentYear, name: t("nav_title") })}
+</span>
+
               </motion.div>
 
               <motion.div
@@ -197,13 +192,13 @@ const Footer = () => {
                   onClick={() => navigate("/privacy-policy")}
                   className="hover:text-primary-500 dark:hover:text-white transition-colors duration-200"
                 >
-                  Privacy Policy
+                  {t("privacy_policy")}
                 </button>
                 <button
                   onClick={() => navigate("/terms-of-service")}
                   className="hover:text-primary-500 dark:hover:text-white transition-colors duration-200"
                 >
-                  Terms of Service
+                  {t("terms_of_service")}
                 </button>
               </motion.div>
             </div>
