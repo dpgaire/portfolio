@@ -332,7 +332,7 @@ const PremiumChatbot = () => {
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setIsOpen(true)}
-          className="relative group w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center"
+          className="relative group w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center"
         >
           <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <MessageCircle className="w-7 h-7 text-white z-10" />
@@ -367,7 +367,7 @@ const PremiumChatbot = () => {
                 ? isWelcome || isSystem
                   ? "bg-gradient-to-br from-blue-50/70 to-purple-50/70 border-white/30 shadow-xl"
                   : "bg-white/80 border-gray-200/50 shadow-lg"
-                : "bg-gradient-to-br from-blue-700 via-purple-700 to-indigo-800 text-white shadow-2xl"
+                : "bg-gradient-to-br  from-emerald-400 via-teal-500 to-green-600 text-white shadow-2xl"
             }`}
           >
             {/* Floating glowing elements for premium feel */}
@@ -384,13 +384,13 @@ const PremiumChatbot = () => {
                   className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-offset-2
                   ${
                     isWelcome || isSystem
-                      ? "bg-gradient-to-br from-blue-500 to-purple-600 ring-purple-300"
+                      ? "bg-gradient-to-br  from-emerald-400  to-green-600 ring-purple-300"
                       : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300"
                   }`}
                 >
                   <Bot
                     className={`w-5 h-5 ${
-                      isWelcome || isSystem ? "text-white" : "text-purple-600"
+                      isWelcome || isSystem ? "text-white" : "to-green-600"
                     }`}
                   />
                 </div>
@@ -450,7 +450,7 @@ const PremiumChatbot = () => {
         }`}
       >
         {/* Chat Header */}
-        <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white rounded-t-2xl p-4 shadow-lg flex-shrink-0">
+        <div className="relative bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 text-white rounded-t-2xl p-4 shadow-lg flex-shrink-0">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm opacity-30"></div>
           <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -540,12 +540,12 @@ const PremiumChatbot = () => {
                       <div className="bg-white border border-gray-100 py-4 px-2 rounded-2xl shadow-sm">
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center border border-gray-200">
-                            <Bot className="w-4 h-4 text-purple-600" />
+                            <Bot className="w-4 h-4 text-green-600" />
                           </div>
                           <div className="flex space-x-1">
                             <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
                             <div
-                              className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+                              className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
                               style={{ animationDelay: "0.1s" }}
                             ></div>
                             <div
@@ -577,7 +577,7 @@ const PremiumChatbot = () => {
                   <button
                     onClick={() => handleSendMessage()}
                     disabled={!inputValue.trim() || isTyping}
-                    className="absolute right-2 top-2 w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="absolute right-2 top-2 w-8 h-8 rounded-lg  bg-gradient-to-r from-emerald-400  to-green-600 text-white flex items-center justify-center hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Send className="w-4 h-4" />
                   </button>

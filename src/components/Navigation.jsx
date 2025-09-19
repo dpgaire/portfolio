@@ -88,7 +88,7 @@ const Navigation = () => {
               className="flex items-center space-x-2 cursor-pointer"
               onClick={()=>navigate('/')}
             >
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8  bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-lg flex items-center justify-center">
                 <span onClick={()=>navigate('/')} className="text-white font-bold text-sm">DG</span>
               </div>
               <span className="text-xl font-bold gradient-text hidden sm:block">
@@ -104,7 +104,7 @@ const Navigation = () => {
                   onClick={() => handleNavClick(item.href)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                  className={`flex items-center  space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none  focus:ring-blue-500 focus:ring-offset-2 ${
                     activeSection === item.id
                       ? 'bg-primary-500 text-white shadow-lg'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700'
