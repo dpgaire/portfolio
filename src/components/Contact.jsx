@@ -235,7 +235,7 @@ const Contact = () => {
                   whileHover={{ x: 10 }}
                   className="flex items-center p-4 bg-white dark:bg-dark-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <info.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="ml-4">

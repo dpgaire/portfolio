@@ -209,7 +209,7 @@ const Skills = () => {
         <motion.div variants={itemVariants} className="mt-16">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🏆</span>
               </div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">

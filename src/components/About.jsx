@@ -166,12 +166,12 @@ const About = () => {
               <div className="grid gap-4">
                 {expertise.map((item, index) => (
                   <motion.div
-                    key={item.title}
+                    key={item.title + index}
                     variants={itemVariants}
                     whileHover={{ x: 10 }}
                     className="flex items-start space-x-4 p-4 rounded-lg bg-white/50 dark:bg-dark-700/50 border border-gray-200/50 dark:border-dark-600/50 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-lg flex items-center justify-center">
                       <item.icon className="w-5 h-5 text-white" />
                     </div>
                     <div>

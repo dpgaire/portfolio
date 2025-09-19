@@ -68,10 +68,10 @@ const Footer = () => {
                 viewport={{ once: true }}
               >
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold">DG</span>
                   </div>
-                  <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500">
+                  <span className="text-2xl font-bold bg-clip-text text-transparent  bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600">
                     {t("nav_title")}
                   </span>
                 </div>
