@@ -87,9 +87,8 @@ const About = () => {
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             {t('about_subtitle')}
           </p>
-          <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
+          <div className="w-20 h-1   bg-gradient-to-r from-emerald-400 to-green-600 mx-auto mt-6 rounded-full"></div>
         </motion.div>
-
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Image and Stats */}
           <motion.div variants={itemVariants} className="space-y-8">
