@@ -1,7 +1,8 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { projects } from "../components/Projects"; // Assuming projects data is here
+// import { projects } from "../components/Projects"; // Assuming projects data is here
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { projects } from "../utils";
 
 const ProjectDetails = () => {
   const { id } = useParams();
