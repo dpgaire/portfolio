@@ -1,60 +1,75 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { useTranslation } from 'react-i18next';
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { useTranslation } from "react-i18next";
 
 const Skills = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
-    triggerOnce: true
+    triggerOnce: true,
   });
 
   const skillCategories = [
     {
-      title: t('skills_category_1_title'),
+      title: t("skills_category_1_title"),
       icon: "🎨",
       skills: [
         { name: "React", level: 95, color: "from-blue-500 to-cyan-500" },
         { name: "TypeScript", level: 90, color: "from-blue-600 to-blue-400" },
         { name: "Next.js", level: 85, color: "from-gray-800 to-gray-600" },
         { name: "Tailwind CSS", level: 92, color: "from-cyan-500 to-blue-500" },
-        { name: "Framer Motion", level: 88, color: "from-purple-500 to-pink-500" }
-      ]
+        {
+          name: "Framer Motion",
+          level: 88,
+          color: "from-purple-500 to-pink-500",
+        },
+      ],
     },
     {
-      title: t('skills_category_2_title'),
+      title: t("skills_category_2_title"),
       icon: "⚙️",
       skills: [
         { name: "Node.js", level: 88, color: "from-green-600 to-green-400" },
         { name: "Express.js", level: 85, color: "from-gray-700 to-gray-500" },
         { name: "PostgreSQL", level: 82, color: "from-blue-700 to-blue-500" },
         { name: "MongoDB", level: 80, color: "from-green-700 to-green-500" },
-        { name: "GraphQL", level: 75, color: "from-pink-600 to-purple-600" }
-
-      ]
+        { name: "GraphQL", level: 75, color: "from-pink-600 to-purple-600" },
+      ],
     },
     {
-      title: t('skills_category_3_title'),
+      title: t("skills_category_3_title"),
       icon: "📱",
       skills: [
-        { name: "React Native", level: 87, color: "from-blue-500 to-purple-500" },
+        {
+          name: "React Native",
+          level: 87,
+          color: "from-blue-500 to-purple-500",
+        },
         { name: "Expo", level: 85, color: "from-indigo-600 to-blue-600" },
         // { name: "Flutter", level: 70, color: "from-blue-400 to-cyan-400" },
-        { name: "iOS Development", level: 65, color: "from-gray-600 to-gray-400" },
-        { name: "Android Development", level: 68, color: "from-green-600 to-green-400" }
-      ]
+        {
+          name: "iOS Development",
+          level: 65,
+          color: "from-gray-600 to-gray-400",
+        },
+        {
+          name: "Android Development",
+          level: 68,
+          color: "from-green-600 to-green-400",
+        },
+      ],
     },
     {
-      title: t('skills_category_4_title'),
+      title: t("skills_category_4_title"),
       icon: "🛠️",
       skills: [
         { name: "Git & GitHub", level: 93, color: "from-gray-800 to-gray-600" },
         { name: "Docker", level: 78, color: "from-blue-600 to-blue-400" },
         { name: "AWS", level: 75, color: "from-orange-500 to-yellow-500" },
         { name: "Webpack", level: 82, color: "from-blue-500 to-cyan-500" },
-        { name: "Jest", level: 85, color: "from-red-600 to-red-400" }
-      ]
-    }
+        { name: "Jest", level: 85, color: "from-red-600 to-red-400" },
+      ],
+    },
   ];
 
   const containerVariants = {
@@ -63,9 +78,9 @@ const Skills = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
+        delayChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -75,9 +90,9 @@ const Skills = () => {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const progressVariants = {
@@ -87,9 +102,9 @@ const Skills = () => {
       transition: {
         duration: 1.5,
         ease: "easeOut",
-        delay: 0.5
-      }
-    })
+        delay: 0.5,
+      },
+    }),
   };
 
   return (
@@ -104,12 +119,12 @@ const Skills = () => {
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">{t('skills_title')}</span>
+            <span className="gradient-text">{t("skills_title")}</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            {t('skills_subtitle')}
+            {t("skills_subtitle")}
           </p>
-          <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6 rounded-full"></div>
+          <div className="w-20 h-1 bg-gradient-to-r from-emerald-400 to-green-600 mx-auto mt-6 rounded-full"></div>
         </motion.div>
 
         {/* Skills Grid */}
@@ -144,7 +159,7 @@ const Skills = () => {
                         {skill.level}%
                       </span>
                     </div>
-                    
+
                     {/* Progress Bar */}
                     <div className="relative h-3 bg-gray-200 dark:bg-dark-700 rounded-full overflow-hidden">
                       <motion.div
@@ -154,7 +169,7 @@ const Skills = () => {
                         animate={inView ? "visible" : "hidden"}
                         className={`absolute top-0 left-0 h-full bg-gradient-to-r ${skill.color} rounded-full`}
                       />
-                      
+
                       {/* Shine Effect */}
                       <motion.div
                         animate={{
@@ -164,7 +179,7 @@ const Skills = () => {
                           duration: 2,
                           repeat: Infinity,
                           repeatDelay: 3,
-                          ease: "easeInOut"
+                          ease: "easeInOut",
                         }}
                         className="absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
                       />
@@ -180,18 +195,37 @@ const Skills = () => {
         <motion.div variants={itemVariants} className="mt-16">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              {t('skills_additional_title')}
+              {t("skills_additional_title")}
             </h3>
           </div>
 
           <div className="flex flex-wrap justify-center gap-4">
             {[
-              "JavaScript", "Python", "Java", "PHP",
-              "React.js", "Redux", "Zustand",
-              "Firebase", "Supabase", "Prisma", "Mongoose",
-              "Electron", "PWA", "WebAssembly", "Three.js",
-              "D3.js", "Chart.js", "Storybook", "Cypress", "Playwright",
-              "Jenkins", "GitHub Actions", "Vercel", "Netlify", "Heroku"
+              "JavaScript",
+              "Python",
+              "Java",
+              "PHP",
+              "React.js",
+              "Redux",
+              "Zustand",
+              "Firebase",
+              "Supabase",
+              "Prisma",
+              "Mongoose",
+              "Electron",
+              "PWA",
+              "WebAssembly",
+              "Three.js",
+              "D3.js",
+              "Chart.js",
+              "Storybook",
+              "Cypress",
+              "Playwright",
+              "Jenkins",
+              "GitHub Actions",
+              "Vercel",
+              "Netlify",
+              "Heroku",
             ].map((tech, index) => (
               <motion.span
                 key={tech}
@@ -213,10 +247,10 @@ const Skills = () => {
                 <span className="text-2xl">🏆</span>
               </div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                {t('skills_cert_1_title')}
+                {t("skills_cert_1_title")}
               </h4>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                {t('skills_cert_1_desc')}
+                {t("skills_cert_1_desc")}
               </p>
             </div>
 
@@ -225,10 +259,10 @@ const Skills = () => {
                 <span className="text-2xl">📜</span>
               </div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                {t('skills_cert_2_title')}
+                {t("skills_cert_2_title")}
               </h4>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                {t('skills_cert_2_desc')}
+                {t("skills_cert_2_desc")}
               </p>
             </div>
 
@@ -237,10 +271,10 @@ const Skills = () => {
                 <span className="text-2xl">⭐</span>
               </div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                {t('skills_cert_3_title')}
+                {t("skills_cert_3_title")}
               </h4>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                {t('skills_cert_3_desc')}
+                {t("skills_cert_3_desc")}
               </p>
             </div>
           </div>
@@ -251,4 +285,3 @@ const Skills = () => {
 };
 
 export default Skills;
-
