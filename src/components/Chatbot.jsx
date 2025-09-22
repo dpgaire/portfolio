@@ -31,9 +31,9 @@ import {
   Compass,
   Cpu,
   PenTool,
+  Menu,
+  Grid3X3,
 } from "lucide-react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { personData, priorityMatches } from "../assets/personal_data";
 
 const smartSuggestions = [
   {
@@ -48,7 +48,7 @@ const smartSuggestions = [
     text: "Show me his frontend & backend skills",
     category: "skills",
     popular: true,
-    id: "frontend-skills", // default focus
+    id: "frontend-skills",
   },
   {
     icon: Award,
@@ -78,55 +78,6 @@ const smartSuggestions = [
     popular: true,
     id: "availability",
   },
-  {
-    icon: TrendingUp,
-    text: "Key achievements",
-    category: "achievements",
-    popular: true,
-    id: "achievements",
-  },
-  {
-    icon: Mail,
-    text: "Contact details",
-    category: "contact",
-    popular: true,
-    id: "contact",
-  },
-  {
-    icon: BookOpen,
-    text: "Educational background",
-    category: "education",
-    popular: false,
-    id: "education",
-  },
-  {
-    icon: Compass,
-    text: "Durga's vision & mission",
-    category: "vision",
-    popular: false,
-    id: "vision",
-  },
-  {
-    icon: Lightbulb,
-    text: "Development philosophy",
-    category: "philosophy",
-    popular: false,
-    id: "philosophy",
-  },
-  {
-    icon: Cpu,
-    text: "AI & automation expertise",
-    category: "skills",
-    popular: false,
-    id: "ai-expertise",
-  },
-  {
-    icon: PenTool,
-    text: "Blog insights",
-    category: "knowledge",
-    popular: false,
-    id: "blog-insights",
-  },
 ];
 
 const quickStarters = [
@@ -136,19 +87,14 @@ const quickStarters = [
   "What are his key achievements?",
   "Tell me Durga's expertise",
   "Why should I hire him?",
-  "Show me his GitHub",
-  "What’s DevOS AI?",
-  "What is his educational background?",
-  "What’s his long-term vision?",
-  "Explain his development philosophy",
-  "Does he work with AI & automation?",
-  "What does he write about in his blog?",
 ];
 
 const PremiumChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const inputRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -161,9 +107,73 @@ const PremiumChatbot = () => {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const messagesEndRef = useRef(null);
 
-  const API_KEY = import.meta.env.VITE_GEMINI_KEY;
+  // Prevent background scrolling when chatbot is open
+  useEffect(() => {
+    if (isOpen) {
+      // Store original body styles
+      const originalStyle = window.getComputedStyle(document.body);
+      const originalOverflow = originalStyle.overflow;
+      const originalPaddingRight = originalStyle.paddingRight;
+      
+      // Get scrollbar width to prevent layout shift
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      
+      // Lock body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+      
+      return () => {
+        // Restore original styles when chatbot closes
+        document.body.style.overflow = originalOverflow;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [isOpen]);
+
+  // Detect mobile device and screen size changes
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    const handleResize = () => {
+      checkMobile();
+    };
+
+    const handleVisualViewport = () => {
+      if (window.visualViewport && isMobile) {
+        const viewportHeight = window.visualViewport.height;
+        const windowHeight = window.innerHeight;
+        const keyboardHeight = windowHeight - viewportHeight;
+        setKeyboardHeight(keyboardHeight > 100 ? keyboardHeight : 0);
+        
+        // Force a small delay to ensure proper rendering
+        setTimeout(() => {
+          if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', handleResize);
+    
+    // Handle virtual keyboard on mobile
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleVisualViewport);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleVisualViewport);
+      }
+    };
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -178,80 +188,6 @@ const PremiumChatbot = () => {
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
       .replace(/\n\n/g, "<br><br>")
       .replace(/\n/g, "<br>");
-  };
-
-  const findLocalAnswer = (question) => {
-    const lowerQuestion = question.toLowerCase().trim();
-
-    // 1. Exact Match
-    const exactMatch = personData.find(
-      (item) => item.question.toLowerCase().trim() === lowerQuestion
-    );
-    if (exactMatch) {
-      return exactMatch.answer;
-    }
-
-    for (const match of priorityMatches) {
-      if (match.keywords.some((keyword) => lowerQuestion.includes(keyword))) {
-        const faq = personData.find((item) => item.id === match.id);
-        if (faq) return faq.answer;
-      }
-    }
-
-    // 3. Fallback: search through all data for partial matches
-    for (const item of personData) {
-      const questionWords = lowerQuestion.split(" ");
-      const itemTags = item.tags.join(" ").toLowerCase();
-      const itemAnswer = item.answer.toLowerCase();
-
-      if (
-        questionWords.some(
-          (word) =>
-            word.length > 2 &&
-            (itemTags.includes(word) || itemAnswer.includes(word))
-        )
-      ) {
-        return item.answer;
-      }
-    }
-
-    return null; // Return null if no local answer is found
-  };
-
-  const generateGeminiResponse = async (question) => {
-    if (!API_KEY) {
-      return "My apologies, but the Gemini API key is not configured. Please ensure REACT_APP_GEMINI_API_KEY is set in your environment variables.";
-    }
-
-    try {
-      const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({
-        model: "models/gemini-1.5-flash",
-      });
-
-      // Create context from person data
-      const context = personData
-        .map(
-          (item) =>
-            `Q: ${item.question}\nA: ${item.answer}\nCategory: ${
-              item.category
-            }\nTags: ${item.tags.join(", ")}`
-        )
-        .join("\n\n");
-
-      const prompt = `You are Durga Gairhe's AI assistant. Based on the following information about Durga, answer the user's question in a short, sweet, and helpful manner. Keep responses concise but informative.\n\nContext about Durga Gairhe:\n${context}\n\nUser Question: ${question}\n\nInstructions:\n- Keep responses short and sweet (2-3 sentences max unless more detail is specifically requested)\n- Use the provided context to answer accurately\n- If the question is not covered in the context, politely redirect to available information\n- Maintain a professional but friendly tone\n- Use emojis sparingly and appropriately\n\nAnswer:`;
-
-      const generationConfig = {
-        temperature: 0.2,
-      };
-
-      const result = await model.generateContent(prompt, generationConfig);
-      const response = await result.response;
-      return response.text();
-    } catch (error) {
-      console.error("Gemini API Error:", error);
-      return "I'm having trouble connecting to the AI service. Please check your API key or try again later.";
-    }
   };
 
   const handleSendMessage = async (messageText = inputValue) => {
@@ -270,47 +206,43 @@ const PremiumChatbot = () => {
     setShowSuggestions(false);
 
     try {
-      // First try to find a local answer
-      let responseText = findLocalAnswer(messageText);
+      const response = await fetch("https://ai-chatbot-api-ten.vercel.app/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: messageText }),
+      });
 
-      // If no local answer found, use Gemini API
-      if (!responseText) {
-        responseText = await generateGeminiResponse(messageText);
+      console.log('response',response)
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
 
-      // Enhanced typing simulation
-      const typingDelay = Math.min(messageText.length * 50 + 1000, 2500);
+      const data = await response.json();
+      const botResponse = {
+        id: Date.now() + 1,
+        text: formatAnswerToHTML(data.response),
+        sender: "bot",
+        timestamp: new Date(),
+        type: "response",
+      };
 
-      setTimeout(() => {
-        const botResponse = {
-          id: Date.now() + 1,
-          text: formatAnswerToHTML(responseText),
-          sender: "bot",
-          timestamp: new Date(),
-          type: "response",
-        };
-
-        setMessages((prev) => [...prev, botResponse]);
-        setIsTyping(false);
-      }, typingDelay);
+      setMessages((prev) => [...prev, botResponse]);
     } catch (error) {
-      console.error("Error generating response:", error);
-      setTimeout(() => {
-        const errorResponse = {
-          id: Date.now() + 1,
-          text: "I apologize, but I'm having trouble processing your request right now. Please try again.",
-          sender: "bot",
-          timestamp: new Date(),
-          type: "error",
-        };
-        setMessages((prev) => [...prev, errorResponse]);
-        setIsTyping(false);
-      }, 1000);
+      console.error("Error fetching chatbot response:", error);
+      const errorResponse = {
+        id: Date.now() + 1,
+        text: "Sorry, I'm having trouble connecting to my brain right now. Please try again in a moment.",
+        sender: "bot",
+        timestamp: new Date(),
+        type: "response",
+      };
+      setMessages((prev) => [...prev, errorResponse]);
+    } finally {
+      setIsTyping(false);
     }
-  };
-
-  const handleQuickQuestion = (question) => {
-    handleSendMessage(question);
   };
 
   const handleKeyPress = (e) => {
@@ -320,26 +252,50 @@ const PremiumChatbot = () => {
     }
   };
 
+  // Handle input focus for mobile keyboard
   useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
+    if (isOpen && inputRef.current && !isTyping) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, isTyping]);
 
-  // Enhanced Floating Button
+  const handleInputFocus = () => {
+    if (isMobile) {
+      // Small delay to allow keyboard to appear
+      setTimeout(() => {
+        if (messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        }
+      }, 300);
+    }
+  };
+
+  const handleInputBlur = () => {
+    if (isMobile) {
+      // Reset any transforms when keyboard disappears
+      setTimeout(() => {
+        setKeyboardHeight(0);
+      }, 100);
+    }
+  };
+
+  // Floating Action Button
   if (!isOpen) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
         <button
           onClick={() => setIsOpen(true)}
-          className="relative group w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center"
+          className="relative group w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 shadow-lg md:shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center backdrop-blur-sm"
         >
           <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <MessageCircle className="w-7 h-7 text-white z-10" />
-          <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
-            <Bell className="w-3 h-3 text-white" />
+          <MessageCircle className="w-6 h-6 md:w-7 md:h-7 text-white z-10" />
+          <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
+            <Bell className="w-2 h-2 md:w-3 md:h-3 text-white" />
           </div>
-          <div className="absolute -bottom-2 -left-2 w-8 h-8 bg-blue-500/20 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-1 -left-1 w-6 h-6 md:w-8 md:h-8 bg-emerald-500/20 rounded-full animate-ping"></div>
         </button>
       </div>
     );
@@ -348,60 +304,53 @@ const PremiumChatbot = () => {
   const renderMessage = (message) => {
     const isBot = message.sender === "bot";
     const isWelcome = message.type === "welcome";
-    const isSystem = message.type === "system";
 
     return (
       <div
         key={message.id}
-        className={`flex ${
-          isBot ? "justify-start" : "justify-end"
-        } mb-6 transition-all duration-500`}
+        className={`flex ${isBot ? "justify-start" : "justify-end"} mb-4 md:mb-6 px-2 md:px-4`}
       >
-        <div
-          className={`lg:max-w-[80%] w-full h-full ${
-            isBot ? "mr-12" : "ml-12"
-          } relative`}
-        >
+        <div className={`max-w-[85%] md:max-w-[80%] ${isBot ? "mr-2" : "ml-2"}`}>
           <div
-            className={`p-5 rounded-3xl relative overflow-hidden backdrop-blur-xl border 
+            className={`px-3 py-3 md:px-4 md:py-4 rounded-2xl md:rounded-3xl relative overflow-hidden backdrop-blur-sm border transition-all duration-300
             ${
               isBot
-                ? isWelcome || isSystem
-                  ? "bg-gradient-to-br from-blue-50/70 to-purple-50/70 border-white/30 shadow-xl"
-                  : "bg-white/80 border-gray-200/50 shadow-lg"
-                : "bg-gradient-to-br  from-emerald-400 via-teal-500 to-green-600 text-white shadow-2xl"
+                ? isWelcome
+                  ? "bg-gradient-to-br from-blue-50/90 to-purple-50/90 border-blue-200/30 shadow-md"
+                  : "bg-white/90 border-gray-200/50 shadow-sm"
+                : "bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 text-white shadow-md border-transparent"
             }`}
           >
-            {/* Floating glowing elements for premium feel */}
-            {(isWelcome || isSystem) && (
+            {/* Premium effects for welcome messages */}
+            {isWelcome && (
               <>
-                <div className="absolute top-0 right-0 w-20 h-20 bg-blue-400/10 blur-2xl rounded-full -mr-6 -mt-6 animate-pulse"></div>
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-purple-400/10 blur-2xl rounded-full -ml-6 -mb-6 animate-pulse"></div>
+                <div className="absolute top-0 right-0 w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-xl rounded-full -mr-4 -mt-4 animate-pulse"></div>
+                <div className="absolute bottom-0 left-0 w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-400/10 to-teal-400/10 blur-xl rounded-full -ml-4 -mb-4 animate-pulse"></div>
               </>
             )}
 
-            <div className="flex items-start space-x-3 relative z-10">
+            <div className="flex items-start space-x-2 md:space-x-3 relative z-10">
               {isBot && (
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-offset-2
+                  className={`w-7 h-7 md:w-9 md:h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-offset-1
                   ${
-                    isWelcome || isSystem
-                      ? "bg-gradient-to-br  from-emerald-400  to-green-600 ring-purple-300"
-                      : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300"
+                    isWelcome
+                      ? "bg-gradient-to-br from-emerald-400 to-green-600 ring-emerald-300/50"
+                      : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300/50"
                   }`}
                 >
                   <Bot
-                    className={`w-5 h-5 ${
-                      isWelcome || isSystem ? "text-white" : "to-green-600"
+                    className={`w-4 h-4 md:w-5 md:h-5 ${
+                      isWelcome ? "text-white" : "text-emerald-600"
                     }`}
                   />
                 </div>
               )}
 
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p
                   dangerouslySetInnerHTML={{ __html: message.text }}
-                  className={`lg:text-[15px] text-sm leading-relaxed tracking-wide whitespace-pre-line
+                  className={`text-sm md:text-[15px] leading-relaxed tracking-wide whitespace-pre-line break-words
                   ${
                     isBot
                       ? "text-gray-800 font-medium"
@@ -409,8 +358,8 @@ const PremiumChatbot = () => {
                   }`}
                 ></p>
                 <p
-                  className={`text-xs mt-2 ${
-                    isBot ? "text-gray-500" : "text-blue-100/80"
+                  className={`text-xs mt-1 md:mt-2 ${
+                    isBot ? "text-gray-500" : "text-emerald-100/80"
                   }`}
                 >
                   {message.timestamp.toLocaleTimeString([], {
@@ -421,8 +370,8 @@ const PremiumChatbot = () => {
               </div>
 
               {!isBot && (
-                <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/20">
-                  <User className="w-5 h-5 text-white" />
+                <div className="w-7 h-7 md:w-9 md:h-9 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/30">
+                  <User className="w-4 h-4 md:w-5 md:h-5 text-white" />
                 </div>
               )}
             </div>
@@ -431,12 +380,53 @@ const PremiumChatbot = () => {
       </div>
     );
   };
+
+  // Responsive container styles
+  const getContainerStyles = () => {
+    if (isMobile && !isExpanded) {
+      const availableHeight = keyboardHeight > 0 
+        ? `${window.visualViewport?.height || window.innerHeight}px`
+        : '100vh';
+        
+      return {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: availableHeight,
+        width: '100vw',
+        borderRadius: 0,
+        maxHeight: 'none',
+        overflow: 'hidden',
+      };
+    }
+    
+    if (isExpanded) {
+      return {
+        width: '95vw',
+        height: '90vh',
+        maxWidth: '1000px',
+        maxHeight: '800px',
+        borderRadius: '1rem',
+      };
+    }
+    
+    return {
+      width: '384px', // w-96
+      height: '600px',
+      borderRadius: '1rem',
+    };
+  };
+
   return (
     <div
-      className={`fixed z-50 transition-all duration-500 ease-in-out ${
+      className={`fixed z-50 transition-all duration-300 ease-out ${
         isExpanded
-          ? "inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm"
-          : "right-0 bottom-0 lg:right-2"
+          ? "inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+          : isMobile
+          ? ""
+          : "bottom-2 right-2 md:bottom-4 md:right-4"
       }`}
       onClick={(e) => {
         if (isExpanded && e.target === e.currentTarget) {
@@ -445,86 +435,83 @@ const PremiumChatbot = () => {
       }}
     >
       <div
-        className={`bg-white back-scroll lg:rounded-2xl lg:shadow-2xl flex flex-col transition-all duration-500
-    ${
-      isExpanded
-        ? "w-11/12 h-5/6 max-w-4xl"
-        : "w-screen h-screen lg:w-96 lg:h-[600px]"
-    }`}
+        className="bg-white shadow-2xl flex flex-col overflow-hidden"
+        style={getContainerStyles()}
       >
-        {/* Chat Header */}
-        <div className="relative bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 text-white lg:rounded-t-2xl p-4 shadow-lg flex-shrink-0">
+        {/* Header */}
+        <div className="relative bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 text-white p-3 md:p-4 shadow-lg flex-shrink-0">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm opacity-30"></div>
           <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm shadow-md">
-                <Bot className="w-5 h-5" />
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm shadow-inner">
+                <Bot className="w-4 h-4 md:w-5 md:h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">Durga's AI Assistant</h3>
+                <h3 className="text-base md:text-lg font-bold">Durga's AI Assistant</h3>
                 <div className="text-xs opacity-90 flex items-center">
-                  <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                  {API_KEY ? "Gemini AI Powered" : "Local Knowledge Base"}
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                  Online & Ready to Help
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="p-1.5 rounded-lg hover:bg-white/20 transition-colors duration-200"
-                title={isExpanded ? "Minimize" : "Expand"}
-              >
-                {isExpanded ? (
-                  <Minimize2 className="w-4 h-4" />
-                ) : (
-                  <Maximize2 className="w-4 h-4" />
-                )}
-              </button>
+            <div className="flex items-center space-x-1 md:space-x-2">
+              {!isMobile && (
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="p-1.5 md:p-2 rounded-lg hover:bg-white/20 transition-colors duration-200"
+                  title={isExpanded ? "Minimize" : "Expand"}
+                >
+                  {isExpanded ? (
+                    <Minimize2 className="w-4 h-4" />
+                  ) : (
+                    <Maximize2 className="w-4 h-4" />
+                  )}
+                </button>
+              )}
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg hover:bg-white/20 transition-colors duration-200"
+                className="p-1.5 md:p-2 rounded-lg hover:bg-white/20 transition-colors duration-200"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Animated decorative elements */}
-          <div className="absolute top-2 right-4 opacity-20">
-            <Sparkles className="w-5 h-5 animate-spin" />
+          {/* Decorative elements */}
+          <div className="absolute top-2 right-16 md:right-20 opacity-20">
+            <Sparkles className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
           </div>
-          <div className="absolute bottom-2 left-4 opacity-20">
-            <Code className="w-4 h-4 animate-bounce" />
+          <div className="absolute bottom-2 left-16 md:left-20 opacity-20">
+            <Code className="w-3 h-3 md:w-4 md:h-4 animate-bounce" />
           </div>
         </div>
 
-        {/* Chat Body - Fixed layout with proper flex structure */}
-
-        <div className="flex flex-col flex-1 min-h-0 bg-white border-x border-gray-100">
-          {/* Messages Area - This will now properly scroll */}
-          {showSuggestions && messages.length <= 2 ? (
-            <div className="flex-1 px-4 py-3 bg-gradient-to-b from-gray-50/80 to-white border-t border-gray-100 overflow-y-auto">
-              <div className="flex flex-col justify-center items-start h-full">
+        {/* Messages Area - Scrollable */}
+        <div 
+          className="flex-1 min-h-0 bg-gradient-to-b from-gray-50/50 to-white"
+          style={{
+            maxHeight: isMobile && keyboardHeight > 0 
+              ? `calc(${window.visualViewport?.height || window.innerHeight}px - 120px)` 
+              : 'auto'
+          }}
+        >
+          {showSuggestions && messages.length <= 1 ? (
+            <div className="h-full p-3 md:p-4 overflow-y-auto">
+              <div className="flex flex-col justify-center items-center h-full space-y-4">
                 <div className="w-full">
-                  <p className="text-xs font-semibold text-gray-600 mb-3 flex items-center">
-                    <Lightbulb className="w-3 h-3 mr-1 text-blue-500" />
-                    Popular Questions
+                  <p className="text-xs font-semibold text-gray-600 mb-3 flex items-center justify-center md:justify-start">
+                    <Lightbulb className="w-3 h-3 mr-1 text-emerald-500" />
+                    Quick Start Questions
                   </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {smartSuggestions.slice(0, 4).map((suggestion, index) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
+                    {smartSuggestions.slice(0, isMobile ? 4 : 6).map((suggestion, index) => (
                       <button
                         key={index}
-                        onClick={() => handleQuickQuestion(suggestion.text)}
-                        className={`text-xs h-8 px-3 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                          suggestion
-                            ? "bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-200 text-blue-700 hover:shadow-md"
-                            : "bg-white border border-gray-200 text-gray-700 hover:border-blue-300"
-                        }`}
+                        onClick={() => handleSendMessage(suggestion.text)}
+                        className="text-xs md:text-sm p-3 md:p-3 rounded-xl flex items-center justify-start bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-700 hover:shadow-md hover:scale-[1.02] transition-all duration-200 text-left"
                       >
-                        {suggestion.icon && (
-                          <suggestion.icon className="w-3 h-3 mr-1" />
-                        )}
-                        {suggestion.text}
+                        <suggestion.icon className="w-3 h-3 md:w-4 md:h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">{suggestion.text}</span>
                       </button>
                     ))}
                   </div>
@@ -532,27 +519,33 @@ const PremiumChatbot = () => {
               </div>
             </div>
           ) : (
-            <div className="flex-1 overflow-y-auto p-4 bg-gradient-to-b from-gray-50/50 to-white min-h-0">
-              <div className="space-y-2">
-                {messages.map((message) => renderMessage(message))}
-              </div>
+            <div 
+              ref={messagesContainerRef}
+              className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+              style={{
+                paddingBottom: isMobile ? '1rem' : '0.5rem',
+                paddingTop: '0.5rem',
+              }}
+            >
+              {messages.map((message) => renderMessage(message))}
+              
               {/* Typing Indicator */}
               {isTyping && (
-                <div className="flex justify-start mb-4">
-                  <div className="max-w-[85%] mr-6">
-                    <div className="bg-white border border-gray-100 py-4 px-2 rounded-2xl shadow-sm">
+                <div className="flex justify-start mb-4 px-2 md:px-4">
+                  <div className="max-w-[85%]">
+                    <div className="bg-white/90 border border-gray-100 py-3 md:py-4 px-3 md:px-4 rounded-2xl md:rounded-3xl shadow-sm">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center border border-gray-200">
-                          <Bot className="w-4 h-4 text-green-600" />
+                        <div className="w-7 h-7 md:w-9 md:h-9 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center border border-gray-200">
+                          <Bot className="w-4 h-4 md:w-5 md:h-5 text-emerald-600" />
                         </div>
                         <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
                           <div
-                            className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
+                            className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"
                             style={{ animationDelay: "0.1s" }}
                           ></div>
                           <div
-                            className="w-2 h-2 bg-pink-500 rounded-full animate-bounce"
+                            className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
                             style={{ animationDelay: "0.2s" }}
                           ></div>
                         </div>
@@ -564,51 +557,56 @@ const PremiumChatbot = () => {
               <div ref={messagesEndRef} />
             </div>
           )}
-
-          {/* Input Area - Fixed at bottom */}
-          <div className="flex-shrink-0 p-4 bg-white border-t border-gray-100">
-            <div className="flex space-x-2">
-              <div className="relative flex-1">
-                <input
-                  ref={inputRef}
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask me anything about Durga..."
-                  className="w-full h-12 px-4 pr-12 rounded-xl text-gray-600 border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 shadow-sm"
-                />
-                <button
-                  onClick={() => handleSendMessage()}
-                  disabled={!inputValue.trim() || isTyping}
-                  className="absolute right-2 top-2 w-8 h-8 rounded-lg  bg-gradient-to-r from-emerald-400  to-green-600 text-white flex items-center justify-center hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Send className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Quick starters */}
-            <div className="flex flex-wrap gap-2 mt-3">
-              {quickStarters.slice(0, 4).map((starter, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleQuickQuestion(starter)}
-                  className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-600 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 flex items-center"
-                >
-                  <CornerDownRight className="w-3 h-3 mr-1" />
-                  {starter}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* Chat Footer */}
-        <div className="flex-shrink-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-500/10 rounded-b-2xl border-t border-gray-200 p-2 text-center">
-          <p className="text-xs text-gray-500">
-            {API_KEY ? "Powered by Gemini AI" : "Local Knowledge Base"} • Always
-            learning
-          </p>
+        {/* Input Area - Sticky */}
+        <div 
+          className="flex-shrink-0 bg-white border-t border-gray-200 p-3 md:p-4"
+          style={{
+            position: 'sticky',
+            bottom: 8,
+            zIndex: 10,
+            // Ensure input stays visible above keyboard
+            transform: isMobile && keyboardHeight > 0 ? 'translateY(0)' : 'none',
+          }}
+        >
+          <div className="flex space-x-2">
+            <div className="relative flex-1">
+              <input
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={handleKeyPress}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                placeholder="Ask me anything about Durga..."
+                className="w-full h-10 md:h-12 px-3 md:px-4 pr-10 md:pr-12 rounded-xl text-sm md:text-base text-gray-700 border-2 border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all duration-200 shadow-sm bg-white"
+                disabled={isTyping}
+              />
+              <button
+                onClick={() => handleSendMessage()}
+                disabled={!inputValue.trim() || isTyping}
+                className="absolute right-1 md:right-2 top-1 md:top-2 w-8 h-8 md:w-8 md:h-8 rounded-lg bg-gradient-to-r from-emerald-400 to-green-600 text-white flex items-center justify-center hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Send className="w-3 h-3 md:w-4 md:h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Quick starters */}
+          <div className="flex flex-wrap gap-1 md:gap-2 mt-2 md:mt-3">
+            {quickStarters.slice(0, isMobile ? 3 : 4).map((starter, index) => (
+              <button
+                key={index}
+                onClick={() => handleSendMessage(starter)}
+                className="text-xs px-2 md:px-3 py-1 md:py-1.5 bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-600 rounded-lg transition-all duration-200 border border-transparent hover:border-emerald-200 flex items-center whitespace-nowrap"
+                disabled={isTyping}
+              >
+                <CornerDownRight className="w-2 h-2 md:w-3 md:h-3 mr-1 flex-shrink-0" />
+                <span className="truncate max-w-[120px] md:max-w-none">{starter}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
