@@ -18,7 +18,6 @@ const Skills = () => {
 
     const randomGradient = getRandomGradient();
 
-
     useEffect(() => {
       const getProjects = async () => {
         try {
@@ -92,7 +91,7 @@ const Skills = () => {
          {loading ? <SkillsSkeleton/>:error ? <p className="text-center text-red-500">{error}</p> : null}
         <div className="grid lg:grid-cols-2 gap-8">
          
-          {skillsData.map((category, categoryIndex) => (
+          {skillsData.map((category) => (
             <motion.div
               key={category.title}
               variants={itemVariants}
@@ -106,7 +105,7 @@ const Skills = () => {
               </div>
 
               <div className="space-y-6">
-                {category?.skills?.map((skill, skillIndex) => (
+                {category?.skills?.map((skill) => (
                   <motion.div
                     key={skill.name}
                     variants={itemVariants}

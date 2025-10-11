@@ -150,7 +150,7 @@ const Blog = () => {
                   key={post.id}
                   whileHover={{ y: -5 }}
                   className="card-hover overflow-hidden group cursor-pointer"
-                  onClick={() => navigate(`/blog/${post.slug}`)}
+                  onClick={() => navigate(`/blog/${post.id}`)}
                 >
                   {/* Post Image */}
                   <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
@@ -202,7 +202,7 @@ const Blog = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/blog/${post.slug}`);
+                          navigate(`/blog/${post.id}`);
                         }}
                         className="inline-flex items-center text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 group"
                       >
@@ -258,7 +258,7 @@ const Blog = () => {
                     key={post.id}
                     whileHover={{ y: -5 }}
                     className="card-hover overflow-hidden group cursor-pointer"
-                    onClick={() => navigate(`/blog/${post.slug}`)}
+                    onClick={() => navigate(`/blog/${post.id}`)}
                   >
                     {/* Post Image */}
                     <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 dark:from-dark-700 dark:to-dark-600 overflow-hidden">
