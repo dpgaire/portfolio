@@ -22,18 +22,33 @@ import {
   HeartIcon as HeartSolidIcon,
   BookmarkIcon as BookmarkSolidIcon,
 } from "@heroicons/react/24/solid";
-import { blogPosts } from "../posts/index";
+import { fetchBlogById } from "../api";
 import { CheckIcon } from "lucide-react";
+import BlogDetailsSkeleton from "../components/ui/BlogDetailsSkeleton";
 
 const BlogDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [markdownContent, setMarkdownContent] = useState("");
 
-  const post = blogPosts.find((p) => p.slug === id);
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const data = await fetchBlogById(id);
+        setPost(data);
+      } catch (error) {
+        console.error("Error fetching blog post:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getPost();
+  }, [id]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -162,6 +177,10 @@ const BlogDetails = () => {
       </code>
     );
   };
+
+  if (loading) {
+    return <BlogDetailsSkeleton />;
+  }
 
   if (!post) {
     return (

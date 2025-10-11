@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import { fetchSkillsData } from "../api";
+import SkillsSkeleton from "./ui/SkillsSkeleton";
+import { getRandomGradient } from "../utils";
 
 const Skills = () => {
   const { t } = useTranslation();
@@ -8,69 +12,26 @@ const Skills = () => {
     threshold: 0.1,
     triggerOnce: true,
   });
+  const [skillsData, setSkillsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const skillCategories = [
-    {
-      title: t("skills_category_1_title"),
-      icon: "🎨",
-      skills: [
-        { name: "React", level: 95, color: "from-blue-500 to-cyan-500" },
-        { name: "TypeScript", level: 90, color: "from-blue-600 to-blue-400" },
-        { name: "Next.js", level: 85, color: "from-gray-800 to-gray-600" },
-        { name: "Tailwind CSS", level: 92, color: "from-cyan-500 to-blue-500" },
-        {
-          name: "Framer Motion",
-          level: 88,
-          color: "from-purple-500 to-pink-500",
-        },
-      ],
-    },
-    {
-      title: t("skills_category_2_title"),
-      icon: "⚙️",
-      skills: [
-        { name: "Node.js", level: 88, color: "from-green-600 to-green-400" },
-        { name: "Express.js", level: 85, color: "from-gray-700 to-gray-500" },
-        { name: "PostgreSQL", level: 82, color: "from-blue-700 to-blue-500" },
-        { name: "MongoDB", level: 80, color: "from-green-700 to-green-500" },
-        { name: "GraphQL", level: 75, color: "from-pink-600 to-purple-600" },
-      ],
-    },
-    {
-      title: t("skills_category_3_title"),
-      icon: "📱",
-      skills: [
-        {
-          name: "React Native",
-          level: 87,
-          color: "from-blue-500 to-purple-500",
-        },
-        { name: "Expo", level: 85, color: "from-indigo-600 to-blue-600" },
-        // { name: "Flutter", level: 70, color: "from-blue-400 to-cyan-400" },
-        {
-          name: "iOS Development",
-          level: 65,
-          color: "from-gray-600 to-gray-400",
-        },
-        {
-          name: "Android Development",
-          level: 68,
-          color: "from-green-600 to-green-400",
-        },
-      ],
-    },
-    {
-      title: t("skills_category_4_title"),
-      icon: "🛠️",
-      skills: [
-        { name: "Git & GitHub", level: 93, color: "from-gray-800 to-gray-600" },
-        { name: "Docker", level: 78, color: "from-blue-600 to-blue-400" },
-        { name: "AWS", level: 75, color: "from-orange-500 to-yellow-500" },
-        { name: "Webpack", level: 82, color: "from-blue-500 to-cyan-500" },
-        { name: "Jest", level: 85, color: "from-red-600 to-red-400" },
-      ],
-    },
-  ];
+    const randomGradient = getRandomGradient();
+
+
+    useEffect(() => {
+      const getProjects = async () => {
+        try {
+          const data = await fetchSkillsData();
+          setSkillsData(data);
+        } catch (err) {
+          setError("Failed to fetch skills.",err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      getProjects();
+    }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -128,14 +89,15 @@ const Skills = () => {
         </motion.div>
 
         {/* Skills Grid */}
+         {loading ? <SkillsSkeleton/>:error ? <p className="text-center text-red-500">{error}</p> : null}
         <div className="grid lg:grid-cols-2 gap-8">
-          {skillCategories.map((category, categoryIndex) => (
+         
+          {skillsData.map((category, categoryIndex) => (
             <motion.div
               key={category.title}
               variants={itemVariants}
               className="card p-8"
             >
-              {/* Category Header */}
               <div className="flex items-center mb-6">
                 <div className="text-3xl mr-4">{category.icon}</div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -143,9 +105,8 @@ const Skills = () => {
                 </h3>
               </div>
 
-              {/* Skills List */}
               <div className="space-y-6">
-                {category.skills.map((skill, skillIndex) => (
+                {category?.skills?.map((skill, skillIndex) => (
                   <motion.div
                     key={skill.name}
                     variants={itemVariants}
@@ -156,21 +117,19 @@ const Skills = () => {
                         {skill.name}
                       </span>
                       <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {skill.level}%
+                        {skill.percentage}%
                       </span>
                     </div>
 
-                    {/* Progress Bar */}
                     <div className="relative h-3 bg-gray-200 dark:bg-dark-700 rounded-full overflow-hidden">
                       <motion.div
                         variants={progressVariants}
-                        custom={skill.level}
+                        custom={skill.percentage}
                         initial="hidden"
                         animate={inView ? "visible" : "hidden"}
-                        className={`absolute top-0 left-0 h-full bg-gradient-to-r ${skill.color} rounded-full`}
+                        className={`absolute top-0 left-0 h-full bg-gradient-to-r ${randomGradient} rounded-full`}
                       />
 
-                      {/* Shine Effect */}
                       <motion.div
                         animate={{
                           x: [-100, 300],
@@ -192,7 +151,7 @@ const Skills = () => {
         </div>
 
         {/* Additional Skills Section */}
-        <motion.div variants={itemVariants} className="mt-16">
+        {/* <motion.div variants={itemVariants} className="mt-16">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               {t("skills_additional_title")}
@@ -237,10 +196,10 @@ const Skills = () => {
               </motion.span>
             ))}
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Certifications & Achievements */}
-        <motion.div variants={itemVariants} className="mt-16">
+        {/* <motion.div variants={itemVariants} className="mt-16">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -278,7 +237,7 @@ const Skills = () => {
               </p>
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </section>
   );

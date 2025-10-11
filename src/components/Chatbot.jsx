@@ -214,8 +214,6 @@ const PremiumChatbot = () => {
         body: JSON.stringify({ query: messageText }),
       });
 
-      console.log('response',response)
-
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

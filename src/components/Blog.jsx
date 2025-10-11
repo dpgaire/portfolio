@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -13,9 +13,15 @@ import {
   ExclamationTriangleIcon, // Import the icon
 } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
+import { fetchBlogsData } from "../api";
+import BlogSkeleton from "./ui/BlogSkeleton";
 
 const Blog = () => {
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { t } = useTranslation();
+
   const navigate = useNavigate();
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -24,6 +30,20 @@ const Blog = () => {
 
   const location = useLocation();
   const currentPath = location.pathname;
+
+  useEffect(() => {
+    const getBlogPosts = async () => {
+      try {
+        const data = await fetchBlogsData();
+        setBlogPosts(data);
+      } catch (err) {
+        setError("Failed to fetch blogs.", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getBlogPosts();
+  }, []);
 
   const categories = [
     t("blog_filter_all"),
@@ -84,7 +104,7 @@ const Blog = () => {
       day: "numeric",
     });
   };
-
+  
   return (
     <section className="section-padding bg-white dark:bg-dark-900">
       <motion.div
@@ -106,7 +126,11 @@ const Blog = () => {
         </motion.div>
 
         {/* Featured Posts */}
-        {currentPath !== "/blog" ? (
+        {loading ? (
+          <BlogSkeleton />
+        ) : error ? (
+          <p className="text-center text-red-500">{error}</p>
+        ) : currentPath !== "/blog" ? (
           <motion.div variants={itemVariants} className="mb-16">
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">

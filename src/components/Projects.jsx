@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { EyeIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { projects } from "../utils";
-
-
+import { fetchProjectsData } from "../api";
+import ProjectsSkeleton from "./ui/ProjectsSkeleton";
 
 const Projects = () => {
   const { t } = useTranslation();
@@ -17,6 +16,24 @@ const Projects = () => {
   });
 
   const [filter, setFilter] = useState("all");
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    const getProjects = async () => {
+      try {
+        const data = await fetchProjectsData();
+        setProjects(data);
+      } catch (err) {
+        setError("Failed to fetch projects.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProjects();
+  }, []);
 
   const categories = [
     { id: "all", label: t("projects_filter_all") },
@@ -37,6 +54,7 @@ const Projects = () => {
       : projects.filter((project) => project.category === filter);
 
   const featuredProjects = projects.filter((post) => post.featured);
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -85,7 +103,12 @@ const Projects = () => {
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-emerald-400 to-green-600 mx-auto mt-6 rounded-full"></div>
         </motion.div>
-        {currentPath !== "/projects" ? (
+
+        {loading ? (
+          <ProjectsSkeleton />
+        ) : error ? (
+          <p className="text-center text-red-500">{error}</p>
+        ) : currentPath !== "/projects" ? (
           <motion.div variants={itemVariants} className="mb-16">
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">

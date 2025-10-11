@@ -20,6 +20,7 @@ import LanguageSwitcher from './ui/LanguageSwitcher';
 const Navigation = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { theme, toggleTheme } = useTheme();
@@ -54,10 +55,32 @@ const Navigation = () => {
         setActiveSection(currentSection);
       }
     };
-
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navItems]);
+
+  useEffect(() => {
+    let timer;
+    if (clickCount === 3) {
+      window.open('https://admin-dashboard-coral-nu-61.vercel.app/', '_blank');
+      setClickCount(0);
+    }
+
+    if (clickCount > 0) {
+      // Reset click count after 1.2 seconds of no clicks
+      timer = setTimeout(() => setClickCount(0), 1200);
+    }
+    return () => clearTimeout(timer);
+  }, [clickCount]);
+
+  const handleClick = () => {
+    setClickCount(prev => prev + 1);
+    // Only navigate on single click (not triple)
+    if (clickCount === 0) {
+      navigate('/');
+    }
+  };
 
   const handleNavClick = (href) => {
     setIsOpen(false);
@@ -67,7 +90,6 @@ const Navigation = () => {
     }
     navigate(`/${href}`)
   };
-
   return (
     <>
       <motion.nav
@@ -86,10 +108,10 @@ const Navigation = () => {
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2 cursor-pointer"
-              onClick={()=>navigate('/')}
+              onClick={handleClick}
             >
               <div className="w-8 h-8  bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-lg flex items-center justify-center">
-                <span onClick={()=>navigate('/')} className="text-white font-bold text-sm">DG</span>
+                <span className="text-white font-bold text-sm">DG</span>
               </div>
               <span className="text-xl font-bold gradient-text hidden sm:block">
                { t('nav_title')}
