@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Github, Linkedin } from "lucide-react";
-import emailjs from "emailjs-com";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -13,6 +12,7 @@ import {
   CheckCircleIcon,
   ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
+import { postContactForm } from "../api";
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ const Contact = () => {
     email: "",
     subject: "",
     message: "",
-    company_website: "", // Honeypot field (should be left blank)
+    company_website: "", 
   });
 
   const [formStatus, setFormStatus] = useState({
@@ -132,10 +132,10 @@ const Contact = () => {
     e.preventDefault();
 
     // Honeypot check
-    if (formData.company_website !== "") {
-      console.warn("Bot detected via honeypot!");
-      return;
-    }
+    // if (formData.company_website !== "") {
+    //   console.warn("Bot detected via honeypot!");
+    //   return;
+    // }
 
     // Validation
     const validation = isValidForm(formData);
@@ -146,22 +146,8 @@ const Contact = () => {
 
     setFormStatus({ type: "loading", message: "Sending message..." });
 
-    // Sanitize inputs
-    const templateParams = {
-      from_name: sanitizeInput(formData.name),
-      from_email: sanitizeInput(formData.email),
-      subject: sanitizeInput(formData.subject),
-      message: sanitizeInput(formData.message),
-    };
-
     try {
-      await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        templateParams,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      );
-
+      await postContactForm(formData);
       setFormData({
         name: "",
         email: "",
@@ -365,36 +351,47 @@ const Contact = () => {
                       className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
                       placeholder={t("contact_form_email_placeholder")}
                     />
+                  </div>
+                </div>
+
+                {/* Subject */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      Company Website
+                    </label>
                     <input
                       type="text"
                       name="company_website"
                       value={formData.company_website}
                       onChange={handleInputChange}
-                      className="hidden"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                      placeholder="Company website (optional)"
                       tabIndex="-1"
                       autoComplete="off"
                     />
                   </div>
-                </div>
-
-                {/* Subject */}
-                <div>
-                  <label
-                    htmlFor="subject"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
-                    {t("contact_form_subject_label")}
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
-                    placeholder={t("contact_form_subject_placeholder")}
-                  />
+                  <div>
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      {t("contact_form_subject_label")}
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                      placeholder={t("contact_form_subject_placeholder")}
+                    />
+                  </div>
                 </div>
 
                 {/* Message */}

@@ -14,8 +14,26 @@ import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFoundPage from "./pages/NotFoundPage"; // Import the new page
 import ProjectDetails from "./pages/ProjectDetails"; // Import the new page
+import { useEffect } from "react";
 
 function App() {
+  //   useEffect(() => {
+  //   const handleKeyDown = (e) => {
+  //     // Check for Ctrl + Shift + 1
+  //     if (e.ctrlKey && e.shiftKey && e.key === "1") {
+  //       e.preventDefault(); // Prevent any default browser behavior
+  //       window.open("https://admin-dashboard-coral-nu-61.vercel.app", "_blank");
+  //     }
+  //   };
+
+  //   // Add event listener when component mounts
+  //   window.addEventListener("keydown", handleKeyDown);
+
+  //   // Cleanup when component unmounts
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, [])
   return (
     <HelmetProvider>
       <Router>
