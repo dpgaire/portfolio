@@ -106,7 +106,7 @@ const Skills = () => {
               </div>
 
               <div className="space-y-6">
-                {category.skills.map((skill, skillIndex) => (
+                {category?.skills?.map((skill, skillIndex) => (
                   <motion.div
                     key={skill.name}
                     variants={itemVariants}

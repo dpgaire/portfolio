@@ -1,12 +1,31 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-// import { projects } from "../components/Projects"; // Assuming projects data is here
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { projects } from "../utils";
+import { fetchProjectById } from "../api";
+import ProjectDetailsSkeleton from "../components/ui/ProjectDetailsSkeleton";
 
 const ProjectDetails = () => {
   const { id } = useParams();
-  const project = projects.find((p) => p.id === parseInt(id));
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getProject = async () => {
+      try {
+        const data = await fetchProjectById(id);
+        setProject(data);
+      } catch (error) {
+        console.error("Error fetching project:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProject();
+  }, [id]);
+
+  if (loading) {
+    return <ProjectDetailsSkeleton />;
+  }
 
   if (!project) {
     return (
