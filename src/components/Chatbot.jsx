@@ -15,6 +15,7 @@ import {
   MessageSquare,
   Trash2,
   Edit,
+  Menu,
   Minimize2,
   Maximize2,
 } from "lucide-react";
@@ -43,9 +44,8 @@ const smartSuggestions = [
   },
 ];
 
-const Chatbot = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(true); // Expanded by default in modal view
+const Chatbot = ({ setIsOpen }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -55,6 +55,14 @@ const Chatbot = () => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    }
+  }, [inputValue]);
 
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
@@ -79,7 +87,7 @@ const Chatbot = () => {
   }, [chatHistory]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (setIsOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -87,7 +95,7 @@ const Chatbot = () => {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isOpen]);
+  }, [setIsOpen]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -110,10 +118,11 @@ const Chatbot = () => {
     setChatHistory((prev) => [newChat, ...prev]);
     setActiveChatId(newChatId);
     setMessages(newChat.messages);
+    setIsSidebarOpen(false);
   };
 
   useEffect(() => {
-    if (isOpen && !activeChatId) {
+    if (setIsOpen && !activeChatId) {
       if (chatHistory.length > 0) {
         const lastChat = chatHistory[0];
         setActiveChatId(lastChat.id);
@@ -122,7 +131,7 @@ const Chatbot = () => {
         createNewChat();
       }
     }
-  }, [isOpen, activeChatId, chatHistory]);
+  }, [setIsOpen, activeChatId, chatHistory]);
 
   const handleSendMessage = async (messageText = inputValue) => {
     if (!messageText.trim()) return;
@@ -139,9 +148,7 @@ const Chatbot = () => {
     setIsTyping(true);
 
     const updatedChatHistory = chatHistory.map((chat) =>
-      chat.id === activeChatId
-        ? { ...chat, messages: currentMessages }
-        : chat
+      chat.id === activeChatId ? { ...chat, messages: currentMessages } : chat
     );
     setChatHistory(updatedChatHistory);
 
@@ -178,9 +185,7 @@ const Chatbot = () => {
       setMessages(finalMessages);
       setChatHistory(
         chatHistory.map((chat) =>
-          chat.id === activeChatId
-            ? { ...chat, messages: finalMessages }
-            : chat
+          chat.id === activeChatId ? { ...chat, messages: finalMessages } : chat
         )
       );
     } catch (error) {
@@ -194,9 +199,7 @@ const Chatbot = () => {
       setMessages(finalMessages);
       setChatHistory(
         chatHistory.map((chat) =>
-          chat.id === activeChatId
-            ? { ...chat, messages: finalMessages }
-            : chat
+          chat.id === activeChatId ? { ...chat, messages: finalMessages } : chat
         )
       );
     } finally {
@@ -216,6 +219,7 @@ const Chatbot = () => {
     if (chat) {
       setActiveChatId(chatId);
       setMessages(chat.messages);
+      setIsSidebarOpen(false);
     }
   };
 
@@ -225,84 +229,35 @@ const Chatbot = () => {
     if (activeChatId === chatId) {
       if (updatedHistory.length > 0) {
         switchChat(updatedHistory[0].id);
-      } else {
-        createNewChat();
       }
+    } else {
+      createNewChat();
     }
   };
 
   const handleStartChat = (e) => {
     e.preventDefault();
     if (userName.trim()) {
-      localStorage.setItem("userInfo", JSON.stringify({ name: userName, email: userEmail }));
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({ name: userName, email: userEmail })
+      );
       setShowModal(false);
       setIsOpen(true);
     }
   };
 
-  if (!isOpen) {
-    return (
-      <>
-        <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
-          <button
-            onClick={() => setShowModal(true)}
-            className="relative group w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 shadow-lg md:shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center backdrop-blur-sm"
-          >
-            <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <MessageCircle className="w-6 h-6 md:w-7 md:h-7 text-white z-10" />
-            <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
-              <Bell className="w-2 h-2 md:w-3 md:h-3 text-white" />
-            </div>
-            <div className="absolute -bottom-1 -left-1 w-6 h-6 md:w-8 md:h-8 bg-emerald-500/20 rounded-full animate-ping"></div>
-          </button>
-        </div>
-        <Modal
-          isOpen={showModal}
-          onClose={() => setShowModal(false)}
-          title="Before we start..."
-        >
-          <form onSubmit={handleStartChat}>
-            <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
-                required
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email (Optional)
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-emerald-500 text-white py-2 px-4 rounded-md hover:bg-emerald-600 transition-colors duration-300"
-            >
-              Start Chat
-            </button>
-          </form>
-        </Modal>
-      </>
-    );
+  const openChatModal = () => {
+    const userInfo = localStorage.getItem("userInfo");
+    if (!userInfo) {
+      setShowModal(true);
+      return;
+    }
+    setIsOpen(true);
+  };
+
+  if (!setIsOpen) {
+    return null;
   }
 
   const renderMessage = (message) => {
@@ -321,7 +276,8 @@ const Chatbot = () => {
                 isWelcome
                   ? "bg-gradient-to-br from-emerald-400 to-green-600 ring-emerald-300/50"
                   : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300/50"
-              }`}>
+              }`}
+            >
               <Bot
                 className={`w-5 h-5 ${
                   isWelcome ? "text-white" : "text-emerald-600"
@@ -336,11 +292,14 @@ const Chatbot = () => {
                   ? "bg-gradient-to-br from-blue-50/90 to-purple-50/90 border-blue-200/30 shadow-md"
                   : "bg-white/90 border-gray-200/50 shadow-sm"
                 : "bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 text-white shadow-md border-transparent"
-            }`}>
+            }`}
+          >
             <p
               dangerouslySetInnerHTML={{ __html: message.text }}
-              className={`text-sm leading-relaxed ${isBot ? "text-gray-800" : "text-white"}`}>
-            </p>
+              className={`text-sm leading-relaxed ${
+                isBot ? "text-gray-800" : "text-white"
+              }`}
+            ></p>
           </div>
           {!isBot && (
             <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/30">
@@ -354,17 +313,9 @@ const Chatbot = () => {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-      <div
-        style={{
-          width: isExpanded ? '95vw' : '1000px',
-          height: isExpanded ? '90vh' : '800px',
-          maxWidth: '1000px',
-          maxHeight: '800px',
-        }}
-        className="relative w-full h-full rounded-lg bg-white flex shadow-2xl transition-all duration-300"
-      >
+      <div className="relative w-full h-full md:w-[95vw] md:h-[90vh] max-w-5xl rounded-lg bg-white flex shadow-2xl transition-all duration-300">
         {/* Sidebar */}
-        <div className="w-1/4 bg-teal-900/95 text-white p-3 flex flex-col rounded-l-lg backdrop-blur-sm">
+        {/* <div className={`absolute md:relative z-10 md:z-auto w-full md:w-1/3 bg-gradient-to-br from-emerald-400 to-green-600 text-white p-3 flex-col rounded-r-none rounded-lg md:rounded-l-lg backdrop-blur-sm transition-transform duration-300 ${isSidebarOpen ? 'flex' : 'hidden md:flex'}`}>
           <button
             onClick={createNewChat}
             className="flex items-center justify-between p-2.5 mb-4 rounded-lg hover:bg-white/10 transition-colors duration-200 border border-white/20"
@@ -413,24 +364,114 @@ const Chatbot = () => {
               </div>
             </div>
           </div>
+        </div> */}
+        {/* 🔘 Toggle button (visible only on small screens) */}
+
+        {!isSidebarOpen && (
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="md:hidden fixed top-6 left-6 z-20 p-2 bg-emerald-500 text-white rounded-md shadow-md focus:outline-none"
+          >
+            <Menu size={22} />
+          </button>
+        )}
+
+        {/* X icon (shows when sidebar is open) */}
+        {isSidebarOpen && (
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="md:hidden fixed bottom-6 right-24 z-30 p-2 bg-emerald-500 text-white rounded-md shadow-md focus:outline-none"
+          >
+            <X size={22} />
+          </button>
+        )}
+
+        {/* 🟢 Sidebar */}
+        <div
+          className={`fixed top-0 left-0  h-full w-3/4 sm:w-2/3 md:w-1/3 bg-gradient-to-br from-emerald-400 to-green-600 text-white p-3 flex flex-col 
+        rounded-r-none md:rounded-l-lg  backdrop-blur-sm transition-transform duration-300 z-10
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+        md:translate-x-0 md:relative md:flex`}
+        >
+          {/* New Chat Button */}
+          <button
+            onClick={createNewChat}
+            className="flex items-center justify-between p-2.5 mb-4 rounded-lg hover:bg-white/10 transition-colors duration-200 border border-white/20"
+          >
+            <div className="flex items-center gap-2">
+              <Bot size={18} className="mr-2" />
+              <span className="font-semibold">New Chat</span>
+            </div>
+            <Edit size={16} />
+          </button>
+
+          {/* Chat History */}
+          <div className="flex-grow  overflow-y-auto -mr-2 pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+            {chatHistory.map((chat) => (
+              <div
+                key={chat.id}
+                className={`flex items-center mt-2 gap-2 justify-between p-2.5 rounded-lg cursor-pointer transition-colors duration-200 ${
+                  activeChatId === chat.id ? "bg-white/20" : "hover:bg-white/10"
+                }`}
+                onClick={() => {
+                  switchChat(chat.id);
+                  setIsSidebarOpen(false); // close on mobile
+                }}
+              >
+                <MessageSquare size={16} className="mr-2 flex-shrink-0" />
+                <span className="flex-grow truncate text-sm font-medium">
+                  {chat.title}
+                </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteChat(chat.id);
+                  }}
+                  className="ml-2 text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* User Info */}
+          <div className="border-t border-white/20 pt-3 mt-2">
+            <div className="flex items-center p-2.5 rounded-lg hover:bg-white/10 cursor-pointer transition-colors duration-200">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mr-2">
+                <User size={18} />
+              </div>
+              <div>
+                <span className="font-semibold">{userName}</span>
+                <p className="text-xs text-gray-400">{userEmail}</p>
+              </div>
+            </div>
+          </div>
         </div>
 
+        {/* Optional overlay (dark background when open on mobile) */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black/40 z-5 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
         {/* Main Chat Area */}
-        <div className="w-3/4 flex flex-col bg-gradient-to-b from-gray-50/50 to-white rounded-r-lg">
-          <div className="p-3 border-b border-gray-200/80 flex justify-between items-center bg-white/50 backdrop-blur-sm rounded-tr-lg">
-            <h2 className="text-base font-bold text-gray-700">
-              {chatHistory.find((c) => c.id === activeChatId)?.title || "Chat"}
-            </h2>
+        <div className="w-full flex flex-col bg-gradient-to-b from-gray-50/50 to-white rounded-lg md:rounded-r-lg md:rounded-l-none">
+          <div className="p-3 border-b border-gray-200/80 flex justify-between items-center bg-gradient-to-r from-emerald-400 to-green-600 text-white rounded-t-lg md:rounded-tr-lg md:rounded-tl-none">
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="md:hidden p-1.5 rounded-md bg-white/20 hover:bg-white/30 transition-colors duration-200"
+            >
+              <Menu size={18} />
+            </button>
+            <h2 className="text-base font-bold">Durga's AI Assistant</h2>
             <div className="flex items-center gap-1">
-              {/* <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="p-1.5 rounded-md bg-green-400 text-white hover:bg-gray-200 transition-colors duration-200"
-                title={isExpanded ? "Minimize" : "Expand"}>
-                {isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-              </button> */}
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-md bg-green-400 text-white transition-colors duration-200">
+                className="p-1.5 rounded-md bg-white/20 hover:bg-white/30 transition-colors duration-200"
+              >
                 <X size={18} />
               </button>
             </div>
@@ -441,13 +482,32 @@ const Chatbot = () => {
               messages.map(renderMessage)
             ) : (
               <div className="h-full flex flex-col justify-center items-center text-center">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mb-4">
+                {/* <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mb-4">
                   <Bot size={32} className="text-white" />
+                </div> */}
+                <div className="relative w-20 h-20 mb-6">
+                  {/* 🟢 Thick gradient border */}
+                  <div className="absolute inset-0 rounded-full p-[4px] bg-gradient-to-br from-emerald-400 to-green-600">
+                    {/* Inner image circle */}
+                    <div
+                      className="w-full h-full rounded-full bg-center bg-cover"
+                      style={{
+                        backgroundImage:
+                          "url('https://dpgaire.github.io/image-server/projects/durga.png')",
+                      }}
+                    ></div>
+                  </div>
+
+                  {/* 🤖 Bot icon at the top center */}
+                  <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-emerald-500 p-1.5 rounded-full shadow-md">
+                    <Bot size={20} className="text-white" />
+                  </div>
                 </div>
+
                 <h3 className="text-xl font-bold text-gray-800 mb-6">
                   How can I help you today?
                 </h3>
-                <div className="grid grid-cols-2 gap-3 w-full max-w-md">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md">
                   {smartSuggestions.map((suggestion, index) => (
                     <button
                       key={index}
@@ -480,29 +540,37 @@ const Chatbot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="p-4 border-t border-gray-200/80 bg-white/50 backdrop-blur-sm rounded-br-lg">
-            <div className="relative">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask me anything about Durga..."
-                className="w-full h-12 px-4 pr-12 rounded-xl text-sm text-gray-700 border-2 border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all duration-200 shadow-sm bg-white"
-                disabled={isTyping}
-              />
-              <button
-                onClick={() => handleSendMessage()}
-                disabled={!inputValue.trim() || isTyping}
-                className="absolute right-2 top-2 w-8 h-8 rounded-lg bg-gradient-to-r from-emerald-400 to-green-600 text-white flex items-center justify-center hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Send className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-xs text-center text-gray-500 mt-2">
-              AI can make mistakes. Consider checking important information.
-            </p>
-          </div>
+    <div className="p-4 border-t border-white/20 bg-gradient-to-br from-white/60 to-white/30 backdrop-blur-md rounded-b-lg shadow-inner">
+  <div className="flex items-center gap-3">
+    {/* Input Field */}
+    <div className="flex-1 relative">
+      <input
+        ref={inputRef}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyPress={handleKeyPress}
+        placeholder="Ask me anything about Durga..."
+        disabled={isTyping}
+        className="w-full h-12 md:h-14 pl-4 py-2 pr-14 text-sm md:text-base text-gray-800 placeholder-gray-400 bg-white/80 border border-gray-200 rounded-xl shadow-sm outline-none transition-all duration-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300 focus:bg-white"
+      />
+
+      {/* Send Button */}
+      <button
+        onClick={() => handleSendMessage()}
+        disabled={!inputValue.trim() || isTyping}
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-emerald-400 to-green-600 text-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <Send className="w-4 h-4" />
+      </button>
+    </div>
+  </div>
+
+  <p className="text-xs text-center text-gray-500 mt-3 italic">
+    AI can make mistakes — double-check important info.
+  </p>
+</div>
+
+
         </div>
       </div>
     </div>
