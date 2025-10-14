@@ -309,7 +309,7 @@ const Chatbot = ({ setIsOpen }) => {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         title="Welcome to Durga's AI Assistant"
-        description="To begin a conversation, please enter your name. Email is optional."
+        description="To begin a conversation, please enter your name and email is optional."
       >
         <form onSubmit={handleStartChat} className="mt-4">
           <div className="mb-4">
@@ -317,7 +317,7 @@ const Chatbot = ({ setIsOpen }) => {
               htmlFor="name"
               className="block text-sm font-medium text-gray-700"
             >
-              Name
+              Name*
             </label>
             <input
               type="text"
@@ -325,7 +325,7 @@ const Chatbot = ({ setIsOpen }) => {
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               className="mt-1 block w-full px-3 py-2 bg-white border text-gray-700 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
-              placeholder="John Doe"
+              placeholder="Durga Gairhe"
               required
             />
           </div>
@@ -342,7 +342,7 @@ const Chatbot = ({ setIsOpen }) => {
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
               className="mt-1 block w-full px-3 text-gray-700 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
-              placeholder="john.doe@example.com"
+              placeholder="gairhedurga13@gmail.com"
             />
           </div>
           <div className="flex justify-end">
