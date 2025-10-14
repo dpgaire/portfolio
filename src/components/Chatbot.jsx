@@ -123,7 +123,6 @@ const Chatbot = ({ setIsOpen }) => {
 
   const createNewChat = () => {
     const newChatId = Date.now();
-    inputRef.current.focus();
     const newChat = {
       id: newChatId,
       title: "New Chat",
@@ -292,11 +291,6 @@ const Chatbot = ({ setIsOpen }) => {
     setIsOpen(true);
   };
 
-    useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
 
   if (!setIsOpen) {
     return (
