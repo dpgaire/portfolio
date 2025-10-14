@@ -34,7 +34,7 @@ const Navigation = () => {
     { id: 'about', label: t('about'), icon: UserIcon, href: '#about' },
     { id: 'skills', label: t('skills'), icon: WrenchScrewdriverIcon, href: '#skills' },
     { id: 'projects', label: t('projects'), icon: CodeBracketIcon, href: '#projects' },
-    { id: 'chat', label: t('Chat'), icon: ChatBubbleBottomCenterIcon , href: 'chat' },
+    // { id: 'chat', label: t('Chat'), icon: ChatBubbleBottomCenterIcon , href: 'chat' },
     { id: 'blog', label: t('blog'), icon: DocumentTextIcon, href: '#blog' },
     { id: 'contact', label: t('contact'), icon: EnvelopeIcon, href: '#contact' },
   ];

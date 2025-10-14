@@ -250,7 +250,7 @@ const Contact = () => {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-primary-500 hover:to-secondary-500 rounded-lg flex items-center justify-center transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-emerald-400 hover:to-green-600 rounded-lg flex items-center justify-center transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     aria-label={`Visit ${social.name}`}
                   >
                     <span className="text-xl" aria-hidden="true">
