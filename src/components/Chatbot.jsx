@@ -61,12 +61,6 @@ const Chatbot = ({ setIsOpen }) => {
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (inputRef.current) {
       inputRef.current.style.height = "auto";
       inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
     }
@@ -297,6 +291,12 @@ const Chatbot = ({ setIsOpen }) => {
     }
     setIsOpen(true);
   };
+
+    useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   if (!setIsOpen) {
     return (
