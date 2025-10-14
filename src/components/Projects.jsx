@@ -20,14 +20,16 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
     const getProjects = async () => {
       try {
         const data = await fetchProjectsData();
         setProjects(data);
       } catch (err) {
-        setError("Failed to fetch projects.");
+         setError(
+          "Error, please kindly inform the developer and contact him at",
+          err
+        );
       } finally {
         setLoading(false);
       }
@@ -54,7 +56,6 @@ const Projects = () => {
       : projects.filter((project) => project.category === filter);
 
   const featuredProjects = projects.filter((post) => post.featured);
-
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -107,7 +108,16 @@ const Projects = () => {
         {loading ? (
           <ProjectsSkeleton />
         ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
+          <span className="text-center text-red-500">
+            {error}{" "}
+            <a
+              href="tel:+9779846724440"
+              className="underline hover:text-red-600"
+            >
+              +9779846724440
+            </a>
+            .
+          </span>
         ) : currentPath !== "/projects" ? (
           <motion.div variants={itemVariants} className="mb-16">
             <div className="flex justify-between items-center">
@@ -139,14 +149,15 @@ const Projects = () => {
                     exit="hidden"
                     whileHover={{ y: -10 }}
                     className="card-hover group cursor-pointer overflow-hidden"
-                    onClick={() => navigate(`/project/${project.id}`)}
                   >
                     {/* Project Image */}
-                    <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
+                    <div
+                      onClick={() => navigate(`/project/${project.id}`)}
+                      className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden"
+                    >
                       <div className="absolute inset-0 flex items-center justify-center">
                         <img src={project.image} alt={project.title} />
                       </div>
-
                       {/* Overlay */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                         <div className="flex gap-2">
@@ -203,20 +214,30 @@ const Projects = () => {
                           </span>
                         )}
                       </div>
-
                       {/* Action Links */}
                       <div className="flex gap-2">
                         {project.liveUrl && (
-                          <button className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200"
+                          >
                             <EyeIcon className="w-4 h-4 mr-1" />
                             {t("projects_view_live")}
-                          </button>
+                          </a>
                         )}
+
                         {project.githubUrl && (
-                          <button className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
+                          <a
+                            href={project.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200"
+                          >
                             <CodeBracketIcon className="w-4 h-4 mr-1" />
                             {t("projects_view_code")}
-                          </button>
+                          </a>
                         )}
                       </div>
                     </div>
@@ -262,10 +283,15 @@ const Projects = () => {
                     exit="hidden"
                     whileHover={{ y: -10 }}
                     className="card-hover group cursor-pointer overflow-hidden"
-                    onClick={() => navigate(`/project/${project.id}`)}
                   >
                     {/* Project Image */}
-                    <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
+                    <div
+                      onClick={() => navigate(`/project/${project.id}`)}
+                      className="relative aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden"
+                    >
+                      <div onClick={() => navigate(`/project/${project.id}`)}>
+
+                        </div>
                       <div className="absolute inset-0 flex items-center justify-center">
                         <img src={project.image} alt={project.title} />
                       </div>
@@ -302,16 +328,16 @@ const Projects = () => {
 
                     {/* Project Content */}
                     <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
+                      <h3 onClick={() => navigate(`/project/${project.id}`)} className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
                         {project.title}
                       </h3>
 
-                      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                      <p onClick={() => navigate(`/project/${project.id}`)} className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
                         {project.description}
                       </p>
 
                       {/* Technologies */}
-                      <div className="flex flex-wrap gap-1 mb-4">
+                      <div onClick={() => navigate(`/project/${project.id}`)} className="flex flex-wrap gap-1 mb-4">
                         {project.technologies.slice(0, 3).map((tech) => (
                           <span
                             key={tech}
@@ -330,16 +356,27 @@ const Projects = () => {
                       {/* Action Links */}
                       <div className="flex gap-2">
                         {project.liveUrl && (
-                          <button className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200"
+                          >
                             <EyeIcon className="w-4 h-4 mr-1" />
                             {t("projects_view_live")}
-                          </button>
+                          </a>
                         )}
+
                         {project.githubUrl && (
-                          <button className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
+                          <a
+                            href={project.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200"
+                          >
                             <CodeBracketIcon className="w-4 h-4 mr-1" />
                             {t("projects_view_code")}
-                          </button>
+                          </a>
                         )}
                       </div>
                     </div>

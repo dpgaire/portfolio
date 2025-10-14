@@ -37,7 +37,10 @@ const Blog = () => {
         const data = await fetchBlogsData();
         setBlogPosts(data);
       } catch (err) {
-        setError("Failed to fetch blogs.", err);
+        setError(
+          "Error, please kindly inform the developer and contact him at",
+          err
+        );
       } finally {
         setLoading(false);
       }
@@ -104,7 +107,7 @@ const Blog = () => {
       day: "numeric",
     });
   };
-  
+
   return (
     <section className="section-padding bg-white dark:bg-dark-900">
       <motion.div
@@ -129,7 +132,16 @@ const Blog = () => {
         {loading ? (
           <BlogSkeleton />
         ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
+          <span className="text-center text-red-500">
+            {error}{" "}
+            <a
+              href="tel:+9779846724440"
+              className="underline hover:text-red-600"
+            >
+              +9779846724440
+            </a>
+            .
+          </span>
         ) : currentPath !== "/blog" ? (
           <motion.div variants={itemVariants} className="mb-16">
             <div className="flex justify-between items-center">

@@ -24,7 +24,7 @@ const Skills = () => {
           const data = await fetchSkillsData();
           setSkillsData(data);
         } catch (err) {
-          setError("Failed to fetch skills.",err);
+          setError("Error, please kindly inform the developer and contact him at",err);
         } finally {
           setLoading(false);
         }
@@ -88,7 +88,16 @@ const Skills = () => {
         </motion.div>
 
         {/* Skills Grid */}
-         {loading ? <SkillsSkeleton/>:error ? <p className="text-center text-red-500">{error}</p> : null}
+         {loading ? <SkillsSkeleton/>:error ? <span className="text-center text-red-500">
+            {error}{" "}
+            <a
+              href="tel:+9779846724440"
+              className="underline hover:text-red-600"
+            >
+              +9779846724440
+            </a>
+            .
+          </span> : null}
         <div className="grid lg:grid-cols-2 gap-8">
          
           {skillsData.map((category) => (

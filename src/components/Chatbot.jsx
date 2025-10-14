@@ -10,185 +10,155 @@ import {
   Code,
   Zap,
   Bell,
-  Star,
-  Github,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  Briefcase,
-  TrendingUp,
-  Shield,
-  Coffee,
-  BookOpen,
   Lightbulb,
-  ChevronDown,
-  ChevronUp,
-  Settings,
-  Maximize2,
-  Minimize2,
-  CornerDownRight,
-  Compass,
-  Cpu,
-  PenTool,
+  Plus,
+  MessageSquare,
+  Trash2,
+  Edit,
   Menu,
-  Grid3X3,
+  Minimize2,
+  Maximize2,
 } from "lucide-react";
+import Modal from "./ui/Modal";
 
 const smartSuggestions = [
   {
     icon: Sparkles,
     text: "Why hire Durga?",
     category: "why-hire",
-    popular: true,
-    id: "why-hire",
   },
   {
     icon: Code,
     text: "Show me his frontend & backend skills",
     category: "skills",
-    popular: true,
-    id: "frontend-skills",
   },
   {
     icon: Award,
     text: "Latest & featured projects",
     category: "projects",
-    popular: true,
-    id: "featured-projects",
   },
   {
     icon: Zap,
     text: "What's DevOS AI?",
     category: "projects",
-    popular: true,
-    id: "current-project",
-  },
-  {
-    icon: Github,
-    text: "GitHub portfolio",
-    category: "contact",
-    popular: true,
-    id: "contact",
-  },
-  {
-    icon: Briefcase,
-    text: "Is he available?",
-    category: "availability",
-    popular: true,
-    id: "availability",
   },
 ];
 
-const quickStarters = [
-  "Show me his latest project",
-  "How can I contact him?",
-  "Is Durga available for projects?",
-  "What are his key achievements?",
-  "Tell me Durga's expertise",
-  "Why should I hire him?",
-];
-
-const PremiumChatbot = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const inputRef = useRef(null);
-  const messagesContainerRef = useRef(null);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "👋 Hello! I'm Durga's AI Assistant. I can tell you everything about his expertise, projects, and why he's the perfect developer for your next project. What would you like to know?",
-      sender: "bot",
-      timestamp: new Date(),
-      type: "welcome",
-    },
-  ]);
+const Chatbot = ({ setIsOpen }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(true);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [activeChatId, setActiveChatId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [editingChatId, setEditingChatId] = useState(null);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
-  // Prevent background scrolling when chatbot is open
   useEffect(() => {
-    if (isOpen) {
-      // Store original body styles
-      const originalStyle = window.getComputedStyle(document.body);
-      const originalOverflow = originalStyle.overflow;
-      const originalPaddingRight = originalStyle.paddingRight;
-      
-      // Get scrollbar width to prevent layout shift
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      
-      // Lock body scroll
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-      
-      return () => {
-        // Restore original styles when chatbot closes
-        document.body.style.overflow = originalOverflow;
-        document.body.style.paddingRight = originalPaddingRight;
-      };
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
-  }, [isOpen]);
+  }, []);
 
-  // Detect mobile device and screen size changes
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    }
+  }, [inputValue]);
 
-    const handleResize = () => {
-      checkMobile();
-    };
+  useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      const { name, email } = JSON.parse(userInfo);
+      setUserName(name);
+      setUserEmail(email);
+      setShowModal(false);
+      const savedHistory = localStorage.getItem("chatHistory");
+      if (savedHistory) {
+        setChatHistory(JSON.parse(savedHistory));
+      }
+    } else {
+      setShowModal(true);
+    }
+    setHistoryLoaded(true);
+  }, []);
 
-    const handleVisualViewport = () => {
-      if (window.visualViewport && isMobile) {
-        const viewportHeight = window.visualViewport.height;
-        const windowHeight = window.innerHeight;
-        const keyboardHeight = windowHeight - viewportHeight;
-        setKeyboardHeight(keyboardHeight > 100 ? keyboardHeight : 0);
-        
-        // Force a small delay to ensure proper rendering
-        setTimeout(() => {
-          if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-          }
-        }, 100);
+  useEffect(() => {
+    if (historyLoaded) {
+      if (chatHistory.length > 0) {
+        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+      } else {
+        localStorage.removeItem("chatHistory");
+      }
+    }
+  }, [chatHistory, historyLoaded]);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const userInfo = localStorage.getItem("userInfo");
+      if (!userInfo) {
+        setChatHistory([]);
       }
     };
 
-    checkMobile();
-    window.addEventListener('resize', handleResize);
-    
-    // Handle virtual keyboard on mobile
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleVisualViewport);
-    }
+    window.addEventListener("storage", handleStorageChange);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleVisualViewport);
-      }
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
 
-  const scrollToBottom = () => {
+  useEffect(() => {
+    if (setIsOpen) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [setIsOpen]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
+
+  const createNewChat = () => {
+    const newChatId = Date.now();
+    inputRef.current.focus();
+    const newChat = {
+      id: newChatId,
+      title: "New Chat",
+      messages: [
+        {
+          id: Date.now(),
+          text: "👋 Hello! I'm Durga's AI Assistant. How can I help you today?",
+          sender: "bot",
+          type: "welcome",
+        },
+      ],
+    };
+    setChatHistory((prev) => [newChat, ...prev]);
+    setActiveChatId(newChatId);
+    setMessages(newChat.messages);
+    setIsSidebarOpen(false);
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const formatAnswerToHTML = (answer) => {
-    return answer
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\n\n/g, "<br><br>")
-      .replace(/\n/g, "<br>");
-  };
+    if (historyLoaded && setIsOpen && !activeChatId) {
+      if (chatHistory.length > 0) {
+        const lastChat = chatHistory[0];
+        setActiveChatId(lastChat.id);
+        setMessages(lastChat.messages);
+      } else {
+        createNewChat();
+      }
+    }
+  }, [setIsOpen, activeChatId, chatHistory, historyLoaded]);
 
   const handleSendMessage = async (messageText = inputValue) => {
     if (!messageText.trim()) return;
@@ -197,47 +167,68 @@ const PremiumChatbot = () => {
       id: Date.now(),
       text: messageText,
       sender: "user",
-      timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    const currentMessages = [...messages, userMessage];
+    setMessages(currentMessages);
     setInputValue("");
     setIsTyping(true);
-    setShowSuggestions(false);
+
+    const updatedChatHistory = chatHistory.map((chat) =>
+      chat.id === activeChatId ? { ...chat, messages: currentMessages } : chat
+    );
+    setChatHistory(updatedChatHistory);
+
+    if (messages.length === 1) {
+      const updatedChatHistoryWithTitle = updatedChatHistory.map((chat) =>
+        chat.id === activeChatId ? { ...chat, title: messageText } : chat
+      );
+      setChatHistory(updatedChatHistoryWithTitle);
+    }
 
     try {
-      const response = await fetch("https://ai-chatbot-api-ten.vercel.app/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query: messageText }),
-      });
+      const response = await fetch(
+        "https://ai-chatbot-api-ten.vercel.app/api/chat",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: messageText,
+            user: { name: userName, email: userEmail },
+          }),
+        }
+      );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
 
       const data = await response.json();
       const botResponse = {
         id: Date.now() + 1,
-        text: formatAnswerToHTML(data.response),
+        text: data.response.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>"),
         sender: "bot",
-        timestamp: new Date(),
-        type: "response",
       };
 
-      setMessages((prev) => [...prev, botResponse]);
+      const finalMessages = [...currentMessages, botResponse];
+      setMessages(finalMessages);
+      setChatHistory(
+        chatHistory.map((chat) =>
+          chat.id === activeChatId ? { ...chat, messages: finalMessages } : chat
+        )
+      );
     } catch (error) {
       console.error("Error fetching chatbot response:", error);
       const errorResponse = {
         id: Date.now() + 1,
-        text: "Sorry, I'm having trouble connecting to my brain right now. Please try again in a moment.",
+        text: "Sorry, something went wrong. Please try again.",
         sender: "bot",
-        timestamp: new Date(),
-        type: "response",
       };
-      setMessages((prev) => [...prev, errorResponse]);
+      const finalMessages = [...currentMessages, errorResponse];
+      setMessages(finalMessages);
+      setChatHistory(
+        chatHistory.map((chat) =>
+          chat.id === activeChatId ? { ...chat, messages: finalMessages } : chat
+        )
+      );
     } finally {
       setIsTyping(false);
     }
@@ -250,52 +241,126 @@ const PremiumChatbot = () => {
     }
   };
 
-  // Handle input focus for mobile keyboard
-  useEffect(() => {
-    if (isOpen && inputRef.current && !isTyping) {
-      const timer = setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
-      return () => clearTimeout(timer);
+  const switchChat = (chatId) => {
+    const chat = chatHistory.find((c) => c.id === chatId);
+    if (chat) {
+      setActiveChatId(chatId);
+      setMessages(chat.messages);
+      setIsSidebarOpen(false);
     }
-  }, [isOpen, isTyping]);
+  };
 
-  const handleInputFocus = () => {
-    if (isMobile) {
-      // Small delay to allow keyboard to appear
-      setTimeout(() => {
-        if (messagesEndRef.current) {
-          messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  const handleDeleteChat = (chatId) => {
+    if (window.confirm("Are you sure you want to delete this chat?")) {
+      const updatedHistory = chatHistory.filter((c) => c.id !== chatId);
+      setChatHistory(updatedHistory);
+      if (activeChatId === chatId) {
+        if (updatedHistory.length > 0) {
+          switchChat(updatedHistory[0].id);
+        } else {
+          setActiveChatId(null);
+          setMessages([]);
         }
-      }, 300);
+      }
     }
   };
 
-  const handleInputBlur = () => {
-    if (isMobile) {
-      // Reset any transforms when keyboard disappears
-      setTimeout(() => {
-        setKeyboardHeight(0);
-      }, 100);
+  const handleEditTitle = (chatId) => {
+    setEditingChatId(chatId);
+  };
+
+  const handleUpdateTitle = (chatId, newTitle) => {
+    const updatedHistory = chatHistory.map((chat) =>
+      chat.id === chatId ? { ...chat, title: newTitle } : chat
+    );
+    setChatHistory(updatedHistory);
+    setEditingChatId(null);
+  };
+
+  const handleStartChat = (e) => {
+    e.preventDefault();
+    if (userName.trim()) {
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({ name: userName, email: userEmail })
+      );
+      setShowModal(false);
+      setIsOpen(true);
     }
   };
 
-  // Floating Action Button
-  if (!isOpen) {
+  const openChatModal = () => {
+    const userInfo = localStorage.getItem("userInfo");
+    if (!userInfo) {
+      setShowModal(true);
+      return;
+    }
+    setIsOpen(true);
+  };
+
+  if (!setIsOpen) {
     return (
-      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="relative group w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 shadow-lg md:shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center backdrop-blur-sm"
-        >
-          <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <MessageCircle className="w-6 h-6 md:w-7 md:h-7 text-white z-10" />
-          <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
-            <Bell className="w-2 h-2 md:w-3 md:h-3 text-white" />
+      <button
+        onClick={openChatModal}
+        className="fixed bottom-5 right-5 bg-emerald-500 text-white p-4 rounded-full shadow-lg hover:bg-emerald-600 transition-colors duration-300 z-40"
+      >
+        <MessageCircle size={24} />
+      </button>
+    );
+  }
+
+  if (showModal) {
+    return (
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="Welcome to Durga's AI Assistant"
+        description="To begin a conversation, please enter your name. Email is optional."
+      >
+        <form onSubmit={handleStartChat} className="mt-4">
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-white border text-gray-700 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+              placeholder="John Doe"
+              required
+            />
           </div>
-          <div className="absolute -bottom-1 -left-1 w-6 h-6 md:w-8 md:h-8 bg-emerald-500/20 rounded-full animate-ping"></div>
-        </button>
-      </div>
+          <div className="mb-6">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email (Optional)
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
+              className="mt-1 block w-full px-3 text-gray-700 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+              placeholder="john.doe@example.com"
+            />
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-transparent rounded-md shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+            >
+              Start Chat
+            </button>
+          </div>
+        </form>
+      </Modal>
     );
   }
 
@@ -306,12 +371,26 @@ const PremiumChatbot = () => {
     return (
       <div
         key={message.id}
-        className={`flex ${isBot ? "justify-start" : "justify-end"} mb-4 md:mb-6 px-2 md:px-4`}
+        className={`flex ${isBot ? "" : "justify-end"} mb-4`}
       >
-        <div className={`max-w-[85%] md:max-w-[80%] ${isBot ? "mr-2" : "ml-2"}`}>
+        <div className={`flex items-start gap-3 max-w-[85%]`}>
+          {isBot && (
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-offset-1 ${
+                isWelcome
+                  ? "bg-gradient-to-br from-emerald-400 to-green-600 ring-emerald-300/50"
+                  : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300/50"
+              }`}
+            >
+              <Bot
+                className={`w-5 h-5 ${
+                  isWelcome ? "text-white" : "text-emerald-600"
+                }`}
+              />
+            </div>
+          )}
           <div
-            className={`px-3 py-3 md:px-4 md:py-4 rounded-2xl md:rounded-3xl relative overflow-hidden backdrop-blur-sm border transition-all duration-300
-            ${
+            className={`px-4 py-3 rounded-2xl relative overflow-hidden backdrop-blur-sm border transition-all duration-300 ${
               isBot
                 ? isWelcome
                   ? "bg-gradient-to-br from-blue-50/90 to-purple-50/90 border-blue-200/30 shadow-md"
@@ -319,234 +398,221 @@ const PremiumChatbot = () => {
                 : "bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 text-white shadow-md border-transparent"
             }`}
           >
-            {/* Premium effects for welcome messages */}
-            {isWelcome && (
-              <>
-                <div className="absolute top-0 right-0 w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-xl rounded-full -mr-4 -mt-4 animate-pulse"></div>
-                <div className="absolute bottom-0 left-0 w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-400/10 to-teal-400/10 blur-xl rounded-full -ml-4 -mb-4 animate-pulse"></div>
-              </>
-            )}
-
-            <div className="flex items-start space-x-2 md:space-x-3 relative z-10">
-              {isBot && (
-                <div
-                  className={`w-7 h-7 md:w-9 md:h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-offset-1
-                  ${
-                    isWelcome
-                      ? "bg-gradient-to-br from-emerald-400 to-green-600 ring-emerald-300/50"
-                      : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300/50"
-                  }`}
-                >
-                  <Bot
-                    className={`w-4 h-4 md:w-5 md:h-5 ${
-                      isWelcome ? "text-white" : "text-emerald-600"
-                    }`}
-                  />
-                </div>
-              )}
-
-              <div className="flex-1 min-w-0">
-                <p
-                  dangerouslySetInnerHTML={{ __html: message.text }}
-                  className={`text-sm md:text-[15px] leading-relaxed tracking-wide whitespace-pre-line break-words
-                  ${
-                    isBot
-                      ? "text-gray-800 font-medium"
-                      : "text-white font-semibold"
-                  }`}
-                ></p>
-                <p
-                  className={`text-xs mt-1 md:mt-2 ${
-                    isBot ? "text-gray-500" : "text-emerald-100/80"
-                  }`}
-                >
-                  {message.timestamp.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </p>
-              </div>
-
-              {!isBot && (
-                <div className="w-7 h-7 md:w-9 md:h-9 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/30">
-                  <User className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                </div>
-              )}
-            </div>
+            <p
+              dangerouslySetInnerHTML={{ __html: message.text }}
+              className={`text-sm leading-relaxed ${
+                isBot ? "text-gray-800" : "text-white"
+              }`}
+            ></p>
           </div>
+          {!isBot && (
+            <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/30">
+              <User className="w-5 h-5 text-white" />
+            </div>
+          )}
         </div>
       </div>
     );
   };
 
-  // Responsive container styles
-  const getContainerStyles = () => {
-    if (isMobile && !isExpanded) {
-      const availableHeight = keyboardHeight > 0 
-        ? `${window.visualViewport?.height || window.innerHeight}px`
-        : '100vh';
-        
-      return {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: availableHeight,
-        width: '100vw',
-        borderRadius: 0,
-        maxHeight: 'none',
-        overflow: 'hidden',
-      };
-    }
-    
-    if (isExpanded) {
-      return {
-        width: '95vw',
-        height: '90vh',
-        maxWidth: '1000px',
-        maxHeight: '800px',
-        borderRadius: '1rem',
-      };
-    }
-    
-    return {
-      width: '384px', // w-96
-      height: '600px',
-      borderRadius: '1rem',
-    };
-  };
-
   return (
-    <div
-      className={`fixed z-50 transition-all duration-300 ease-out ${
-        isExpanded
-          ? "inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-          : isMobile
-          ? ""
-          : "bottom-2 right-2 md:bottom-4 md:right-4"
-      }`}
-      onClick={(e) => {
-        if (isExpanded && e.target === e.currentTarget) {
-          setIsExpanded(false);
-        }
-      }}
-    >
-      <div
-        className="bg-white shadow-2xl flex flex-col overflow-hidden"
-        style={getContainerStyles()}
-      >
-        {/* Header */}
-        <div className="relative bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 text-white p-3 md:p-4 shadow-lg flex-shrink-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm opacity-30"></div>
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm shadow-inner">
-                <Bot className="w-4 h-4 md:w-5 md:h-5" />
+    <>
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+        <div className="relative w-full h-full md:w-[95vw] md:h-[90vh] max-w-5xl rounded-lg bg-white flex shadow-2xl transition-all duration-300">
+          {/* Sidebar */}
+          {!isSidebarOpen && (
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="md:hidden fixed top-6 left-6 z-20 p-2 bg-emerald-500 text-white rounded-md shadow-md focus:outline-none"
+            >
+              <Menu size={22} />
+            </button>
+          )}
+
+          {/* X icon (shows when sidebar is open) */}
+          {isSidebarOpen && (
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="md:hidden fixed bottom-6 right-24 z-30 p-2 bg-emerald-500 text-white rounded-md shadow-md focus:outline-none"
+            >
+              <X size={22} />
+            </button>
+          )}
+
+          {/* 🟢 Sidebar */}
+          <div
+            className={`fixed top-0 left-0  h-full w-3/4 sm:w-2/3 md:w-1/3 bg-gradient-to-br from-emerald-400 to-green-600 text-white p-3 flex flex-col 
+        rounded-r-none md:rounded-l-lg  backdrop-blur-sm transition-transform duration-300 z-10
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+        md:translate-x-0 md:relative md:flex`}
+          >
+            {/* New Chat Button */}
+            <button
+              onClick={createNewChat}
+              className="flex items-center justify-between p-2.5 mb-4 rounded-lg hover:bg-white/10 transition-colors duration-200 border border-white/20"
+            >
+              <div className="flex items-center gap-2">
+                <Bot size={18} className="mr-2" />
+                <span className="font-semibold">New Chat</span>
               </div>
-              <div>
-                <h3 className="text-base md:text-lg font-bold">Durga's AI Assistant</h3>
-                <div className="text-xs opacity-90 flex items-center">
-                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                  Online & Ready to Help
+              <Edit size={16} />
+            </button>
+
+            {/* Chat History */}
+            <div className="flex-grow  overflow-y-auto -mr-2 pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+              {chatHistory.map((chat) => (
+                <div
+                  key={chat.id}
+                  className={`flex items-center mt-2 gap-2 justify-between p-2.5 rounded-lg cursor-pointer transition-colors duration-200 ${
+                    activeChatId === chat.id
+                      ? "bg-white/20"
+                      : "hover:bg-white/10"
+                  }`}
+                  onClick={() => {
+                    switchChat(chat.id);
+                    setIsSidebarOpen(false); // close on mobile
+                  }}
+                >
+                  <MessageSquare size={16} className="mr-2 flex-shrink-0" />
+                  {editingChatId === chat.id ? (
+                    <input
+                      type="text"
+                      defaultValue={chat.title}
+                      onBlur={(e) => handleUpdateTitle(chat.id, e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          handleUpdateTitle(chat.id, e.target.value);
+                        }
+                      }}
+                      className="flex-grow bg-transparent text-sm font-medium outline-none"
+                      autoFocus
+                    />
+                  ) : (
+                    <span className="flex-grow truncate text-sm font-medium">
+                      {chat.title}
+                    </span>
+                  )}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditTitle(chat.id);
+                    }}
+                    className="ml-2 text-white transition-colors duration-200"
+                  >
+                    <Edit size={14} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteChat(chat.id);
+                    }}
+                    className="ml-2 text-white transition-colors duration-200"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* User Info */}
+            <div className="border-t border-white/20 pt-3 mt-2">
+              <div className="flex items-center p-2.5 rounded-lg hover:bg-white/10 cursor-pointer transition-colors duration-200">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mr-2">
+                  <User size={18} />
+                </div>
+                <div>
+                  <span className="font-semibold">{userName}</span>
+                  <p className="text-xs text-white">{userEmail}</p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-1 md:space-x-2">
-              {!isMobile && (
-                <button
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className="p-1.5 md:p-2 rounded-lg hover:bg-white/20 transition-colors duration-200"
-                  title={isExpanded ? "Minimize" : "Expand"}
-                >
-                  {isExpanded ? (
-                    <Minimize2 className="w-4 h-4" />
-                  ) : (
-                    <Maximize2 className="w-4 h-4" />
-                  )}
-                </button>
-              )}
+          </div>
+
+          {/* Optional overlay (dark background when open on mobile) */}
+          {isSidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black/40 z-5 md:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
+
+          {/* Main Chat Area */}
+          <div className="w-full flex flex-col bg-gradient-to-b from-gray-50/50 to-white rounded-lg md:rounded-r-lg md:rounded-l-none">
+            <div className="p-3 border-b border-gray-200/80 flex justify-between items-center bg-gradient-to-r from-emerald-400 to-green-600 text-white rounded-t-lg md:rounded-tr-lg md:rounded-tl-none">
               <button
-                onClick={() => setIsOpen(false)}
-                className="p-1.5 md:p-2 rounded-lg hover:bg-white/20 transition-colors duration-200"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="md:hidden p-1.5 rounded-md bg-white/20 hover:bg-white/30 transition-colors duration-200"
               >
-                <X className="w-4 h-4" />
+                <Menu size={18} />
               </button>
+              <h2 className="text-base font-bold">Durga's AI Assistant</h2>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-1.5 rounded-md bg-white/20 hover:bg-white/30 transition-colors duration-200"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Decorative elements */}
-          <div className="absolute top-2 right-16 md:right-20 opacity-20">
-            <Sparkles className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
-          </div>
-          <div className="absolute bottom-2 left-16 md:left-20 opacity-20">
-            <Code className="w-3 h-3 md:w-4 md:h-4 animate-bounce" />
-          </div>
-        </div>
+            <div className="flex-grow p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+              {messages.length > 1 ? (
+                messages.map(renderMessage)
+              ) : (
+                <div className="h-full flex flex-col justify-center items-center text-center">
+                  {/* <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mb-4">
+                  <Bot size={32} className="text-white" />
+                </div> */}
+                  <div className="relative w-20 h-20 mb-6">
+                    {/* 🟢 Thick gradient border */}
+                    <div className="absolute inset-0 rounded-full p-[4px] bg-gradient-to-br from-emerald-400 to-green-600">
+                      {/* Inner image circle */}
+                      <div
+                        className="w-full h-full rounded-full bg-center bg-cover"
+                        style={{
+                          backgroundImage:
+                            "url('https://dpgaire.github.io/image-server/projects/durga.png')",
+                        }}
+                      ></div>
+                    </div>
 
-        {/* Messages Area - Scrollable */}
-        <div 
-          className="flex-1 min-h-0 bg-gradient-to-b from-gray-50/50 to-white"
-          style={{
-            maxHeight: isMobile && keyboardHeight > 0 
-              ? `calc(${window.visualViewport?.height || window.innerHeight}px - 120px)` 
-              : 'auto'
-          }}
-        >
-          {showSuggestions && messages.length <= 1 ? (
-            <div className="h-full p-3 md:p-4 overflow-y-auto">
-              <div className="flex flex-col justify-center items-center h-full space-y-4">
-                <div className="w-full">
-                  <p className="text-xs font-semibold text-gray-600 mb-3 flex items-center justify-center md:justify-start">
-                    <Lightbulb className="w-3 h-3 mr-1 text-emerald-500" />
-                    Quick Start Questions
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
-                    {smartSuggestions.slice(0, isMobile ? 4 : 6).map((suggestion, index) => (
+                    {/* 🤖 Bot icon at the top center */}
+                    <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-emerald-500 p-1.5 rounded-full shadow-md">
+                      <Bot size={20} className="text-white" />
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-gray-800 mb-6">
+                    How can I help you today?
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md">
+                    {smartSuggestions.map((suggestion, index) => (
                       <button
                         key={index}
                         onClick={() => handleSendMessage(suggestion.text)}
-                        className="text-xs md:text-sm p-3 md:p-3 rounded-xl flex items-center justify-start bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-700 hover:shadow-md hover:scale-[1.02] transition-all duration-200 text-left"
+                        className="text-sm p-3 rounded-xl flex items-center bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-700 hover:shadow-md hover:scale-[1.02] transition-all duration-200 text-left"
                       >
-                        <suggestion.icon className="w-3 h-3 md:w-4 md:h-4 mr-2 flex-shrink-0" />
+                        <suggestion.icon
+                          className="w-4 h-4 mr-2 flex-shrink-0"
+                        />
                         <span className="truncate">{suggestion.text}</span>
                       </button>
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-          ) : (
-            <div 
-              ref={messagesContainerRef}
-              className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
-              style={{
-                paddingBottom: isMobile ? '1rem' : '0.5rem',
-                paddingTop: '0.5rem',
-              }}
-            >
-              {messages.map((message) => renderMessage(message))}
-              
-              {/* Typing Indicator */}
+              )}
               {isTyping && (
-                <div className="flex justify-start mb-4 px-2 md:px-4">
-                  <div className="max-w-[85%]">
-                    <div className="bg-white/90 border border-gray-100 py-3 md:py-4 px-3 md:px-4 rounded-2xl md:rounded-3xl shadow-sm">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-7 h-7 md:w-9 md:h-9 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center border border-gray-200">
-                          <Bot className="w-4 h-4 md:w-5 md:h-5 text-emerald-600" />
-                        </div>
-                        <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
-                          <div
-                            className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"
-                            style={{ animationDelay: "0.1s" }}
-                          ></div>
-                          <div
-                            className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
-                            style={{ animationDelay: "0.2s" }}
-                          ></div>
-                        </div>
+                <div className="flex justify-start mb-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-offset-1 ring-gray-300/50">
+                      <Bot className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    <div className="bg-white/90 border border-gray-100 py-3 px-4 rounded-2xl shadow-sm">
+                      <div className="flex items-center space-x-1">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-teal-500 rounded-full animate-bounce [animation-delay:0.1s]"></div>
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
                       </div>
                     </div>
                   </div>
@@ -554,61 +620,41 @@ const PremiumChatbot = () => {
               )}
               <div ref={messagesEndRef} />
             </div>
-          )}
-        </div>
 
-        {/* Input Area - Sticky */}
-        <div 
-          className="flex-shrink-0 bg-white border-t border-gray-200 p-3 md:p-4"
-          style={{
-            position: 'sticky',
-            bottom: 8,
-            zIndex: 10,
-            // Ensure input stays visible above keyboard
-            transform: isMobile && keyboardHeight > 0 ? 'translateY(0)' : 'none',
-          }}
-        >
-          <div className="flex space-x-2">
-            <div className="relative flex-1">
-              <input
-                ref={inputRef}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                placeholder="Ask me anything about Durga..."
-                className="w-full h-10 md:h-12 px-3 md:px-4 pr-10 md:pr-12 rounded-xl text-sm md:text-base text-gray-700 border-2 border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all duration-200 shadow-sm bg-white"
-                disabled={isTyping}
-              />
-              <button
-                onClick={() => handleSendMessage()}
-                disabled={!inputValue.trim() || isTyping}
-                className="absolute right-1 md:right-2 top-1 md:top-2 w-8 h-8 md:w-8 md:h-8 rounded-lg bg-gradient-to-r from-emerald-400 to-green-600 text-white flex items-center justify-center hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Send className="w-3 h-3 md:w-4 md:h-4" />
-              </button>
+            <div className="p-4 border-t border-white/20 bg-gradient-to-br from-white/60 to-white/30 backdrop-blur-md rounded-b-lg shadow-inner">
+              <div className="flex items-center gap-3">
+                {/* Input Field */}
+                <div className="flex-1 relative">
+                  <input
+                    ref={inputRef}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Ask me anything about Durga..."
+                    disabled={isTyping}
+                    className="w-full h-12 md:h-14 pl-4 py-2 pr-14 text-sm md:text-base text-gray-800 placeholder-gray-400 bg-white/80 border border-gray-200 rounded-xl shadow-sm outline-none transition-all duration-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300 focus:bg-white"
+                  />
+
+                  {/* Send Button */}
+                  <button
+                    onClick={() => handleSendMessage()}
+                    disabled={!inputValue.trim() || isTyping}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-emerald-400 to-green-600 text-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              <p className="text-xs text-center text-gray-500 mt-3 italic">
+                AI can make mistakes — double-check important info.
+              </p>
             </div>
-          </div>
-
-          {/* Quick starters */}
-          <div className="flex flex-wrap gap-1 md:gap-2 mt-2 md:mt-3">
-            {quickStarters.slice(0, isMobile ? 3 : 4).map((starter, index) => (
-              <button
-                key={index}
-                onClick={() => handleSendMessage(starter)}
-                className="text-xs px-2 md:px-3 py-1 md:py-1.5 bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-600 rounded-lg transition-all duration-200 border border-transparent hover:border-emerald-200 flex items-center whitespace-nowrap"
-                disabled={isTyping}
-              >
-                <CornerDownRight className="w-2 h-2 md:w-3 md:h-3 mr-1 flex-shrink-0" />
-                <span className="truncate max-w-[120px] md:max-w-none">{starter}</span>
-              </button>
-            ))}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default PremiumChatbot;
+export default Chatbot;

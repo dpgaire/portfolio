@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@google/gemini-cli": "^0.10.0-nightly.20251010.558be873",
     "@google/generative-ai": "^0.24.1",
     "@heroicons/react": "^2.2.0",
     "@vercel/analytics": "^1.5.0",
