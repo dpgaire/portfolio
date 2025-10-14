@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  XMarkIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 import { fetchProjectById } from "../api";
 import ProjectDetailsSkeleton from "../components/ui/ProjectDetailsSkeleton";
 
@@ -8,12 +13,19 @@ const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [allImages, setAllImages] = useState([]);
 
   useEffect(() => {
     const getProject = async () => {
       try {
         const data = await fetchProjectById(id);
         setProject(data);
+
+        // include main image + screenshots
+        const images = [data.image, ...(data.screenshots || [])];
+        setAllImages(images);
       } catch (error) {
         console.error("Error fetching project:", error);
       } finally {
@@ -23,11 +35,28 @@ const ProjectDetails = () => {
     getProject();
   }, [id]);
 
-  if (loading) {
-    return <ProjectDetailsSkeleton />;
-  }
+  const openModal = (index) => {
+    setSelectedImage(allImages[index]);
+    setCurrentIndex(index);
+  };
 
-  if (!project) {
+  const closeModal = () => setSelectedImage(null);
+
+  const showNext = () => {
+    const nextIndex = (currentIndex + 1) % allImages.length;
+    setCurrentIndex(nextIndex);
+    setSelectedImage(allImages[nextIndex]);
+  };
+
+  const showPrev = () => {
+    const prevIndex = (currentIndex - 1 + allImages.length) % allImages.length;
+    setCurrentIndex(prevIndex);
+    setSelectedImage(allImages[prevIndex]);
+  };
+
+  if (loading) return <ProjectDetailsSkeleton />;
+
+  if (!project)
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-900">
         <div className="text-center">
@@ -47,7 +76,6 @@ const ProjectDetails = () => {
         </div>
       </div>
     );
-  }
 
   return (
     <div className="section-padding bg-white dark:bg-dark-900">
@@ -69,11 +97,13 @@ const ProjectDetails = () => {
           </p>
         </div>
 
+        {/* Main Image (also clickable for modal) */}
         <div className="mb-12">
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-auto rounded-lg shadow-lg"
+            onClick={() => openModal(0)} // now opens modal as first image
+            className="w-full h-auto rounded-lg shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105"
           />
         </div>
 
@@ -133,22 +163,56 @@ const ProjectDetails = () => {
           </div>
         </div>
 
+        {/* Screenshots Grid */}
         <div className="mt-16">
           <h2 className="text-3xl font-bold text-center mb-8">
             More Screenshots
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {project.screenshots.map((screenshot, index) => (
               <img
                 key={index}
                 src={screenshot}
                 alt={`${project.title} screenshot ${index + 1}`}
-                className="w-full h-auto rounded-lg shadow-md"
+                onClick={() => openModal(index + 1)} // +1 because main image is index 0
+                className="w-full h-auto rounded-lg shadow-md cursor-pointer transition-transform duration-300 hover:scale-105"
               />
             ))}
           </div>
         </div>
       </div>
+
+      {/* Image Preview Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <button
+            className="absolute top-5 right-5 text-white hover:text-gray-300 transition"
+            onClick={closeModal}
+          >
+            <XMarkIcon className="w-8 h-8" />
+          </button>
+
+          <button
+            className="absolute left-5 text-white hover:text-gray-300 transition"
+            onClick={showPrev}
+          >
+            <ChevronLeftIcon className="w-10 h-10" />
+          </button>
+
+          <img
+            src={selectedImage}
+            alt="Selected screenshot"
+            className="max-h-[90vh] max-w-[90vw] rounded-lg shadow-lg"
+          />
+
+          <button
+            className="absolute right-5 text-white hover:text-gray-300 transition"
+            onClick={showNext}
+          >
+            <ChevronRightIcon className="w-10 h-10" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
