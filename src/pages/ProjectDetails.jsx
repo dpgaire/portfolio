@@ -153,7 +153,8 @@ const ProjectDetails = () => {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-secondary w-full sm:w-auto lg:w-full text-center"
+                               className="btn-secondary hover:text-white  text-center"
+
                   >
                     View on GitHub
                   </a>

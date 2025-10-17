@@ -77,8 +77,7 @@ const Footer = () => {
                 </div>
 
                 <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-6 max-w-md">
-                  {t('footer_intro')}
-                  
+                  {t("footer_intro")}
                 </p>
 
                 <div className="flex space-x-4">
@@ -136,14 +135,22 @@ const Footer = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <h3 className="text-lg font-semibold mb-4">{t("contact_title")}</h3>
+                <h3 className="text-lg font-semibold mb-4">
+                  {t("contact_title")}
+                </h3>
                 <div className="space-y-3 text-gray-600 dark:text-gray-400">
                   <p>
                     <span className="font-medium text-gray-800 dark:text-white block">
-                     {t("contact_info_email_label")}
+                      {t("contact_info_email_label")}
                     </span>
-                    gairhedurga13@gmail.com
+                    <a
+                      href="mailto:gairhedurga13@gmail.com"
+                      className="text-gray-800 dark:text-white hover:underline cursor-pointer"
+                    >
+                      gairhedurga13@gmail.com
+                    </a>
                   </p>
+
                   <p>
                     <span className="font-medium text-gray-800 dark:text-white block">
                       {t("contact_info_location_label")}
@@ -152,11 +159,11 @@ const Footer = () => {
                   </p>
                   <p>
                     <span className="font-medium text-gray-800 dark:text-white block">
-                     {t("footer_availability_title")}
+                      {t("footer_availability_title")}
                     </span>
                     <span className="inline-flex items-center">
                       <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse" />
-                     {t("contact_availability_title")}
+                      {t("contact_availability_title")}
                     </span>
                   </p>
                 </div>
@@ -175,10 +182,13 @@ const Footer = () => {
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
                 className="flex flex-wrap items-center justify-center gap-1"
-              ><span>
-  {t("footer_text", { year: currentYear, name: t("nav_title") })}
-</span>
-
+              >
+                <span>
+                  {t("footer_text", {
+                    year: currentYear,
+                    name: t("nav_title"),
+                  })}
+                </span>
               </motion.div>
 
               <motion.div

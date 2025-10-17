@@ -73,6 +73,7 @@ export default {
         'glow': 'glow 2s ease-in-out infinite alternate',
         'gradient': 'gradient 15s ease infinite',
         'spin-slow': 'spin 8s linear infinite',
+        'slide-in-right': 'slideInRight 0.5s ease-out forwards',
       },
       keyframes: {
         fadeIn: {
@@ -93,6 +94,10 @@ export default {
         },
         slideRight: {
           '0%': { transform: 'translateX(-20px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideInRight: {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
           '100%': { transform: 'translateX(0)', opacity: '1' },
         },
         scaleIn: {
