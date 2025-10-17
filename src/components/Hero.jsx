@@ -192,7 +192,7 @@ const Hero = () => {
           </motion.a>
 
           <motion.a
-            href="/files/Durga_Gairhe_CV.pdf"
+            href="https://dpgaire.github.io/image-server/Docs/Durga_Gairhe_CV.pdf"
             download
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
