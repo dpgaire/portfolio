@@ -296,7 +296,7 @@ const Chatbot = ({ setIsOpen }) => {
     return (
       <button
         onClick={openChatModal}
-        className="fixed bottom-5 right-5 bg-emerald-500 text-white p-4 rounded-full shadow-lg hover:bg-emerald-600 transition-colors duration-300 z-40"
+        className="fixed invisible bottom-5 right-5 bg-emerald-500 text-white p-4 rounded-full shadow-lg hover:bg-emerald-600 transition-colors duration-300 z-40"
       >
         <MessageCircle size={24} />
       </button>
