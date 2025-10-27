@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import  { useState, useRef, useEffect } from "react";
 import {
   MessageCircle,
   X,
@@ -9,17 +9,22 @@ import {
   Award,
   Code,
   Zap,
-  Bell,
-  Lightbulb,
-  Plus,
   MessageSquare,
   Trash2,
   Edit,
   Menu,
-  Minimize2,
-  Maximize2,
 } from "lucide-react";
 import Modal from "./ui/Modal";
+import {
+  createUser,
+  createChatHistory,
+  getChatHistories,
+  getChatHistory,
+  updateChatHistoryTitle,
+  deleteChatHistory,
+  updateChatHistory,
+  createChat,
+} from "../api/chat";
 
 const smartSuggestions = [
   {
@@ -54,8 +59,10 @@ const Chatbot = ({ setIsOpen }) => {
   const [showModal, setShowModal] = useState(false);
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [userId, setUserId] = useState(null);
   const [editingChatId, setEditingChatId] = useState(null);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [isNewChat, setIsNewChat] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -67,46 +74,28 @@ const Chatbot = ({ setIsOpen }) => {
   }, [inputValue]);
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
-    if (userInfo) {
-      const { name, email } = JSON.parse(userInfo);
-      setUserName(name);
-      setUserEmail(email);
+    const user = JSON.parse(localStorage.getItem("chatUser"));
+    if (user) {
+      setUserName(user.payload.fullName);
+      setUserEmail(user.payload.email);
+      setUserId(user.id);
       setShowModal(false);
-      const savedHistory = localStorage.getItem("chatHistory");
-      if (savedHistory) {
-        setChatHistory(JSON.parse(savedHistory));
-      }
+      fetchHistory(user.id);
     } else {
       setShowModal(true);
     }
+
     setHistoryLoaded(true);
   }, []);
 
-  useEffect(() => {
-    if (historyLoaded) {
-      if (chatHistory.length > 0) {
-        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-      } else {
-        localStorage.removeItem("chatHistory");
-      }
+  const fetchHistory = async (id) => {
+    const response = await getChatHistories(id);
+    if (response.success) {
+      // Sort chatHistory by ID in descending order (latest first)
+      const sortedChatHistory = response.chatHistory.sort((a, b) => b.id - a.id);
+      setChatHistory(sortedChatHistory);
     }
-  }, [chatHistory, historyLoaded]);
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const userInfo = localStorage.getItem("userInfo");
-      if (!userInfo) {
-        setChatHistory([]);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+  };
 
   useEffect(() => {
     if (setIsOpen) {
@@ -122,106 +111,96 @@ const Chatbot = ({ setIsOpen }) => {
   }, [messages, isTyping]);
 
   const createNewChat = () => {
-    const newChatId = Date.now();
-    const newChat = {
-      id: newChatId,
-      title: "New Chat",
-      messages: [
-        {
-          id: Date.now(),
-          text: "👋 Hello! I'm Durga's AI Assistant. How can I help you today?",
-          sender: "bot",
-          type: "welcome",
-        },
-      ],
-    };
-    setChatHistory((prev) => [newChat, ...prev]);
-    setActiveChatId(newChatId);
-    setMessages(newChat.messages);
+    setIsNewChat(true);
+    setMessages([
+      {
+        id: Date.now(),
+        text: "👋 Hello! I'm Durga's AI Assistant. How can I help you today?",
+        sender: "bot",
+        type: "welcome",
+      },
+    ]);
     setIsSidebarOpen(false);
   };
 
   useEffect(() => {
-    if (historyLoaded && setIsOpen && !activeChatId) {
+    if (historyLoaded && setIsOpen && !activeChatId && userId) {
       if (chatHistory.length > 0) {
         const lastChat = chatHistory[0];
-        setActiveChatId(lastChat.id);
-        setMessages(lastChat.messages);
+        setActiveChatId(lastChat?.id);
+        setMessages(lastChat?.messages);
+        setIsNewChat(false); // It's an existing chat
       } else {
         createNewChat();
       }
     }
-  }, [setIsOpen, activeChatId, chatHistory, historyLoaded]);
+  }, [setIsOpen, activeChatId, chatHistory, historyLoaded, userId]);
 
   const handleSendMessage = async (messageText = inputValue) => {
-    if (!messageText.trim()) return;
+    const text = messageText.trim();
+    if (!text) return;
+
+    const timestamp = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
     const userMessage = {
       id: Date.now(),
-      text: messageText,
+      text,
       sender: "user",
+      timestamp,
     };
 
-    const currentMessages = [...messages, userMessage];
-    setMessages(currentMessages);
+    const messagesWithUser = [...messages, userMessage];
+    setMessages(messagesWithUser);
     setInputValue("");
     setIsTyping(true);
 
-    const updatedChatHistory = chatHistory.map((chat) =>
-      chat.id === activeChatId ? { ...chat, messages: currentMessages } : chat
-    );
-    setChatHistory(updatedChatHistory);
-
-    if (messages.length === 1) {
-      const updatedChatHistoryWithTitle = updatedChatHistory.map((chat) =>
-        chat.id === activeChatId ? { ...chat, title: messageText } : chat
-      );
-      setChatHistory(updatedChatHistoryWithTitle);
-    }
-
     try {
-      const response = await fetch(
-        "https://ai-chatbot-api-ten.vercel.app/api/chat",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            query: messageText,
-            user: { name: userName, email: userEmail },
-          }),
+      const chatResponse = await createChat(text);
+      const botText =
+        chatResponse?.response?.replace(
+          /\*\*(.*?)\*\*/g,
+          "<strong>$1</strong>"
+        ) || "Sorry, I didn’t understand that.";
+
+      const botMessage = {
+        id: Date.now() + 1,
+        text: botText,
+        sender: "bot",
+        timestamp,
+      };
+
+      setIsTyping(false);
+
+      const finalMessages = [...messagesWithUser, botMessage];
+      setMessages(finalMessages);
+
+      if (isNewChat) {
+        // This is a new chat, so create a new history entry (POST)
+        const newHistory = await createChatHistory(userId, text, finalMessages);
+        if (newHistory.success) {
+          setActiveChatId(newHistory.chatHistory.id);
+          setIsNewChat(false); // Reset the flag
         }
-      );
+      } else if (activeChatId) {
+        // This is an existing chat, so update it (PATCH)
+        await updateChatHistory(userId, activeChatId, {
+          messages: [userMessage, botMessage],
+        });
+      }
 
-      if (!response.ok) throw new Error("Network response was not ok");
-
-      const data = await response.json();
-      const botResponse = {
-        id: Date.now() + 1,
-        text: data.response.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>"),
-        sender: "bot",
-      };
-
-      const finalMessages = [...currentMessages, botResponse];
-      setMessages(finalMessages);
-      setChatHistory(
-        chatHistory.map((chat) =>
-          chat.id === activeChatId ? { ...chat, messages: finalMessages } : chat
-        )
-      );
+      await fetchHistory(userId);
     } catch (error) {
-      console.error("Error fetching chatbot response:", error);
-      const errorResponse = {
+      console.error("Error during message handling:", error);
+      const errorMessage = {
         id: Date.now() + 1,
-        text: "Sorry, something went wrong. Please try again.",
+        text: "⚠️ Sorry, something went wrong. Please try again.",
         sender: "bot",
+        timestamp,
       };
-      const finalMessages = [...currentMessages, errorResponse];
-      setMessages(finalMessages);
-      setChatHistory(
-        chatHistory.map((chat) =>
-          chat.id === activeChatId ? { ...chat, messages: finalMessages } : chat
-        )
-      );
+      setMessages([...messagesWithUser, errorMessage]);
     } finally {
       setIsTyping(false);
     }
@@ -234,25 +213,32 @@ const Chatbot = ({ setIsOpen }) => {
     }
   };
 
-  const switchChat = (chatId) => {
+  const switchChat = async (chatId) => {
     const chat = chatHistory.find((c) => c.id === chatId);
     if (chat) {
-      setActiveChatId(chatId);
-      setMessages(chat.messages);
+      setActiveChatId(chat.id);
+      setIsNewChat(false); // It's an existing chat
+      const response = await getChatHistory(userId, chatId);
+      if (response.success) {
+        setMessages(response.chatHistory.payload.messages);
+      }
       setIsSidebarOpen(false);
     }
   };
 
-  const handleDeleteChat = (chatId) => {
+  const handleDeleteChat = async (chatId) => {
     if (window.confirm("Are you sure you want to delete this chat?")) {
-      const updatedHistory = chatHistory.filter((c) => c.id !== chatId);
-      setChatHistory(updatedHistory);
-      if (activeChatId === chatId) {
-        if (updatedHistory.length > 0) {
-          switchChat(updatedHistory[0].id);
-        } else {
-          setActiveChatId(null);
-          setMessages([]);
+      const response = await deleteChatHistory(userId, chatId);
+      if (response.success) {
+        const updatedHistory = chatHistory.filter((c) => c.id !== chatId);
+        setChatHistory(updatedHistory);
+        if (activeChatId === chatId) {
+          if (updatedHistory.length > 0) {
+            switchChat(updatedHistory[0].id);
+          } else {
+            setActiveChatId(null);
+            setMessages([]);
+          }
         }
       }
     }
@@ -262,35 +248,39 @@ const Chatbot = ({ setIsOpen }) => {
     setEditingChatId(chatId);
   };
 
-  const handleUpdateTitle = (chatId, newTitle) => {
-    const updatedHistory = chatHistory.map((chat) =>
-      chat.id === chatId ? { ...chat, title: newTitle } : chat
-    );
-    setChatHistory(updatedHistory);
-    setEditingChatId(null);
+  const handleUpdateTitle = async (chatId, newTitle) => {
+    const response = await updateChatHistoryTitle(userId, chatId, newTitle);
+    if (response.success) {
+      const updatedHistory = chatHistory.map((chat) =>
+        chat.id === chatId ? { ...chat, title: newTitle } : chat
+      );
+      setChatHistory(updatedHistory);
+      setEditingChatId(null);
+    }
   };
 
-  const handleStartChat = (e) => {
+  const handleStartChat = async (e) => {
     e.preventDefault();
     if (userName.trim()) {
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify({ name: userName, email: userEmail })
-      );
-      setShowModal(false);
-      setIsOpen(true);
+      const response = await createUser(userName, userEmail);
+      if (response.success) {
+        localStorage.setItem("chatUser", JSON.stringify(response.user));
+        localStorage.setItem("userId", response.user.id);
+        setUserId(response.user.id);
+        setShowModal(false);
+        setIsOpen(true);
+      }
     }
   };
 
   const openChatModal = () => {
-    const userInfo = localStorage.getItem("userInfo");
-    if (!userInfo) {
+    const storedUserId = localStorage.getItem("userId");
+    if (!storedUserId) {
       setShowModal(true);
       return;
     }
     setIsOpen(true);
   };
-
 
   if (!setIsOpen) {
     return (
@@ -361,49 +351,77 @@ const Chatbot = ({ setIsOpen }) => {
   const renderMessage = (message) => {
     const isBot = message.sender === "bot";
     const isWelcome = message.type === "welcome";
+    const timestamp = new Date(
+      message.timestamp || Date.now()
+    ).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
     return (
       <div
         key={message.id}
-        className={`flex ${isBot ? "" : "justify-end"} mb-4`}
+        className={`flex ${
+          isBot ? "" : "justify-end"
+        } mb-5 transition-all duration-300`}
       >
-        <div className={`flex items-start gap-3 max-w-[85%]`}>
-          {isBot && (
+        <div
+          className={`flex flex-col ${
+            isBot ? "items-start" : "items-end"
+          } max-w-[85%]`}
+        >
+          <div className="flex items-end gap-3 w-full">
+            {/* 🧠 Bot Avatar */}
+            {isBot && (
+              <div
+                className={`w-9 h-9 rounded-full flex items-center justify-center shadow-md ring-1 ring-offset-1 ${
+                  isWelcome
+                    ? "bg-gradient-to-br from-indigo-400 to-purple-500 ring-indigo-300/50"
+                    : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300/50"
+                }`}
+              >
+                <Bot
+                  className={`w-5 h-5 ${
+                    isWelcome ? "text-white" : "text-emerald-600"
+                  }`}
+                />
+              </div>
+            )}
+
+            {/* 💬 Message bubble */}
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-offset-1 ${
-                isWelcome
-                  ? "bg-gradient-to-br from-emerald-400 to-green-600 ring-emerald-300/50"
-                  : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300/50"
+              className={`px-4 py-3 rounded-2xl relative overflow-hidden backdrop-blur-md border shadow-sm transition-all duration-300 ${
+                isBot
+                  ? isWelcome
+                    ? "bg-gradient-to-br from-blue-50/80 to-purple-50/80 border-blue-200/30 text-gray-800"
+                    : "bg-white/90 border-gray-200/50 text-gray-800"
+                  : "bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 text-white border-transparent"
               }`}
             >
-              <Bot
-                className={`w-5 h-5 ${
-                  isWelcome ? "text-white" : "text-emerald-600"
+              <p
+                className={`text-sm leading-relaxed ${
+                  isBot ? "text-gray-800" : "text-white"
                 }`}
-              />
+                dangerouslySetInnerHTML={{ __html: message.text }}
+              ></p>
             </div>
-          )}
-          <div
-            className={`px-4 py-3 rounded-2xl relative overflow-hidden backdrop-blur-sm border transition-all duration-300 ${
-              isBot
-                ? isWelcome
-                  ? "bg-gradient-to-br from-blue-50/90 to-purple-50/90 border-blue-200/30 shadow-md"
-                  : "bg-white/90 border-gray-200/50 shadow-sm"
-                : "bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 text-white shadow-md border-transparent"
+
+            {/* 👤 User Avatar */}
+            {!isBot && (
+              <div className="w-9 h-9 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center shadow-inner border border-white/40">
+                <User className="w-5 h-5 text-white drop-shadow-sm" />
+              </div>
+            )}
+          </div>
+
+          {/* 🕒 Timestamp below the message */}
+          <span
+            className={`mt-1 text-xs ${
+              isBot ? "text-gray-400 pl-12" : "text-gray-400 pr-12 text-right"
             }`}
           >
-            <p
-              dangerouslySetInnerHTML={{ __html: message.text }}
-              className={`text-sm leading-relaxed ${
-                isBot ? "text-gray-800" : "text-white"
-              }`}
-            ></p>
-          </div>
-          {!isBot && (
-            <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-inner border border-white/30">
-              <User className="w-5 h-5 text-white" />
-            </div>
-          )}
+            {message?.timestamp || timestamp}
+          </span>
         </div>
       </div>
     );
@@ -454,7 +472,7 @@ const Chatbot = ({ setIsOpen }) => {
 
             {/* Chat History */}
             <div className="flex-grow  overflow-y-auto -mr-2 pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
-              {chatHistory.map((chat) => (
+              {chatHistory?.map((chat) => (
                 <div
                   key={chat.id}
                   className={`flex items-center mt-2 gap-2 justify-between p-2.5 rounded-lg cursor-pointer transition-colors duration-200 ${
@@ -551,8 +569,8 @@ const Chatbot = ({ setIsOpen }) => {
             </div>
 
             <div className="flex-grow p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-              {messages.length > 1 ? (
-                messages.map(renderMessage)
+              {messages?.length > 1 ? (
+                messages?.map(renderMessage)
               ) : (
                 <div className="h-full flex flex-col justify-center items-center text-center">
                   {/* <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mb-4">
@@ -587,9 +605,7 @@ const Chatbot = ({ setIsOpen }) => {
                         onClick={() => handleSendMessage(suggestion.text)}
                         className="text-sm p-3 rounded-xl flex items-center bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-700 hover:shadow-md hover:scale-[1.02] transition-all duration-200 text-left"
                       >
-                        <suggestion.icon
-                          className="w-4 h-4 mr-2 flex-shrink-0"
-                        />
+                        <suggestion.icon className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span className="truncate">{suggestion.text}</span>
                       </button>
                     ))}
