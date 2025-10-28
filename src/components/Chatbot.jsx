@@ -8,7 +8,10 @@ import {
   Sparkles,
   Award,
   Code,
-  Zap,
+  Rocket,
+  Scale,
+  Brain,
+
   MessageSquare,
   Trash2,
   Edit,
@@ -29,23 +32,39 @@ import {
 const smartSuggestions = [
   {
     icon: Sparkles,
+    displayText: "Why hire?",
     text: "Why hire Durga?",
     category: "why-hire",
   },
   {
     icon: Code,
+    displayText: "Skills",
     text: "Show me his frontend & backend skills",
     category: "skills",
   },
   {
     icon: Award,
+    displayText: "Projects",
     text: "Latest & featured projects",
     category: "projects",
   },
   {
-    icon: Zap,
-    text: "What's DevOS AI?",
-    category: "projects",
+    icon: Rocket,
+    displayText: "After 5 years",
+    text: "Where do you see yourself in 5 years?",
+    category: "future",
+  },
+  {
+    icon: Scale,
+    displayText: "Strengths & Weaknesses",
+    text: "What are your strengths and weaknesses?",
+    category: "personality",
+  },
+  {
+    icon: Brain,
+    displayText: "Mindset",
+    text: "What is his core mindset?",
+    category: "mindset",
   },
 ];
 
@@ -121,6 +140,7 @@ const Chatbot = ({ setIsOpen }) => {
       },
     ]);
     setIsSidebarOpen(false);
+    inputRef.current.focus();
   };
 
   useEffect(() => {
@@ -299,7 +319,7 @@ const Chatbot = ({ setIsOpen }) => {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         title="Welcome to Durga's AI Assistant"
-        description="To begin a conversation, please enter your name and email is optional."
+        description="To begin a conversation, please enter your name and email(optional)."
       >
         <form onSubmit={handleStartChat} className="mt-4">
           <div className="mb-4">
@@ -368,27 +388,9 @@ const Chatbot = ({ setIsOpen }) => {
         <div
           className={`flex flex-col ${
             isBot ? "items-start" : "items-end"
-          } max-w-[85%]`}
+          } max-w-full md:max-w-[85%]`}
         >
           <div className="flex items-end gap-3 w-full">
-            {/* 🧠 Bot Avatar */}
-            {isBot && (
-              <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center shadow-md ring-1 ring-offset-1 ${
-                  isWelcome
-                    ? "bg-gradient-to-br from-indigo-400 to-purple-500 ring-indigo-300/50"
-                    : "bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-300/50"
-                }`}
-              >
-                <Bot
-                  className={`w-5 h-5 ${
-                    isWelcome ? "text-white" : "text-emerald-600"
-                  }`}
-                />
-              </div>
-            )}
-
-            {/* 💬 Message bubble */}
             <div
               className={`px-4 py-3 rounded-2xl relative overflow-hidden backdrop-blur-md border shadow-sm transition-all duration-300 ${
                 isBot
@@ -405,19 +407,12 @@ const Chatbot = ({ setIsOpen }) => {
                 dangerouslySetInnerHTML={{ __html: message.text }}
               ></p>
             </div>
-
-            {/* 👤 User Avatar */}
-            {!isBot && (
-              <div className="w-9 h-9 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center shadow-inner border border-white/40">
-                <User className="w-5 h-5 text-white drop-shadow-sm" />
-              </div>
-            )}
           </div>
 
           {/* 🕒 Timestamp below the message */}
           <span
             className={`mt-1 text-xs ${
-              isBot ? "text-gray-400 pl-12" : "text-gray-400 pr-12 text-right"
+              isBot ? "text-gray-400 pl-4" : "text-gray-400 pr-4 text-right"
             }`}
           >
             {message?.timestamp || timestamp}
@@ -429,36 +424,14 @@ const Chatbot = ({ setIsOpen }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-        <div className="relative w-full h-full md:w-[95vw] md:h-[90vh] max-w-5xl rounded-lg bg-white flex shadow-2xl transition-all duration-300">
-          {/* Sidebar */}
-          {!isSidebarOpen && (
-            <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="md:hidden fixed top-6 left-6 z-20 p-2 bg-emerald-500 text-white rounded-md shadow-md focus:outline-none"
-            >
-              <Menu size={22} />
-            </button>
-          )}
-
-          {/* X icon (shows when sidebar is open) */}
-          {isSidebarOpen && (
-            <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="md:hidden fixed bottom-6 right-24 z-30 p-2 bg-emerald-500 text-white rounded-md shadow-md focus:outline-none"
-            >
-              <X size={22} />
-            </button>
-          )}
-
-          {/* 🟢 Sidebar */}
+      <div className="fixed inset-0  backdrop-blur-sm flex justify-center items-center z-50 p-0 md:p-4">
+        <div className="relative w-full h-full md:w-[95vw] md:h-[90vh] max-w-5xl rounded-none md:rounded-lg bg-white flex shadow-2xl transition-all duration-300">
           <div
             className={`fixed top-0 left-0  h-full w-3/4 sm:w-2/3 md:w-1/3 bg-gradient-to-br from-emerald-400 to-green-600 text-white p-3 flex flex-col 
         rounded-r-none md:rounded-l-lg  backdrop-blur-sm transition-transform duration-300 z-10
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
         md:translate-x-0 md:relative md:flex`}
           >
-            {/* New Chat Button */}
             <button
               onClick={createNewChat}
               className="flex items-center justify-between p-2.5 mb-4 rounded-lg hover:bg-white/10 transition-colors duration-200 border border-white/20"
@@ -470,7 +443,6 @@ const Chatbot = ({ setIsOpen }) => {
               <Edit size={16} />
             </button>
 
-            {/* Chat History */}
             <div className="flex-grow  overflow-y-auto -mr-2 pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
               {chatHistory?.map((chat) => (
                 <div
@@ -526,7 +498,6 @@ const Chatbot = ({ setIsOpen }) => {
               ))}
             </div>
 
-            {/* User Info */}
             <div className="border-t border-white/20 pt-3 mt-2">
               <div className="flex items-center p-2.5 rounded-lg hover:bg-white/10 cursor-pointer transition-colors duration-200">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mr-2">
@@ -540,17 +511,15 @@ const Chatbot = ({ setIsOpen }) => {
             </div>
           </div>
 
-          {/* Optional overlay (dark background when open on mobile) */}
           {isSidebarOpen && (
             <div
-              className="fixed inset-0 bg-black/40 z-5 md:hidden"
+              className="fixed inset-0 backdrop-blur-sm z-5 md:hidden"
               onClick={() => setIsSidebarOpen(false)}
             />
           )}
 
-          {/* Main Chat Area */}
           <div className="w-full flex flex-col bg-gradient-to-b from-gray-50/50 to-white rounded-lg md:rounded-r-lg md:rounded-l-none">
-            <div className="p-3 border-b border-gray-200/80 flex justify-between items-center bg-gradient-to-r from-emerald-400 to-green-600 text-white rounded-t-lg md:rounded-tr-lg md:rounded-tl-none">
+            <div className="p-3 border-b border-gray-200/80 flex justify-between items-center bg-gradient-to-r from-emerald-400 to-green-600 text-white md:rounded-t-lg md:rounded-tr-lg md:rounded-tl-none">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 className="md:hidden p-1.5 rounded-md bg-white/20 hover:bg-white/30 transition-colors duration-200"
@@ -573,13 +542,8 @@ const Chatbot = ({ setIsOpen }) => {
                 messages?.map(renderMessage)
               ) : (
                 <div className="h-full flex flex-col justify-center items-center text-center">
-                  {/* <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mb-4">
-                  <Bot size={32} className="text-white" />
-                </div> */}
                   <div className="relative w-20 h-20 mb-6">
-                    {/* 🟢 Thick gradient border */}
                     <div className="absolute inset-0 rounded-full p-[4px] bg-gradient-to-br from-emerald-400 to-green-600">
-                      {/* Inner image circle */}
                       <div
                         className="w-full h-full rounded-full bg-center bg-cover"
                         style={{
@@ -588,8 +552,6 @@ const Chatbot = ({ setIsOpen }) => {
                         }}
                       ></div>
                     </div>
-
-                    {/* 🤖 Bot icon at the top center */}
                     <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-emerald-500 p-1.5 rounded-full shadow-md">
                       <Bot size={20} className="text-white" />
                     </div>
@@ -598,7 +560,7 @@ const Chatbot = ({ setIsOpen }) => {
                   <h3 className="text-xl font-bold text-gray-800 mb-6">
                     How can I help you today?
                   </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md">
+                  <div className="grid grid-cols-2 md:grid-cols-2 gap-3 w-full max-w-md">
                     {smartSuggestions.map((suggestion, index) => (
                       <button
                         key={index}
@@ -606,7 +568,7 @@ const Chatbot = ({ setIsOpen }) => {
                         className="text-sm p-3 rounded-xl flex items-center bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-700 hover:shadow-md hover:scale-[1.02] transition-all duration-200 text-left"
                       >
                         <suggestion.icon className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">{suggestion.text}</span>
+                        <span className="truncate">{suggestion.displayText}</span>
                       </button>
                     ))}
                   </div>
@@ -633,7 +595,6 @@ const Chatbot = ({ setIsOpen }) => {
 
             <div className="p-4 border-t border-white/20 bg-gradient-to-br from-white/60 to-white/30 backdrop-blur-md rounded-b-lg shadow-inner">
               <div className="flex items-center gap-3">
-                {/* Input Field */}
                 <div className="flex-1 relative">
                   <input
                     ref={inputRef}
@@ -644,8 +605,6 @@ const Chatbot = ({ setIsOpen }) => {
                     disabled={isTyping}
                     className="w-full h-12 md:h-14 pl-4 py-2 pr-14 text-sm md:text-base text-gray-800 placeholder-gray-400 bg-white/80 border border-gray-200 rounded-xl shadow-sm outline-none transition-all duration-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300 focus:bg-white"
                   />
-
-                  {/* Send Button */}
                   <button
                     onClick={() => handleSendMessage()}
                     disabled={!inputValue.trim() || isTyping}
