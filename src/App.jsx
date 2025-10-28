@@ -15,8 +15,12 @@ import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFoundPage from "./pages/NotFoundPage"; // Import the new page
 import ProjectDetails from "./pages/ProjectDetails"; // Import the new page
+import { useOnlineStatus } from "./utils/useOnlineStatus";
+import OfflineToast from "./components/ui/OfflineToast";
 
 function App() {
+  const isOnline = useOnlineStatus();
+
   return (
     <HelmetProvider>
       <Router>
@@ -25,6 +29,12 @@ function App() {
             <SpeedInsights />
             <InstallPWAButton />
             <ScrollToTop />
+            {!isOnline && (
+              <OfflineToast
+                isVisible={!isOnline}
+                message="You are currently offline. Some features may not be available."
+              />
+            )}
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/blog/:id" element={<BlogDetails />} />

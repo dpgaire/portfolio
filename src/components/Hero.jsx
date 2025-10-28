@@ -118,18 +118,8 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
-        className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto"
+        className="relative z-10 text-center px-4 sm:px-6 mt-8 lg:px-8 max-w-5xl mx-auto"
       >
-        {/* Greeting */}
-        {/* <motion.div variants={itemVariants} className="mb-6">
-          <span className="flex flex-wrap items-center justify-start p-2 lg:justify-center gap-2  bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-dark-600/50 max-w-xs sm:max-w-none">
-            <SparklesIcon className="w-4 h-4 text-primary-500" />
-            <span className="whitespace-normal">
-              {t('hero_greeting')}
-            </span>
-          </span>
-        </motion.div> */}
-
         {/* Main Heading */}
         <motion.h1
           variants={itemVariants}
