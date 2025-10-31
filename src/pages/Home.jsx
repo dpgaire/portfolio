@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+import  { Suspense, lazy, useState } from "react";
 import Hero from "../components/Hero";
 import About from "../components/About";
 import Projects from "../components/Projects";
@@ -8,11 +8,31 @@ import Contact from "../components/Contact";
 import { Helmet } from "react-helmet-async";
 import ChatbotSkeleton from "../components/ui/ChatbotSkeleton";
 import { MessageCircle, Bell } from "lucide-react";
+import { useAbout } from "../context/AboutContext";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+import FallbackError from "../components/ui/FallbackError";
 
 const PremiumChatbot = lazy(() => import("../components/Chatbot"));
 
 const Home = () => {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const { aboutData, loading, error } = useAbout();
+  if (loading) return <LoadingSpinner />;
+  if (error) return <FallbackError/>;
+  if (!aboutData) return null; // ✅ Only proceed when data is ready
+
+  const {
+    title,
+    description,
+    tagline,
+    philosophy,
+    contactDetails,
+    tags,
+    areasOfExpertise,
+    stats,
+  } = aboutData;
+
+  console.log("aboutData", aboutData);
 
   return (
     <>
@@ -24,41 +44,66 @@ const Home = () => {
         />
 
         {/* Open Graph for social media previews */}
-        <meta property="og:title" content="Durga Gairhe - Full-Stack Developer" />
-        <meta property="og:description" content="React & Node.js expert building scalable applications." />
-        <meta property="og:image" content="https://www.durgagairhe.com.np/images/durga.png" />
+        <meta
+          property="og:title"
+          content="Durga Gairhe - Full-Stack Developer"
+        />
+        <meta
+          property="og:description"
+          content="React & Node.js expert building scalable applications."
+        />
+        <meta
+          property="og:image"
+          content="https://www.durgagairhe.com.np/images/durga.png"
+        />
         <meta property="og:url" content="https://www.durgagairhe.com.np" />
         <meta property="og:type" content="website" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Durga Gairhe - Full-Stack Developer" />
-        <meta name="twitter:description" content="System architect & React expert based in Nepal." />
-        <meta name="twitter:image" content="https://www.durgagairhe.com.np/images/durga.png" />
+        <meta
+          name="twitter:title"
+          content="Durga Gairhe - Full-Stack Developer"
+        />
+        <meta
+          name="twitter:description"
+          content="System architect & React expert based in Nepal."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.durgagairhe.com.np/images/durga.png"
+        />
 
         {/* JSON-LD Schema.org Markup */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Person",
-            "name": "Durga Gairhe",
-            "url": "https://www.durgagairhe.com.np",
-            "image": "https://www.durgagairhe.com.np/images/durga.png",
-            "jobTitle": "Full-Stack Developer & System Architect",
-            "sameAs": [
+            name: "Durga Gairhe",
+            url: "https://www.durgagairhe.com.np",
+            image: "https://www.durgagairhe.com.np/images/durga.png",
+            jobTitle: "Full-Stack Developer & System Architect",
+            sameAs: [
               "https://github.com/dpgaire",
-              "https://www.linkedin.com/in/durgagairhe/"
-            ]
+              "https://www.linkedin.com/in/durgagairhe/",
+            ],
           })}
         </script>
       </Helmet>
 
       <main>
         <section id="home">
-          <Hero />
+          <Hero tags={tags} tagline={tagline} cv={contactDetails?.cv} />
         </section>
         <section id="about">
-          <About />
+          <About
+            title={title}
+            description={description}
+            areasOfExpertise={areasOfExpertise}
+            stats={stats}
+            philosophy={philosophy}
+            profileImage={contactDetails?.profileImage}
+          />
         </section>
         <section id="skills">
           <Skills />
@@ -70,7 +115,7 @@ const Home = () => {
           <Blog />
         </section>
         <section id="contact">
-          <Contact />
+          <Contact contactDetails={contactDetails} />
         </section>
       </main>
 

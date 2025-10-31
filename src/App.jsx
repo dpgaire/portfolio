@@ -17,6 +17,7 @@ import NotFoundPage from "./pages/NotFoundPage"; // Import the new page
 import ProjectDetails from "./pages/ProjectDetails"; // Import the new page
 import { useOnlineStatus } from "./utils/useOnlineStatus";
 import OfflineToast from "./components/ui/OfflineToast";
+import { AboutProvider } from "./context/AboutContext";
 
 function App() {
   const isOnline = useOnlineStatus();
@@ -25,27 +26,29 @@ function App() {
     <HelmetProvider>
       <Router>
         <ThemeProvider>
-          <Layout>
-            <SpeedInsights />
-            <InstallPWAButton />
-            <ScrollToTop />
-            {!isOnline && (
-              <OfflineToast
-                isVisible={!isOnline}
-                message="You are currently offline. Some features may not be available."
-              />
-            )}
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/blog/:id" element={<BlogDetails />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/projects" element={<ProjectPage />} />
-                <Route path="/project/:id" element={<ProjectDetails />} />
-                <Route path="/terms-of-service" element={<TermsOfService />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-          </Layout>
+          <AboutProvider>
+            <Layout>
+              <SpeedInsights />
+              <InstallPWAButton />
+              <ScrollToTop />
+              {!isOnline && (
+                <OfflineToast
+                  isVisible={!isOnline}
+                  message="You are currently offline. Some features may not be available."
+                />
+              )}
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/blog/:id" element={<BlogDetails />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/projects" element={<ProjectPage />} />
+                  <Route path="/project/:id" element={<ProjectDetails />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </Layout>
+          </AboutProvider>
         </ThemeProvider>
       </Router>
     </HelmetProvider>

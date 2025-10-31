@@ -1,20 +1,41 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { 
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import {
   BoltIcon,
   CodeBracketIcon,
   CpuChipIcon,
   DevicePhoneMobileIcon,
   GlobeAltIcon,
-  RocketLaunchIcon
-} from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
+  RocketLaunchIcon,
+} from "@heroicons/react/24/outline";
+import { useTranslation } from "react-i18next";
 
-const About = () => {
+const About = ({
+  title,
+  description,
+  areasOfExpertise,
+  stats: statData,
+  philosophy,
+  profileImage,
+}) => {
+  const iconMap = {
+    "Full-Stack Development": CodeBracketIcon,
+    "Mobile Development": DevicePhoneMobileIcon,
+    "Web Applications": GlobeAltIcon,
+    "System Architecture": CpuChipIcon,
+  };
+
+  const statIconMap = {
+    "Projects Delivered": RocketLaunchIcon,
+    "Years Experience": BoltIcon,
+    Technologies: CpuChipIcon,
+    "Client Satisfaction": GlobeAltIcon,
+  };
+
   const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
-    triggerOnce: true
+    triggerOnce: true,
   });
 
   const containerVariants = {
@@ -23,9 +44,9 @@ const About = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
+        delayChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -35,40 +56,20 @@ const About = () => {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
-  const stats = [
-    { number: "50+", label: t('about_stat_1_label'), icon: RocketLaunchIcon },
-    { number: "5+", label: t('about_stat_2_label'), icon: BoltIcon },
-    { number: "15+", label: t('about_stat_3_label'), icon: CpuChipIcon },
-    { number: "100%", label: t('about_stat_4_label'), icon: GlobeAltIcon }
-  ];
+  const stats = statData.map((item) => ({
+    ...item,
+    icon: statIconMap[item.title] || RocketLaunchIcon, // fallback icon
+  }));
 
-  const expertise = [
-    {
-      icon: CodeBracketIcon,
-      title: t('about_expertise_1_title'),
-      description: t('about_expertise_1_desc')
-    },
-    {
-      icon: DevicePhoneMobileIcon,
-      title: t('about_expertise_2_title'),
-      description: t('about_expertise_2_desc')
-    },
-    {
-      icon: GlobeAltIcon,
-      title: t('about_expertise_3_title'),
-      description: t('about_expertise_3_desc')
-    },
-    {
-      icon: CpuChipIcon,
-      title: t('about_expertise_4_title'),
-      description: t('about_expertise_4_desc')
-    }
-  ];
+  const expertise = areasOfExpertise.map((item) => ({
+    ...item,
+    icon: iconMap[item.title] || RocketLaunchIcon,
+  }));
 
   return (
     <section className="section-padding bg-gray-50 dark:bg-dark-800/50">
@@ -82,10 +83,10 @@ const About = () => {
         {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">{t('about_title')}</span>
+            <span className="gradient-text">{t("about_title")}</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            {t('about_subtitle')}
+            {t("about_subtitle")}
           </p>
           <div className="w-20 h-1   bg-gradient-to-r from-emerald-400 to-green-600 mx-auto mt-6 rounded-full"></div>
         </motion.div>
@@ -103,15 +104,21 @@ const About = () => {
                 <div className="relative w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-dark-700 dark:to-dark-600 rounded-full overflow-hidden border-4 border-white dark:border-dark-800 shadow-2xl">
                   {/* Placeholder for profile image */}
                   <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 flex items-center justify-center">
-                   
-                    <img alt="profile" className=" h-full bg-cover" src="/images/durga.png" />
-
+                    <img
+                      alt="profile"
+                      className=" h-full bg-cover"
+                      src={profileImage}
+                    />
                   </div>
                 </div>
                 {/* Floating badge */}
                 <motion.div
                   animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                   className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-accent-500 to-primary-500 rounded-full flex items-center justify-center shadow-lg"
                 >
                   <BoltIcon className="w-8 h-8 text-white" />
@@ -121,7 +128,7 @@ const About = () => {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat, index) => (
+              {stats.map((stat) => (
                 <motion.div
                   key={stat.label}
                   variants={itemVariants}
@@ -130,10 +137,10 @@ const About = () => {
                 >
                   <stat.icon className="w-8 h-8 text-primary-500 mx-auto mb-2" />
                   <div className="text-3xl font-bold gradient-text mb-1">
-                    {stat.number}
+                    {stat.count}
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    {stat.label}
+                    {stat.title}
                   </div>
                 </motion.div>
               ))}
@@ -145,15 +152,11 @@ const About = () => {
             {/* Main Description */}
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {t('about_description_1')}
+                {title}
               </h3>
-              
-              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                {t('about_description_2')}
-              </p>
 
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                {t('about_description_3')}
+                {description}
               </p>
             </div>
 
@@ -192,10 +195,10 @@ const About = () => {
               className="p-6 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/10 dark:to-secondary-900/10 rounded-xl border border-primary-200/50 dark:border-primary-800/50"
             >
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                {t('about_philosophy_title')}
+                {t("about_philosophy_title")}
               </h4>
               <p className="text-gray-600 dark:text-gray-400 italic">
-                {t('about_philosophy_desc')}
+                {philosophy}
               </p>
             </motion.div>
           </motion.div>
@@ -206,4 +209,3 @@ const About = () => {
 };
 
 export default About;
-

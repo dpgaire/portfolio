@@ -1,100 +1,80 @@
-import axios from 'axios';
+import axios from "axios";
 
+// ✅ Constants
+const BASE_URL = "https://ai-chatbot-api-ten.vercel.app/api";
 const CACHE_EXPIRATION_TIME = 5 * 60 * 1000; // 5 minutes
 
+// ✅ Generic cache utilities
 const getCachedData = (key) => {
-  const cached = localStorage.getItem(key);
-  if (!cached) return null;
+  try {
+    const cached = localStorage.getItem(key);
+    if (!cached) return null;
 
-  const { data, timestamp } = JSON.parse(cached);
-  if (Date.now() - timestamp > CACHE_EXPIRATION_TIME) {
-    localStorage.removeItem(key);
+    const { data, timestamp } = JSON.parse(cached);
+    const isExpired = Date.now() - timestamp > CACHE_EXPIRATION_TIME;
+
+    if (isExpired) {
+      localStorage.removeItem(key);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.warn(`Error reading cache for key "${key}":`, error);
     return null;
   }
-  return data;
 };
 
 const setCachedData = (key, data) => {
-  const cacheData = {
-    data,
-    timestamp: Date.now(),
-  };
-  localStorage.setItem(key, JSON.stringify(cacheData));
+  try {
+    const cacheData = {
+      data,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem(key, JSON.stringify(cacheData));
+  } catch (error) {
+    console.warn(`Error writing cache for key "${key}":`, error);
+  }
 };
 
-export const fetchAboutData = async () => {
-  const cacheKey = 'aboutData';
+// ✅ Generic API fetcher with caching
+const fetchWithCache = async (endpoint, cacheKey) => {
   const cachedData = getCachedData(cacheKey);
   if (cachedData) return cachedData;
 
-  const response = await axios.get('https://ai-chatbot-api-ten.vercel.app/api/about');
-  setCachedData(cacheKey, response.data);
-  return response.data;
+  try {
+    const { data } = await axios.get(`${BASE_URL}/${endpoint}`);
+    setCachedData(cacheKey, data);
+    return data;
+  } catch (error) {
+    console.error(`Failed to fetch ${endpoint}:`, error);
+    throw new Error("Unable to fetch data. Please try again later.");
+  }
 };
 
-export const fetchProjectsData = async () => {
-  const cacheKey = 'projectsData';
-  const cachedData = getCachedData(cacheKey);
-  if (cachedData) return cachedData;
+// ✅ API endpoints
+export const fetchAboutData = () => fetchWithCache("about", "aboutData");
 
-  const response = await axios.get('https://ai-chatbot-api-ten.vercel.app/api/projects');
-  setCachedData(cacheKey, response.data);
-  return response.data;
-};
+export const fetchProjectsData = () => fetchWithCache("projects", "projectsData");
 
-export const fetchBlogsData = async () => {
-  const cacheKey = 'blogsData';
-  const cachedData = getCachedData(cacheKey);
-  if (cachedData) return cachedData;
+export const fetchBlogsData = () => fetchWithCache("blogs", "blogsData");
 
-  const response = await axios.get('https://ai-chatbot-api-ten.vercel.app/api/blogs');
-  setCachedData(cacheKey, response.data);
-  return response.data;
-};
+export const fetchSkillsData = () => fetchWithCache("skills", "skillsData");
 
-export const fetchSkillsData = async () => {
-  const cacheKey = 'skillsData';
-  const cachedData = getCachedData(cacheKey);
+// ✅ Fetch by ID (uses same generic pattern)
+export const fetchBlogById = (id) =>
+  fetchWithCache(`blogs/${id}`, `blog-${id}`);
 
-  if (cachedData) return cachedData;
-  const response = await axios.get('https://ai-chatbot-api-ten.vercel.app/api/skills');
-  setCachedData(cacheKey, response.data);
+export const fetchProjectById = (id) =>
+  fetchWithCache(`projects/${id}`, `project-${id}`);
 
-  return response.data;
-
-};
-
-export const fetchBlogById = async (id) => {
-  const cacheKey = `blog-${id}`;
-  const cachedData = getCachedData(cacheKey);
-
-  if (cachedData) return cachedData;
-  const response = await axios.get(`https://ai-chatbot-api-ten.vercel.app/api/blogs/${id}`);
-
-  setCachedData(cacheKey, response.data);
-
-  return response.data;
-
-}
-
-
-export const fetchProjectById = async (id) => {
-  const cacheKey = `project-${id}`;
-  const cachedData = getCachedData(cacheKey);
-
-  if (cachedData) return cachedData;
-  const response = await axios.get(`https://ai-chatbot-api-ten.vercel.app/api/projects/${id}`);
-
-  setCachedData(cacheKey, response.data);
-
-  return response.data;
-
-}
-
-export const postContactForm = async (data) => {
-
-  const response = await axios.post('https://ai-chatbot-api-ten.vercel.app/api/contact', data);
-
-  return response.data;
-
+// ✅ POST requests shouldn’t use cache
+export const postContactForm = async (formData) => {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/contact`, formData);
+    return data;
+  } catch (error) {
+    console.error("Failed to send contact form:", error);
+    throw new Error("Unable to send message. Please try again later.");
+  }
 };
