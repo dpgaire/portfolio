@@ -14,7 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { postContactForm } from "../api";
 
-const Contact = () => {
+const Contact = ({contactDetails}) => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -65,20 +65,22 @@ const Contact = () => {
     {
       icon: EnvelopeIcon,
       label: t("contact_info_email_label"),
-      value: "gairhedurga13@gmail.com",
-      href: "mailto:gairhedurga13@gmail.com",
+      value: contactDetails?.email,
+      href: `mailto:${contactDetails?.email}`,
     },
     {
       icon: PhoneIcon,
       label: t("contact_info_phone_label"),
-      value: "+977 9846724440",
-      href: "tel:+9779846724440",
+      value: contactDetails?.phone,
+      href: `tel:${contactDetails?.phone}`,
     },
     {
       icon: MapPinIcon,
       label: t("contact_info_location_label"),
-      value: "Kathmandu, Nepal",
-      href: "https://maps.google.com/?q=Kathmandu,Nepal",
+      value: contactDetails?.location,
+      href: `https://maps.google.com/?q=${encodeURIComponent(
+        contactDetails?.location
+      )}}`,
     },
   ];
 
