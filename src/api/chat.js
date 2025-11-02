@@ -16,9 +16,11 @@ export const createChat = async (query) => {
   return response.data;
 };
 
-export const createChatHistory = async (userId, title, messages) => {
+export const createChatHistory = async (userId, title, messages,email,fullName) => {
   const response = await axios.post(`${API_BASE_URL}/history`, {
     userId,
+    email,
+    fullName,
     title,
     messages,
   });
