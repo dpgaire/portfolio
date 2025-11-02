@@ -199,7 +199,7 @@ const Chatbot = ({ setIsOpen }) => {
 
       if (isNewChat) {
         // This is a new chat, so create a new history entry (POST)
-        const newHistory = await createChatHistory(userId, text, finalMessages);
+        const newHistory = await createChatHistory(userId, text, finalMessages,userEmail,userName);
         if (newHistory.success) {
           setActiveChatId(newHistory.chatHistory.id);
           setIsNewChat(false); // Reset the flag
