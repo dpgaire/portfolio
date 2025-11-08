@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // ✅ Constants
-const BASE_URL = "https://ai-chatbot-api-ten.vercel.app/api";
+const BASE_URL = import.meta.env.VITE_NEXUS_BASE_URL;
 const CACHE_EXPIRATION_TIME = 5 * 60 * 1000;
 const API_KEY = import.meta.env.VITE_NEXUS_API_KEY;
 
