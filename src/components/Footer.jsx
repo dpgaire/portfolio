@@ -7,12 +7,26 @@ import {
 import { Github, Linkedin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAbout } from "../context/AboutContext";
+import LoadingSpinner from "./ui/LoadingSpinner";
+import FallbackError from "./ui/FallbackError";
 
 const Footer = () => {
+    const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
+    const { aboutData, loading, error } = useAbout();
+  
 
-  const { t } = useTranslation();
+   // Early returns
+    if (loading) return <LoadingSpinner />;
+    if (error) return <FallbackError />;
+    if (!aboutData?.contactDetails) return null;
+  
+    const { fullName,email, location } = aboutData.contactDetails;
+    const {tagline} = aboutData
+
+
 
   const quickLinks = [
     { name: t("home"), href: "#home" },
@@ -44,6 +58,13 @@ const Footer = () => {
     navigate(`/${href}`);
   };
 
+   const initials = fullName
+    .split(' ')
+    .map(n => n[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+
   return (
     <footer className="relative bg-white dark:bg-dark-900 dark:text-gray-200 overflow-hidden">
       {/* Background Pattern */}
@@ -69,15 +90,15 @@ const Footer = () => {
               >
                 <div className="flex items-center space-x-3 mb-6">
                   <div className="w-10 h-10 bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">DG</span>
+                    <span className="text-white font-bold">{initials}</span>
                   </div>
                   <span className="text-2xl font-bold bg-clip-text text-transparent  bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600">
-                    {t("nav_title")}
+                    {fullName}
                   </span>
                 </div>
 
                 <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-6 max-w-md">
-                  {t("footer_intro")}
+                  {tagline}
                 </p>
 
                 <div className="flex space-x-4">
@@ -95,8 +116,6 @@ const Footer = () => {
                       <span className="text-xl" aria-hidden="true">
                         {social.icon}
                       </span>
-                      {/* Hidden text for screen readers (optional alternative to aria-label) */}
-                      {/* <span className="sr-only">{social.name}</span> */}
                     </motion.a>
                   ))}
                 </div>
@@ -144,10 +163,10 @@ const Footer = () => {
                       {t("contact_info_email_label")}
                     </span>
                     <a
-                      href="mailto:gairhedurga13@gmail.com"
+                      href={`mailto:${email}`}
                       className="text-gray-800 dark:text-white hover:underline cursor-pointer"
                     >
-                      gairhedurga13@gmail.com
+                      {email}
                     </a>
                   </p>
 
@@ -155,7 +174,7 @@ const Footer = () => {
                     <span className="font-medium text-gray-800 dark:text-white block">
                       {t("contact_info_location_label")}
                     </span>
-                    Kathmandu, Nepal
+                   {location}
                   </p>
                   <p>
                     <span className="font-medium text-gray-800 dark:text-white block">
