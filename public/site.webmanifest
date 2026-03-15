@@ -4,8 +4,8 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#1BBEA3",
-  "background_color": "#1BBEA3",
+  "theme_color": "#242018",
+  "background_color": "#242018",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -19,6 +19,5 @@
       "type": "image/png",
       "purpose": "maskable any"
     }
-    
   ]
 }
