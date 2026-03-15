@@ -3,7 +3,7 @@ import { Moon, Sun } from "lucide-react";
 const ThemeToggle = ({ theme, setTheme }) => (
   <button
     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-    className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors relative overflow-hidden group"
+    className="p-2 rounded-lg bg-stone-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-stone-600 transition-colors relative overflow-hidden group"
     aria-label="Toggle theme"
   >
     <span className="relative z-10">

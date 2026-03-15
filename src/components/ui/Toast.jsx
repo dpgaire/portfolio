@@ -31,7 +31,7 @@ const Toast = () => {
 
   return (
     <div className="fixed bottom-20 right-5 sm:bottom-5 sm:right-5 animate-slide-in-right z-50">
-      <div className="relative bg-gradient-to-br from-emerald-500 to-green-600 text-white p-4 rounded-xl shadow-xl flex items-center">
+      <div className="relative bg-gradient-to-br from-secondary-500 to-secondary-600 text-white p-4 rounded-xl shadow-xl flex items-center">
         <MessageCircle size={28} className="mr-3 flex-shrink-0" />
         <div>
           <p className="font-bold leading-tight">Chat with me!</p>
@@ -45,7 +45,7 @@ const Toast = () => {
         </button>
 
         {/* Pointer / Tail */}
-        <div className="absolute -bottom-2 right-8 w-4 h-4 bg-gradient-to-br from-emerald-500 to-green-600 rotate-45 rounded-sm shadow-md" />
+        <div className="absolute -bottom-2 right-8 w-4 h-4 bg-gradient-to-br from-secondary-500 to-secondary-600 rotate-45 rounded-sm shadow-md" />
       </div>
     </div>
   );

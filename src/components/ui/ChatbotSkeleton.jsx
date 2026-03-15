@@ -5,7 +5,7 @@ const ChatbotSkeleton = () => {
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
       <div className="relative w-full h-full md:w-[95vw] md:h-[90vh] max-w-4xl rounded-lg bg-white flex shadow-2xl transition-all duration-300 animate-pulse">
         {/* Sidebar Skeleton */}
-        <div className="hidden md:flex w-1/3 bg-gray-200/95 p-3 flex-col rounded-l-lg">
+        <div className="hidden md:flex w-1/3 bg-stone-200/95 p-3 flex-col rounded-l-lg">
           <div className="h-12 mb-4 rounded-lg bg-gray-300/50"></div>
           <div className="flex-grow overflow-y-auto -mr-2 pr-2">
             {[...Array(5)].map((_, i) => (
@@ -24,8 +24,8 @@ const ChatbotSkeleton = () => {
         </div>
 
         {/* Main Chat Area Skeleton */}
-        <div className="w-full flex flex-col bg-gray-100/50 rounded-lg md:rounded-r-lg md:rounded-l-none">
-          <div className="p-3 border-b border-gray-200/80 flex justify-between items-center bg-gray-200/50 rounded-t-lg md:rounded-tr-lg md:rounded-tl-none">
+        <div className="w-full flex flex-col bg-stone-100/50 rounded-lg md:rounded-r-lg md:rounded-l-none">
+          <div className="p-3 border-b border-stone-200/80 flex justify-between items-center bg-stone-200/50 rounded-t-lg md:rounded-tr-lg md:rounded-tl-none">
             <div className="h-6 w-1/3 rounded bg-gray-300/50"></div>
             <div className="h-8 w-8 rounded-md bg-gray-300/50"></div>
           </div>
@@ -43,7 +43,7 @@ const ChatbotSkeleton = () => {
             </div>
           </div>
 
-          <div className="p-3 border-t border-gray-200/80 bg-gray-200/50 rounded-br-lg">
+          <div className="p-3 border-t border-stone-200/80 bg-stone-200/50 rounded-br-lg">
             <div className="relative">
               <div className="w-full h-12 rounded-xl bg-gray-300/50"></div>
               <div className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-gray-300/50"></div>

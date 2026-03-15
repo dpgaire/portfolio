@@ -1,61 +1,31 @@
 const BlogDetailsSkeleton = () => {
   return (
-    <div className="pt-20">
-      {/* Hero Section */}
-      <div className="relative bg-gray-50 dark:bg-dark-800 py-16">
-        <div className="container-custom px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="h-8 bg-gray-300 rounded w-1/4 mb-8 animate-pulse"></div>
-            <div className="h-16 bg-gray-300 rounded w-3/4 mb-6 animate-pulse"></div>
-            <div className="h-8 bg-gray-300 rounded w-1/2 mb-8 animate-pulse"></div>
-            <div className="flex flex-wrap items-center gap-6">
-              <div className="h-6 bg-gray-300 rounded w-24 animate-pulse"></div>
-              <div className="h-6 bg-gray-300 rounded w-32 animate-pulse"></div>
-              <div className="h-6 bg-gray-300 rounded w-24 animate-pulse"></div>
-            </div>
-          </div>
+     <div className="pt-16 bg-white dark:bg-dark-900 min-h-screen">
+    <div className="border-b border-stone-100 dark:border-dark-700 py-14">
+      <div className="container-custom px-4 sm:px-6 lg:px-8 max-w-4xl space-y-4">
+        <div className="h-3 bg-stone-200 dark:bg-dark-700 rounded-full w-24 animate-pulse" />
+        <div className="h-10 bg-stone-200 dark:bg-dark-700 rounded-lg w-3/4 animate-pulse" />
+        <div className="h-5 bg-stone-200 dark:bg-dark-700 rounded-full w-1/2 animate-pulse" />
+        <div className="flex gap-4 pt-2">
+          {[1,2,3].map(i => <div key={i} className="h-4 bg-stone-200 dark:bg-dark-700 rounded-full w-20 animate-pulse" />)}
         </div>
       </div>
-
-      {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="max-w-3xl sm:max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12">
-            {/* Main Content */}
-            <div className="lg:col-span-3">
-              <div className="prose prose-sm sm:prose lg:prose-lg dark:prose-invert w-full max-w-full overflow-auto">
-                <div className="h-8 bg-gray-300 rounded w-full mb-4 animate-pulse"></div>
-                <div className="h-4 bg-gray-300 rounded w-full mb-2 animate-pulse"></div>
-                <div className="h-4 bg-gray-300 rounded w-5/6 mb-2 animate-pulse"></div>
-                <div className="h-4 bg-gray-300 rounded w-full mb-2 animate-pulse"></div>
-                <div className="h-4 bg-gray-300 rounded w-4/5 mb-4 animate-pulse"></div>
-                <div className="h-8 bg-gray-300 rounded w-full mb-4 animate-pulse"></div>
-                <div className="h-4 bg-gray-300 rounded w-full mb-2 animate-pulse"></div>
-                <div className="h-4 bg-gray-300 rounded w-5/6 mb-2 animate-pulse"></div>
-              </div>
-            </div>
-
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-24 space-y-6">
-                <div className="card p-6">
-                  <div className="h-6 bg-gray-300 rounded w-1/2 mb-4 animate-pulse"></div>
-                  <div className="space-y-3">
-                    <div className="h-10 bg-gray-300 rounded w-full animate-pulse"></div>
-                    <div className="h-10 bg-gray-300 rounded w-full animate-pulse"></div>
-                    <div className="h-10 bg-gray-300 rounded w-full animate-pulse"></div>
-                  </div>
-                </div>
-                <div className="card p-6">
-                  <div className="h-6 bg-gray-300 rounded w-1/2 mb-4 animate-pulse"></div>
-                  <div className="h-6 bg-gray-300 rounded w-3/4 animate-pulse"></div>
-                </div>
-              </div>
-            </div>
+    </div>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-14 max-w-6xl">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
+        <div className="lg:col-span-3 space-y-3">
+          {[1,2,3,4,5,6,7,8].map(i => (
+            <div key={i} className={`h-3.5 bg-stone-200 dark:bg-dark-700 rounded-full animate-pulse ${i % 4 === 0 ? 'w-2/3' : 'w-full'}`} />
+          ))}
+        </div>
+        <div className="lg:col-span-1">
+          <div className="rounded-2xl border border-stone-100 dark:border-dark-700 bg-stone-50 dark:bg-dark-800 p-5 space-y-3">
+            {[1,2,3].map(i => <div key={i} className="h-9 bg-stone-200 dark:bg-dark-700 rounded-xl animate-pulse" />)}
           </div>
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
