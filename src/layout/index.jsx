@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
       {children}
       <Analytics />
       <Chatbot />
-      <Toast />
+      {/* <Toast /> */}
       <Footer />
     </div>
   );
