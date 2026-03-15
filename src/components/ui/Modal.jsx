@@ -11,13 +11,13 @@ const Modal = ({ isOpen, onClose, title,description='', children }) => {
           <div>
           <h2 className="text-xl font-bold text-gray-800">{title}</h2>
            {description && (
-              <p className="text-gray-500 text-sm mt-1">{description}</p>
+              <p className="text-stone-500 text-sm mt-1">{description}</p>
             )}
 
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-md hover:bg-gray-200 transition-colors duration-200"
+            className="p-1.5 rounded-md hover:bg-stone-200 transition-colors duration-200"
           >
             <X size={18} />
           </button>

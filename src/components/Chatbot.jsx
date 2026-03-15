@@ -306,7 +306,7 @@ const Chatbot = ({ setIsOpen }) => {
     return (
       <button
         onClick={openChatModal}
-        className="fixed invisible bottom-5 right-5 bg-emerald-500 text-white p-4 rounded-full shadow-lg hover:bg-emerald-600 transition-colors duration-300 z-40"
+        className="fixed invisible bottom-5 right-5 bg-secondary-500 text-white p-4 rounded-full shadow-lg hover:bg-secondary-600 transition-colors duration-300 z-40"
       >
         <MessageCircle size={24} />
       </button>
@@ -334,7 +334,7 @@ const Chatbot = ({ setIsOpen }) => {
               id="name"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white border text-gray-700 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 bg-white border text-gray-700 border-gray-300 rounded-md shadow-sm placeholder-stone-400 focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm"
               placeholder="Durga Gairhe"
               required
             />
@@ -351,14 +351,14 @@ const Chatbot = ({ setIsOpen }) => {
               id="email"
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
-              className="mt-1 block w-full px-3 text-gray-700 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+              className="mt-1 block w-full px-3 text-gray-700 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-stone-400 focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm"
               placeholder="gairhedurga13@gmail.com"
             />
           </div>
           <div className="flex justify-end">
             <button
               type="submit"
-              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-transparent rounded-md shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-secondary-600 border border-transparent rounded-md shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500"
             >
               Start Chat
             </button>
@@ -396,8 +396,8 @@ const Chatbot = ({ setIsOpen }) => {
                 isBot
                   ? isWelcome
                     ? "bg-gradient-to-br from-blue-50/80 to-purple-50/80 border-blue-200/30 text-gray-800"
-                    : "bg-white/90 border-gray-200/50 text-gray-800"
-                  : "bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 text-white border-transparent"
+                    : "bg-white/90 border-stone-200/50 text-gray-800"
+                  : "bg-gradient-to-br from-secondary-500 via-secondary-500 to-secondary-600 text-white border-transparent"
               }`}
             >
               <p
@@ -412,7 +412,7 @@ const Chatbot = ({ setIsOpen }) => {
           {/* 🕒 Timestamp below the message */}
           <span
             className={`mt-1 text-xs ${
-              isBot ? "text-gray-400 pl-4" : "text-gray-400 pr-4 text-right"
+              isBot ? "text-stone-400 pl-4" : "text-stone-400 pr-4 text-right"
             }`}
           >
             {message?.timestamp || timestamp}
@@ -427,7 +427,7 @@ const Chatbot = ({ setIsOpen }) => {
       <div className="fixed inset-0  backdrop-blur-sm flex justify-center items-center z-50 p-0 md:p-4">
         <div className="relative w-full h-full md:w-[95vw] md:h-[90vh] max-w-5xl rounded-none md:rounded-lg bg-white flex shadow-2xl transition-all duration-300">
           <div
-            className={`fixed top-0 left-0  h-full w-3/4 sm:w-2/3 md:w-1/3 bg-gradient-to-br from-emerald-400 to-green-600 text-white p-3 flex flex-col 
+            className={`fixed top-0 left-0  h-full w-3/4 sm:w-2/3 md:w-1/3 bg-gradient-to-br from-secondary-400 to-secondary-600 text-white p-3 flex flex-col 
         rounded-r-none md:rounded-l-lg  backdrop-blur-sm transition-transform duration-300 z-10
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
         md:translate-x-0 md:relative md:flex`}
@@ -500,7 +500,7 @@ const Chatbot = ({ setIsOpen }) => {
 
             <div className="border-t border-white/20 pt-3 mt-2">
               <div className="flex items-center p-2.5 rounded-lg hover:bg-white/10 cursor-pointer transition-colors duration-200">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center mr-2">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-secondary-400 to-secondary-600 flex items-center justify-center mr-2">
                   <User size={18} />
                 </div>
                 <div>
@@ -518,8 +518,8 @@ const Chatbot = ({ setIsOpen }) => {
             />
           )}
 
-          <div className="w-full flex flex-col bg-gradient-to-b from-gray-50/50 to-white rounded-lg md:rounded-r-lg md:rounded-l-none">
-            <div className="p-3 border-b border-gray-200/80 flex justify-between items-center bg-gradient-to-r from-emerald-400 to-green-600 text-white md:rounded-t-lg md:rounded-tr-lg md:rounded-tl-none">
+          <div className="w-full flex flex-col bg-gradient-to-b from-stone-50/50 to-white rounded-lg md:rounded-r-lg md:rounded-l-none">
+            <div className="p-3 border-b border-stone-200/80 flex justify-between items-center bg-gradient-to-r from-secondary-400 to-secondary-600 text-white md:rounded-t-lg md:rounded-tr-lg md:rounded-tl-none">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 className="md:hidden p-1.5 rounded-md bg-white/20 hover:bg-white/30 transition-colors duration-200"
@@ -543,7 +543,7 @@ const Chatbot = ({ setIsOpen }) => {
               ) : (
                 <div className="h-full flex flex-col justify-center items-center text-center">
                   <div className="relative w-20 h-20 mb-6">
-                    <div className="absolute inset-0 rounded-full p-[4px] bg-gradient-to-br from-emerald-400 to-green-600">
+                    <div className="absolute inset-0 rounded-full p-[4px] bg-gradient-to-br from-secondary-400 to-secondary-600">
                       <div
                         className="w-full h-full rounded-full bg-center bg-cover"
                         style={{
@@ -552,7 +552,7 @@ const Chatbot = ({ setIsOpen }) => {
                         }}
                       ></div>
                     </div>
-                    <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-emerald-500 p-1.5 rounded-full shadow-md">
+                    <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-secondary-500 p-1.5 rounded-full shadow-md">
                       <Bot size={20} className="text-white" />
                     </div>
                   </div>
@@ -577,14 +577,14 @@ const Chatbot = ({ setIsOpen }) => {
               {isTyping && (
                 <div className="flex justify-start mb-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-offset-1 ring-gray-300/50">
-                      <Bot className="w-5 h-5 text-emerald-600" />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-stone-100 to-stone-200 flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-offset-1 ring-gray-300/50">
+                      <Bot className="w-5 h-5 text-secondary-600" />
                     </div>
-                    <div className="bg-white/90 border border-gray-100 py-3 px-4 rounded-2xl shadow-sm">
+                    <div className="bg-white/90 border border-stone-100 py-3 px-4 rounded-2xl shadow-sm">
                       <div className="flex items-center space-x-1">
-                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-teal-500 rounded-full animate-bounce [animation-delay:0.1s]"></div>
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                        <div className="w-2 h-2 bg-secondary-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-secondary-500 rounded-full animate-bounce [animation-delay:0.1s]"></div>
+                        <div className="w-2 h-2 bg-secondary-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
                       </div>
                     </div>
                   </div>
@@ -603,19 +603,19 @@ const Chatbot = ({ setIsOpen }) => {
                     onKeyPress={handleKeyPress}
                     placeholder="Ask me anything about Durga..."
                     disabled={isTyping}
-                    className="w-full h-12 md:h-14 pl-4 py-2 pr-14 text-sm md:text-base text-gray-800 placeholder-gray-400 bg-white/80 border border-gray-200 rounded-xl shadow-sm outline-none transition-all duration-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300 focus:bg-white"
+                    className="w-full h-12 md:h-14 pl-4 py-2 pr-14 text-sm md:text-base text-gray-800 placeholder-stone-400 bg-white/80 border border-stone-200 rounded-xl shadow-sm outline-none transition-all duration-300 focus:border-secondary-400 focus:ring-2 focus:ring-emerald-300 focus:bg-white"
                   />
                   <button
                     onClick={() => handleSendMessage()}
                     disabled={!inputValue.trim() || isTyping}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-emerald-400 to-green-600 text-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-secondary-400 to-secondary-600 text-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
-              <p className="text-xs text-center text-gray-500 mt-3 italic">
+              <p className="text-xs text-center text-stone-500 mt-3 italic">
                 AI can make mistakes — double-check important info.
               </p>
             </div>

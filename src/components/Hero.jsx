@@ -10,132 +10,73 @@ import { useTranslation } from "react-i18next";
 
 const Hero = ({ tags, tagline, cv }) => {
   const { t, i18n } = useTranslation();
-
   const sequence = tags.flatMap((tag) => [tag, 2000]);
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
+
+  const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const floatingVariants = {
-    animate: {
-      y: [-10, 10, -10],
-      rotate: [0, 5, -5, 0],
-      transition: {
-        duration: 6,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
+      transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
     },
   };
 
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-dark-900"
     >
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Gradient Orbs */}
-        <motion.div
-          variants={floatingVariants}
-          animate="animate"
-          className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-primary-400/30 to-secondary-400/30 rounded-full blur-3xl"
-        />
-        <motion.div
-          variants={floatingVariants}
-          animate="animate"
-          style={{ animationDelay: "2s" }}
-          className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-secondary-400/20 to-accent-400/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          variants={floatingVariants}
-          animate="animate"
-          style={{ animationDelay: "4s" }}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-accent-400/25 to-primary-400/25 rounded-full blur-3xl"
-        />
-
-        {/* Floating Geometric Shapes */}
-        <motion.div
-          animate={{
-            rotate: 360,
-            scale: [1, 1.1, 1],
+      {/* Single, restrained background element */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Subtle grid */}
+        <div
+          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+          style={{
+            backgroundImage: `linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px)`,
+            backgroundSize: "60px 60px",
           }}
-          transition={{
-            rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-          }}
-          className="absolute top-1/4 right-1/4 w-4 h-4 bg-primary-500/40 transform rotate-45"
         />
-        <motion.div
-          animate={{
-            rotate: -360,
-            y: [-20, 20, -20],
-          }}
-          transition={{
-            rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-            y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-          }}
-          className="absolute bottom-1/3 left-1/4 w-6 h-6 border-2 border-secondary-500/40 rounded-full"
-        />
-        <motion.div
-          animate={{
-            rotate: 360,
-            x: [-15, 15, -15],
-          }}
-          transition={{
-            rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-            x: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-          }}
-          className="absolute top-2/3 right-1/3 w-3 h-3 bg-accent-500/50"
-        />
+        {/* Single ambient glow — top right, barely visible */}
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-secondary-400/8 to-secondary-500/5 blur-3xl dark:from-secondary-400/6 dark:to-secondary-500/4" />
       </div>
 
-      {/* Main Content */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
-        className="relative z-10 text-center px-4 sm:px-6 mt-8 lg:px-8 max-w-5xl mx-auto"
+        className="relative z-10 text-center px-6 mt-8 max-w-4xl mx-auto"
       >
-        {/* Main Heading */}
+        {/* Eyebrow — small status chip */}
+        <motion.div variants={itemVariants} className="flex justify-center mb-8">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-stone-200 dark:border-dark-600 bg-stone-50 dark:bg-dark-800 text-xs font-medium text-stone-500 dark:text-stone-400 tracking-wider uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary-500 animate-pulse" />
+            Available for work
+          </span>
+        </motion.div>
+
+        {/* Main heading — refined weight and tracking */}
         <motion.h1
           variants={itemVariants}
-          className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+          className="text-5xl sm:text-7xl font-bold mb-5 leading-[1.05] tracking-tight text-stone-900 dark:text-white"
         >
-          <span className="block text-gray-900 dark:text-white">
-            {t("hero_name")}
-          </span>
+          {t("hero_name")}
         </motion.h1>
 
-        {/* Animated Subtitle */}
+        {/* Animated subtitle — constrained size */}
         <motion.div
           key={i18n.language}
           variants={itemVariants}
-          className="text-xl sm:text-2xl lg:text-3xl font-medium mb-8 text-gray-700 dark:text-gray-300 min-h-[2.5rem]"
+          className="text-xl sm:text-2xl font-medium mb-6 min-h-[2rem]"
         >
           <TypeAnimation
             sequence={sequence.length > 0 ? sequence : ["Loading...", 2000]}
@@ -146,26 +87,26 @@ const Hero = ({ tags, tagline, cv }) => {
           />
         </motion.div>
 
-        {/* Description */}
+        {/* Tagline — breathing room, restrained size */}
         <motion.p
           variants={itemVariants}
-          className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
+          className="text-base sm:text-lg text-stone-500 dark:text-stone-400 mb-12 max-w-2xl mx-auto leading-relaxed"
         >
           {tagline}
         </motion.p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons — cleaner, not both filled */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+          className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-20"
         >
           <motion.a
             href="#projects"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-primary group flex items-center"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-sm font-semibold hover:bg-gray-700 dark:hover:bg-stone-100 transition-colors duration-200"
           >
-            <CodeBracketIcon className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+            <CodeBracketIcon className="w-4 h-4" />
             {t("hero_button_1")}
           </motion.a>
 
@@ -173,59 +114,27 @@ const Hero = ({ tags, tagline, cv }) => {
             href={cv}
             target="_blank"
             download
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-secondary hover:text-white cursor-pointer  flex items-center"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-stone-200 dark:border-dark-600 text-gray-700 dark:text-stone-300 text-sm font-semibold hover:border-stone-400 dark:hover:border-dark-400 hover:bg-stone-50 dark:hover:bg-dark-800 transition-all duration-200"
           >
-            <DocumentArrowDownIcon className="w-5 h-5 mr-2 group-hover:translate-y-1 transition-transform duration-300" />
+            <DocumentArrowDownIcon className="w-4 h-4" />
             {t("hero_button_2")}
           </motion.a>
         </motion.div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          variants={itemVariants}
-          className="flex flex-col items-center"
-        >
-          <span className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+        {/* Scroll indicator — minimal */}
+        <motion.div variants={itemVariants} className="flex flex-col items-center gap-2">
+          <span className="text-xs text-stone-400 dark:text-stone-500 tracking-widest uppercase">
             {t("hero_scroll")}
           </span>
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           >
-            <ChevronDownIcon className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+            <ChevronDownIcon className="w-4 h-4 text-gray-300 dark:text-stone-600" />
           </motion.div>
         </motion.div>
-      </motion.div>
-
-      {/* Floating Code Elements */}
-      <motion.div
-        animate={{
-          rotate: [0, 360],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          rotate: { duration: 30, repeat: Infinity, ease: "linear" },
-          scale: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-        }}
-        className="absolute top-20 right-20 hidden lg:block opacity-20 dark:opacity-10"
-      >
-        <div className="text-6xl font-mono text-primary-500">{"<>"}</div>
-      </motion.div>
-
-      <motion.div
-        animate={{
-          rotate: [360, 0],
-          y: [-20, 20, -20],
-        }}
-        transition={{
-          rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-          y: { duration: 7, repeat: Infinity, ease: "easeInOut" },
-        }}
-        className="absolute bottom-32 left-20 hidden lg:block opacity-20 dark:opacity-10"
-      >
-        <div className="text-4xl font-mono text-secondary-500">{"{ }"}</div>
       </motion.div>
     </section>
   );

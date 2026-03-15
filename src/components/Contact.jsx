@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Github, Linkedin } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
 import {
   EnvelopeIcon,
   PhoneIcon,
@@ -14,50 +13,39 @@ import {
 } from "@heroicons/react/24/outline";
 import { postContactForm } from "../api";
 
-const Contact = ({contactDetails}) => {
+const SectionHeader = ({ title, subtitle }) => (
+  <div className="mb-16">
+    <p className="text-xs font-semibold tracking-widest text-secondary-600 dark:text-secondary-400 uppercase mb-3">
+      {subtitle}
+    </p>
+    <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-stone-900 dark:text-white">
+      {title}
+    </h2>
+  </div>
+);
+
+const Contact = ({ contactDetails }) => {
   const { t } = useTranslation();
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
+  const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
-    company_website: "", 
+    company_website: "",
   });
 
-  const [formStatus, setFormStatus] = useState({
-    type: "", // 'success', 'error', 'loading'
-    message: "",
-  });
-
-  const sanitizeInput = (str) => {
-    const temp = document.createElement("div");
-    temp.textContent = str;
-    return temp.innerHTML;
-  };
+  const [formStatus, setFormStatus] = useState({ type: "", message: "" });
 
   const isValidForm = ({ name, email, subject, message }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!name.trim() || !email.trim() || !subject.trim() || !message.trim()) {
+    if (!name.trim() || !email.trim() || !subject.trim() || !message.trim())
       return { valid: false, message: "All fields are required." };
-    }
-
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email))
       return { valid: false, message: "Please enter a valid email address." };
-    }
-
-    if (message.length > 1000) {
-      return {
-        valid: false,
-        message: "Message is too long (max 1000 characters).",
-      };
-    }
-
+    if (message.length > 1000)
+      return { valid: false, message: "Message is too long (max 1000 characters)." };
     return { valid: true };
   };
 
@@ -78,105 +66,53 @@ const Contact = ({contactDetails}) => {
       icon: MapPinIcon,
       label: t("contact_info_location_label"),
       value: contactDetails?.location,
-      href: `https://maps.google.com/?q=${encodeURIComponent(
-        contactDetails?.location
-      )}}`,
+      href: `https://maps.google.com/?q=${encodeURIComponent(contactDetails?.location)}`,
     },
   ];
 
   const socialLinks = [
-    {
-      name: "GitHub",
-      url: "https://github.com/dpgaire",
-      icon: <Github />,
-      color: "hover:text-gray-900 dark:hover:text-white",
-    },
-    {
-      name: "LinkedIn",
-      url: "https://linkedin.com/in/durga-gairhe",
-      icon: <Linkedin />,
-      color: "hover:text-blue-600",
-    },
+    { name: "GitHub", url: "https://github.com/dpgaire", icon: <Github className="w-4 h-4" /> },
+    { name: "LinkedIn", url: "https://linkedin.com/in/durga-gairhe", icon: <Linkedin className="w-4 h-4" /> },
   ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
   };
 
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
+    hidden: { y: 24, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } },
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Honeypot check
-    // if (formData.company_website !== "") {
-    //   console.warn("Bot detected via honeypot!");
-    //   return;
-    // }
-
-    // Validation
     const validation = isValidForm(formData);
     if (!validation.valid) {
       setFormStatus({ type: "error", message: validation.message });
       return;
     }
-
     setFormStatus({ type: "loading", message: "Sending message..." });
-
     try {
       await postContactForm(formData);
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-        company_website: "",
-      });
-
-      setFormStatus({
-        type: "success",
-        message: t("contact_form_success"),
-      });
-
-      setTimeout(() => {
-        setFormStatus({ type: "", message: "" });
-      }, 5000);
+      setFormData({ name: "", email: "", subject: "", message: "", company_website: "" });
+      setFormStatus({ type: "success", message: t("contact_form_success") });
+      setTimeout(() => setFormStatus({ type: "", message: "" }), 5000);
     } catch (error) {
-      console.error("EmailJS error:", error);
-      setFormStatus({
-        type: "error",
-        message: t("contact_form_error"),
-      });
+      setFormStatus({ type: "error", message: t("contact_form_error") });
     }
   };
 
+  const inputClass =
+    "w-full px-4 py-3 bg-white dark:bg-dark-800 border border-stone-200 dark:border-dark-600 rounded-xl text-sm text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-secondary-500/40 focus:border-secondary-500 transition-all duration-200";
+
   return (
-    <section className="section-padding bg-gray-50 dark:bg-dark-800/50">
+    <section className="section-padding bg-stone-50 dark:bg-dark-800/50">
       <motion.div
         ref={ref}
         variants={containerVariants}
@@ -184,145 +120,125 @@ const Contact = ({contactDetails}) => {
         animate={inView ? "visible" : "hidden"}
         className="container-custom"
       >
-        {/* Section Header */}
-        <motion.div variants={itemVariants} className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">{t("contact_title")}</span>
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            {t("contact_subtitle")}
-          </p>
-          <div className="w-20 h-1 bg-gradient-to-r from-emerald-400 to-green-600 mx-auto mt-6 rounded-full"></div>
-        </motion.div>
+        <SectionHeader title={t("contact_title")} subtitle="Get in touch" />
 
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Contact Information */}
-          <motion.div variants={itemVariants} className="space-y-8">
+        <div className="grid lg:grid-cols-2 gap-20">
+          {/* Left — contact info */}
+          <motion.div variants={itemVariants} className="space-y-10">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              <h3 className="text-xl font-semibold text-stone-900 dark:text-white mb-3">
                 {t("contact_info_title")}
               </h3>
-              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+              <p className="text-stone-500 dark:text-stone-400 leading-relaxed">
                 {t("contact_info_subtitle")}
               </p>
             </div>
 
-            {/* Contact Info Cards */}
-            <div className="space-y-4">
-              {contactInfo.map((info, index) => (
-                <motion.a
+            {/* Contact items — minimal, no card backgrounds */}
+            <div className="space-y-6">
+              {contactInfo.map((info) => (
+                <a
                   key={info.label}
                   href={info.href}
                   target={info.href.startsWith("http") ? "_blank" : undefined}
-                  rel={
-                    info.href.startsWith("http")
-                      ? "noopener noreferrer"
-                      : undefined
-                  }
-                  variants={itemVariants}
-                  whileHover={{ x: 10 }}
-                  className="flex items-center p-4 bg-white dark:bg-dark-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
+                  rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="flex items-center gap-4 group"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-emerald-400 via-teal-500 to-green-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <info.icon className="w-6 h-6 text-white" />
+                  <div className="w-9 h-9 rounded-xl bg-secondary-50 dark:bg-emerald-900/20 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 transition-colors duration-200">
+                    <info.icon className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
                   </div>
-                  <div className="ml-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white">
+                  <div>
+                    <p className="text-xs text-stone-400 dark:text-stone-500 font-medium mb-0.5">
                       {info.label}
-                    </h4>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    </p>
+                    <p className="text-sm font-medium text-stone-900 dark:text-white group-hover:text-secondary-600 dark:group-hover:text-secondary-400 transition-colors duration-200">
                       {info.value}
                     </p>
                   </div>
-                </motion.a>
+                </a>
               ))}
             </div>
 
-            {/* Social Links */}
+            {/* Social links */}
             <div>
-              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <p className="text-xs font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-widest mb-4">
                 {t("contact_follow_title")}
-              </h4>
-              <div className="flex space-x-4">
+              </p>
+              <div className="flex gap-2">
                 {socialLinks.map((social) => (
-                  <motion.a
+                  <a
                     key={social.name}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-12 h-12 dark:bg-dark-800 hover:bg-gradient-to-br hover:from-emerald-400 hover:to-green-600 rounded-lg flex items-center justify-center transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    aria-label={`Visit ${social.name}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-stone-200 dark:border-dark-600 text-sm font-medium text-stone-600 dark:text-stone-400 hover:border-stone-400 dark:hover:border-dark-400 hover:text-stone-900 dark:hover:text-white transition-all duration-200"
+                    aria-label={social.name}
                   >
-                    <span className="text-xl" aria-hidden="true">
-                      {social.icon}
-                    </span>
-                    {/* Hidden text for screen readers (optional alternative to aria-label) */}
-                    {/* <span className="sr-only">{social.name}</span> */}
-                  </motion.a>
+                    {social.icon}
+                    {social.name}
+                  </a>
                 ))}
               </div>
             </div>
 
-            {/* Availability Status */}
-            <motion.div
-              variants={itemVariants}
-              className="p-6 bg-gradient-to-br from-accent-50 to-primary-50 dark:from-accent-900/10 dark:to-primary-900/10 rounded-xl border border-accent-200/50 dark:border-accent-800/50"
-            >
-              <div className="flex items-center mb-3">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse mr-3"></div>
-                <h4 className="font-semibold text-gray-900 dark:text-white">
+            {/* Availability — clean status */}
+            <div className="flex items-start gap-3 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900/30 bg-secondary-50/50 dark:bg-emerald-900/10">
+              <span className="w-2 h-2 rounded-full bg-secondary-500 mt-1.5 flex-shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-stone-900 dark:text-white">
                   {t("contact_availability_title")}
-                </h4>
+                </p>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                  {t("contact_availability_desc")}
+                </p>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">
-                {t("contact_availability_desc")}
-              </p>
-            </motion.div>
+            </div>
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Right — contact form */}
           <motion.div variants={itemVariants}>
-            <div className="card p-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            <div className="bg-white dark:bg-dark-800 rounded-2xl border border-stone-100 dark:border-dark-600 p-8">
+              <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-6">
                 {t("contact_form_title")}
               </h3>
 
-              {/* Form Status */}
               {formStatus.message && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
+                  initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`mb-6 p-4 rounded-lg flex items-center ${
+                  className={`mb-6 p-3.5 rounded-xl flex items-center gap-2.5 text-sm ${
                     formStatus.type === "success"
-                      ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800"
+                      ? "bg-secondary-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
                       : formStatus.type === "error"
                       ? "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800"
                       : "bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
                   }`}
                 >
-                  {formStatus.type === "success" && (
-                    <CheckCircleIcon className="w-5 h-5 mr-2" />
-                  )}
-                  {formStatus.type === "error" && (
-                    <ExclamationCircleIcon className="w-5 h-5 mr-2" />
-                  )}
+                  {formStatus.type === "success" && <CheckCircleIcon className="w-4 h-4 flex-shrink-0" />}
+                  {formStatus.type === "error" && <ExclamationCircleIcon className="w-4 h-4 flex-shrink-0" />}
                   {formStatus.type === "loading" && (
-                    <div className="w-5 h-5 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin flex-shrink-0" />
                   )}
                   <span>{formStatus.message}</span>
                 </motion.div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name and Email */}
-                <div className="grid md:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Honeypot — truly hidden from users */}
+                <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}>
+                  <input
+                    type="text"
+                    name="company_website"
+                    value={formData.company_website}
+                    onChange={handleInputChange}
+                    tabIndex="-1"
+                    autoComplete="off"
+                  />
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
+                    <label htmlFor="name" className="block text-xs font-medium text-stone-500 dark:text-stone-400 mb-1.5">
                       {t("contact_form_name_label")}
                     </label>
                     <input
@@ -332,15 +248,12 @@ const Contact = ({contactDetails}) => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                      className={inputClass}
                       placeholder={t("contact_form_name_placeholder")}
                     />
                   </div>
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
+                    <label htmlFor="email" className="block text-xs font-medium text-stone-500 dark:text-stone-400 mb-1.5">
                       {t("contact_form_email_label")}
                     </label>
                     <input
@@ -350,58 +263,30 @@ const Contact = ({contactDetails}) => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                      className={inputClass}
                       placeholder={t("contact_form_email_placeholder")}
                     />
                   </div>
                 </div>
 
-                {/* Subject */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label
-                      htmlFor="subject"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      Company Website
-                    </label>
-                    <input
-                      type="text"
-                      name="company_website"
-                      value={formData.company_website}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
-                      placeholder="Company website (optional)"
-                      tabIndex="-1"
-                      autoComplete="off"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="subject"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      {t("contact_form_subject_label")}
-                    </label>
-                    <input
-                      type="text"
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
-                      placeholder={t("contact_form_subject_placeholder")}
-                    />
-                  </div>
+                <div>
+                  <label htmlFor="subject" className="block text-xs font-medium text-stone-500 dark:text-stone-400 mb-1.5">
+                    {t("contact_form_subject_label")}
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    required
+                    className={inputClass}
+                    placeholder={t("contact_form_subject_placeholder")}
+                  />
                 </div>
 
-                {/* Message */}
                 <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
+                  <label htmlFor="message" className="block text-xs font-medium text-stone-500 dark:text-stone-400 mb-1.5">
                     {t("contact_form_message_label")}
                   </label>
                   <textarea
@@ -410,13 +295,12 @@ const Contact = ({contactDetails}) => {
                     value={formData.message}
                     onChange={handleInputChange}
                     required
-                    rows={6}
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 resize-none"
+                    rows={5}
+                    className={`${inputClass} resize-none`}
                     placeholder={t("contact_form_message_placeholder")}
                   />
                 </div>
 
-                {/* Submit Button */}
                 <motion.button
                   type="submit"
                   disabled={
@@ -426,20 +310,20 @@ const Contact = ({contactDetails}) => {
                     !formData.subject.trim() ||
                     !formData.message.trim()
                   }
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-sm font-semibold hover:bg-gray-700 dark:hover:bg-stone-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
                 >
                   {formStatus.type === "loading" ? (
-                    <div className="flex items-center justify-center">
-                      <div className="w-5 h-5 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <>
+                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                       Sending...
-                    </div>
+                    </>
                   ) : (
-                    <div className="flex items-center justify-center">
-                      <PaperAirplaneIcon className="w-5 h-5 mr-2" />
+                    <>
+                      <PaperAirplaneIcon className="w-4 h-4" />
                       {t("contact_form_button")}
-                    </div>
+                    </>
                   )}
                 </motion.button>
               </form>

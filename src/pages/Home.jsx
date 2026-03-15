@@ -1,4 +1,4 @@
-import  { Suspense, lazy, useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import Hero from "../components/Hero";
 import About from "../components/About";
 import Projects from "../components/Projects";
@@ -7,7 +7,7 @@ import Blog from "../components/Blog";
 import Contact from "../components/Contact";
 import { Helmet } from "react-helmet-async";
 import ChatbotSkeleton from "../components/ui/ChatbotSkeleton";
-import { MessageCircle, Bell } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useAbout } from "../context/AboutContext";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import FallbackError from "../components/ui/FallbackError";
@@ -18,8 +18,8 @@ const Home = () => {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const { aboutData, loading, error } = useAbout();
   if (loading) return <LoadingSpinner />;
-  if (error) return <FallbackError/>;
-  if (!aboutData) return null; // ✅ Only proceed when data is ready
+  if (error) return <FallbackError />;
+  if (!aboutData) return null;
 
   const {
     title,
@@ -32,8 +32,6 @@ const Home = () => {
     stats,
   } = aboutData;
 
-  console.log("aboutData", aboutData);
-
   return (
     <>
       <Helmet>
@@ -42,39 +40,15 @@ const Home = () => {
           name="description"
           content="Full-Stack Developer specializing in React, Node.js, and modern web technologies. Building scalable applications with precision and creativity."
         />
-
-        {/* Open Graph for social media previews */}
-        <meta
-          property="og:title"
-          content="Durga Gairhe - Full-Stack Developer"
-        />
-        <meta
-          property="og:description"
-          content="React & Node.js expert building scalable applications."
-        />
-        <meta
-          property="og:image"
-          content="https://www.durgagairhe.com.np/images/durga.png"
-        />
+        <meta property="og:title" content="Durga Gairhe - Full-Stack Developer" />
+        <meta property="og:description" content="React & Node.js expert building scalable applications." />
+        <meta property="og:image" content="https://www.durgagairhe.com.np/images/durga.png" />
         <meta property="og:url" content="https://www.durgagairhe.com.np" />
         <meta property="og:type" content="website" />
-
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="Durga Gairhe - Full-Stack Developer"
-        />
-        <meta
-          name="twitter:description"
-          content="System architect & React expert based in Nepal."
-        />
-        <meta
-          name="twitter:image"
-          content="https://www.durgagairhe.com.np/images/durga.png"
-        />
-
-        {/* JSON-LD Schema.org Markup */}
+        <meta name="twitter:title" content="Durga Gairhe - Full-Stack Developer" />
+        <meta name="twitter:description" content="System architect & React expert based in Nepal." />
+        <meta name="twitter:image" content="https://www.durgagairhe.com.np/images/durga.png" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -83,18 +57,13 @@ const Home = () => {
             url: "https://www.durgagairhe.com.np",
             image: "https://www.durgagairhe.com.np/images/durga.png",
             jobTitle: "Full-Stack Developer & System Architect",
-            sameAs: [
-              "https://github.com/dpgaire",
-              "https://www.linkedin.com/in/durgagairhe/",
-            ],
+            sameAs: ["https://github.com/dpgaire", "https://www.linkedin.com/in/durgagairhe/"],
           })}
         </script>
       </Helmet>
 
       <main>
-        <section id="home">
-          <Hero tags={tags} tagline={tagline} cv={contactDetails?.cv} />
-        </section>
+        <section id="home"><Hero tags={tags} tagline={tagline} cv={contactDetails?.cv} /></section>
         <section id="about">
           <About
             title={title}
@@ -105,39 +74,32 @@ const Home = () => {
             profileImage={contactDetails?.profileImage}
           />
         </section>
-        <section id="skills">
-          <Skills />
-        </section>
-        <section id="projects">
-          <Projects />
-        </section>
-        <section id="blog">
-          <Blog />
-        </section>
-        <section id="contact">
-          <Contact contactDetails={contactDetails} />
-        </section>
+        <section id="skills"><Skills /></section>
+        <section id="projects"><Projects /></section>
+        <section id="blog"><Blog /></section>
+        <section id="contact"><Contact contactDetails={contactDetails} /></section>
       </main>
 
-      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
-        <button
-          onClick={() => setIsChatbotOpen(true)}
-          className="relative group w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 shadow-lg md:shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center backdrop-blur-sm"
-        >
-          <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <MessageCircle className="w-6 h-6 md:w-7 md:h-7 text-white z-10" />
-          <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
-            <Bell className="w-2 h-2 md:w-3 md:h-3 text-white" />
-          </div>
-          <div className="absolute -bottom-1 -left-1 w-6 h-6 md:w-8 md:h-8 bg-emerald-500/20 rounded-full animate-ping"></div>
-        </button>
-      </div>
+      {/* Chat FAB — single, calm, intentional */}
+      {/* <div className="fixed bottom-6 right-6 z-50">
+        <div className="relative">
+          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-dark-900" />
 
-      {isChatbotOpen && (
+          <button
+            onClick={() => setIsChatbotOpen(true)}
+            className="group w-12 h-12 rounded-xl bg-stone-900 dark:bg-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center"
+            aria-label="Open chat"
+          >
+            <MessageCircle className="w-5 h-5 text-white dark:text-stone-900 group-hover:rotate-6 transition-transform duration-200" />
+          </button>
+        </div>
+      </div> */}
+
+      {/* {isChatbotOpen && (
         <Suspense fallback={<ChatbotSkeleton />}>
           <PremiumChatbot setIsOpen={setIsChatbotOpen} />
         </Suspense>
-      )}
+      )} */}
     </>
   );
 };

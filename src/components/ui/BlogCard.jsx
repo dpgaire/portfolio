@@ -22,16 +22,16 @@ const BlogCard = ({ post }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="p-6"  onClick={()=>naviagte(`/blog/${post.id}`)}>
-          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+          <div className="flex items-center text-sm text-stone-500 dark:text-stone-400 mb-3">
             <Calendar size={16} className="mr-2" />
             {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             <Clock size={16} className="ml-4 mr-2" />
             {post.readTime}
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          <h3 className="text-xl font-semibold text-stone-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             {post.title}
           </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+          <p className="text-stone-600 dark:text-stone-300 mb-4 line-clamp-3">
             {post.excerpt}
           </p>
           <div className="flex flex-wrap gap-2">

@@ -1,59 +1,34 @@
 const ProjectDetailsSkeleton = () => {
   return (
-    <div className="section-padding bg-white dark:bg-dark-900">
-      <div className="container-custom">
-        <div className="h-8 bg-gray-300 rounded w-1/4 mb-8 animate-pulse"></div>
-
-        <div className="text-center mb-16">
-          <div className="h-16 bg-gray-300 rounded w-3/4 mx-auto mb-4 animate-pulse"></div>
-          <div className="h-8 bg-gray-300 rounded w-1/2 mx-auto animate-pulse"></div>
-        </div>
-
-        <div className="mb-12">
-          <div className="w-full h-96 bg-gray-300 rounded-lg shadow-lg animate-pulse"></div>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2">
-            <div className="prose dark:prose-invert max-w-none">
-              <div className="h-8 bg-gray-300 rounded w-1/3 mb-4 animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-full mb-2 animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-5/6 mb-4 animate-pulse"></div>
-
-              <div className="h-8 bg-gray-300 rounded w-1/3 mt-8 mb-4 animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-full mb-2 animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-full mb-2 animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-4/5 mb-4 animate-pulse"></div>
-
-              <div className="h-8 bg-gray-300 rounded w-1/3 mt-8 mb-4 animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-full mb-2 animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-5/6 mb-4 animate-pulse"></div>
+    <div className="section-padding bg-white dark:bg-dark-900 min-h-screen">
+    <div className="container-custom space-y-10">
+      <div className="h-4 bg-stone-200 dark:bg-dark-700 rounded-full w-28 animate-pulse" />
+      <div className="space-y-3 max-w-3xl">
+        <div className="h-10 bg-stone-200 dark:bg-dark-700 rounded-lg w-2/3 animate-pulse" />
+        <div className="h-5 bg-stone-200 dark:bg-dark-700 rounded-full w-full animate-pulse" />
+      </div>
+      <div className="w-full h-80 bg-stone-200 dark:bg-dark-700 rounded-2xl animate-pulse" />
+      <div className="grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-8">
+          {[1,2,3].map(i => (
+            <div key={i} className="space-y-2">
+              <div className="h-3 bg-stone-200 dark:bg-dark-700 rounded-full w-24 animate-pulse" />
+              <div className="h-4 bg-stone-200 dark:bg-dark-700 rounded-full w-full animate-pulse" />
+              <div className="h-4 bg-stone-200 dark:bg-dark-700 rounded-full w-5/6 animate-pulse" />
             </div>
-          </div>
-          <div>
-            <div className="card p-6 sticky top-24">
-              <div className="h-8 bg-gray-300 rounded w-1/2 mb-4 animate-pulse"></div>
-              <div className="flex flex-wrap gap-2 mb-8">
-                <div className="h-6 bg-gray-300 rounded-full w-24 animate-pulse"></div>
-                <div className="h-6 bg-gray-300 rounded-full w-20 animate-pulse"></div>
-                <div className="h-6 bg-gray-300 rounded-full w-28 animate-pulse"></div>
-                <div className="h-6 bg-gray-300 rounded-full w-16 animate-pulse"></div>
-              </div>
-              <div className="h-12 bg-gray-300 rounded w-full mb-3 animate-pulse"></div>
-              <div className="h-12 bg-gray-300 rounded w-full animate-pulse"></div>
-            </div>
-          </div>
+          ))}
         </div>
-
-        <div className="mt-16">
-          <div className="h-10 bg-gray-300 rounded w-1/2 mx-auto mb-8 animate-pulse"></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <div className="w-full h-64 bg-gray-300 rounded-lg shadow-md animate-pulse"></div>
-            <div className="w-full h-64 bg-gray-300 rounded-lg shadow-md animate-pulse"></div>
+        <div className="rounded-2xl border border-stone-100 dark:border-dark-700 bg-stone-50 dark:bg-dark-800 p-6 space-y-4">
+          <div className="h-3 bg-stone-200 dark:bg-dark-700 rounded-full w-24 animate-pulse" />
+          <div className="flex flex-wrap gap-2">
+            {[1,2,3,4].map(i => <div key={i} className="h-6 bg-stone-200 dark:bg-dark-700 rounded-lg w-16 animate-pulse" />)}
           </div>
+          <div className="h-10 bg-stone-200 dark:bg-dark-700 rounded-xl animate-pulse" />
+          <div className="h-10 bg-stone-200 dark:bg-dark-700 rounded-xl animate-pulse" />
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

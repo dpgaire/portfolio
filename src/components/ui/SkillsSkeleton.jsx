@@ -1,23 +1,28 @@
-const SkillCategorySkeleton = () => (
-  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-    <div className="h-8 w-8 bg-gray-300 rounded-full mb-4 animate-pulse"></div>
-    <div className="h-6 bg-gray-300 rounded w-1/2 mb-4 animate-pulse"></div>
-    <div className="space-y-4">
-      <div className="h-4 bg-gray-300 rounded w-3/4 animate-pulse"></div>
-      <div className="h-4 bg-gray-300 rounded w-5/6 animate-pulse"></div>
-      <div className="h-4 bg-gray-300 rounded w-4/5 animate-pulse"></div>
+const SkillCatSkeleton = () => (
+  <div className="rounded-2xl border border-stone-100 dark:border-dark-700 bg-stone-50 dark:bg-dark-800 p-7 space-y-5">
+    <div className="flex items-center gap-3">
+      <div className="w-8 h-8 bg-stone-200 dark:bg-dark-700 rounded-lg animate-pulse" />
+      <div className="h-4 bg-stone-200 dark:bg-dark-700 rounded-full w-32 animate-pulse" />
     </div>
+    {[1,2,3,4].map(i => (
+      <div key={i} className="space-y-2">
+        <div className="flex justify-between">
+          <div className="h-3 bg-stone-200 dark:bg-dark-700 rounded-full w-24 animate-pulse" />
+          <div className="h-3 bg-stone-200 dark:bg-dark-700 rounded-full w-8 animate-pulse" />
+        </div>
+        <div className="h-1.5 bg-stone-200 dark:bg-dark-700 rounded-full animate-pulse" />
+      </div>
+    ))}
   </div>
 );
-
-const SkillsSkeleton = () => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <SkillCategorySkeleton />
-      <SkillCategorySkeleton />
-      <SkillCategorySkeleton />
-    </div>
-  );
-};
+ 
+export const SkillsSkeleton = () => (
+  <div className="grid lg:grid-cols-2 gap-6">
+    <SkillCatSkeleton />
+    <SkillCatSkeleton />
+    <SkillCatSkeleton />
+    <SkillCatSkeleton />
+  </div>
+);
 
 export default SkillsSkeleton;

@@ -1,81 +1,36 @@
-import { useMemo } from "react";
-import {
-  ArrowPathIcon,
-  ExclamationTriangleIcon,
-} from "@heroicons/react/24/outline";
-
-const quotes = [
-  "“Every setback is a setup for a comeback.”",
-  "“Failure is not the opposite of success; it’s part of success.”",
-  "“Even the best code sometimes breaks — stay calm and fix it.”",
-  "“Errors are just opportunities to learn faster.”",
-  "“Perfection is achieved not when there is nothing to add, but when there is nothing left to take away.”",
-  "“The only real mistake is the one from which we learn nothing.”",
-  "“Bugs are proof you’re building something real.”",
-];
-
-const FallbackError = () => {
-  const randomQuote = useMemo(
-    () => quotes[Math.floor(Math.random() * quotes.length)],
-    []
-  );
-
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white backdrop-blur-lg">
-      {/* Animated icon or X mark */}
-
-      <div className="relative flex items-center justify-center mb-6">
-        {/* Glowing red aura */}
-        <div className="absolute w-24 h-24 bg-red-600/30 blur-2xl rounded-full animate-pulse"></div>
-        <div className="absolute w-16 h-16 bg-red-500/40 blur-xl rounded-full animate-ping"></div>
-
-        {/* Error Icon */}
-        <ExclamationTriangleIcon className="relative w-16 h-16 text-red-500 drop-shadow-[0_0_12px_rgba(255,0,0,0.6)]" />
-      </div>
-
-      {/* Error Message */}
-      <h2 className="text-2xl space-y-2 mt-2 font-semibold mb-3 text-red-400">
-        Error: Something went wrong!
-      </h2>
-
-      {/* Random Quote */}
-      <p className="max-w-md text-center text-gray-400 italic px-6 mb-6">
-        {randomQuote}
-      </p>
-      <p className="text-gray-300 font-semibold italic text-center px-4">
-        Please contact us at{" "}
-        <a
-          href="tel:+9779846724440"
-          className="text-blue-400 underline hover:text-blue-300 transition-colors"
-        >
-          +977 9846724440
-        </a>{" "}
-        or email us at{" "}
-        <a
-          href="mailto:gairhedurga13@gmail.com"
-          className="text-blue-400 underline hover:text-blue-300 transition-colors"
-        >
-          gairhedurga13@gmail.com
-        </a>
-      </p>
-
-      <button
-        onClick={() => window.location.reload()}
-        className="
-        mt-8 px-6 py-3 flex items-center gap-2
-        rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600
-        text-white font-medium shadow-lg shadow-blue-500/30
-        hover:from-indigo-500 hover:to-purple-600
-        transform hover:scale-105 active:scale-95
-        transition-all duration-300 ease-out
-        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400
-      "
-      >
-        <ArrowPathIcon className="w-5 h-5 animate-spin-on-hover transition-transform duration-300" />
-        <span>Try Again</span>
-      </button>
+const FallbackError = () => (
+  <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-stone-950 text-stone-100 px-6">
+    <div className="w-12 h-12 rounded-2xl bg-red-900/30 border border-red-800/40 flex items-center justify-center mb-6">
+      {/* Simple X — not a pulsing red aura */}
+      <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+      </svg>
     </div>
-  );
-};
+ 
+    <h2 className="text-base font-semibold text-stone-100 mb-2">Something went wrong</h2>
+    <p className="text-sm text-stone-400 text-center mb-2 max-w-xs leading-relaxed">
+      We couldn't load this content. Please try again or get in touch.
+    </p>
+    <p className="text-xs text-stone-500 text-center mb-8">
+      <a href="tel:+9779846724440" className="text-secondary-400 hover:text-secondary-300 transition-colors">
+        +977 9846724440
+      </a>
+      {" · "}
+      <a href="mailto:gairhedurga13@gmail.com" className="text-secondary-400 hover:text-secondary-300 transition-colors">
+        gairhedurga13@gmail.com
+      </a>
+    </p>
+ 
+    <button
+      onClick={() => window.location.reload()}
+      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-100 text-sm font-medium transition-colors duration-200"
+    >
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      Try again
+    </button>
+  </div>
+);
 
 export default FallbackError;
